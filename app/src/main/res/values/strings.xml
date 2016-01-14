@@ -1,0 +1,127 @@
+<resources>
+    <string name="app_name">WiFiKeyShare</string>
+
+    <string name="action_settings">Settings</string>
+    <string name="title_activity_main">WiFiKeyShare</string>
+    <string name="title_activity_wifi_network">Wi-Fi Network</string>
+
+
+
+    <!-- Dialog for Access Points -->
+    <skip />
+    <!-- Label to show/hide advanced options [CHAR LIMIT=40] -->
+    <string name="wifi_show_advanced">Advanced options</string>
+
+    <!-- Label for the SSID of the network -->
+    <string name="wifi_ssid">Network name</string>
+    <!-- Hint for a text field to enter the SSID of a hidden wifi network. [CHAR LIMIT=35] -->
+    <string name="wifi_ssid_hint">Enter the SSID</string>
+    <!-- Label for the security of the connection -->
+    <string name="wifi_security">Security</string>
+    <!-- Label for the signal strength of the connection -->
+    <string name="wifi_signal">Signal strength</string>
+    <!-- Label for the status of the connection -->
+    <string name="wifi_status">Status</string>
+    <!-- Label for the link speed of the connection -->
+    <string name="wifi_speed">Link speed</string>
+    <!-- Label for the frequency band of the connection -->
+    <string name="wifi_frequency">Frequency</string>
+    <!-- Label for the IP address of the connection -->
+    <string name="wifi_ip_address">IP address</string>
+    <!-- Hint text for the IP address -->
+    <string name="wifi_ip_address_hint" translatable="false">192.168.1.128</string>
+    <!-- Label for the EAP method of the network -->
+    <string name="wifi_eap_method">EAP method</string>
+    <!-- Label for the phase2 -->
+    <string name="please_select_phase2">Phase 2 authentication</string>
+    <!-- Label for the EAP CA certificate of the network -->
+    <string name="wifi_eap_ca_cert">CA certificate</string>
+    <!-- Label for the EAP user certificate of the network -->
+    <string name="wifi_eap_user_cert">User certificate</string>
+    <!-- Label for the EAP identity of the network -->
+    <string name="wifi_eap_identity">Identity</string>
+    <!-- Label for the EAP anonymous identity of the network -->
+    <string name="wifi_eap_anonymous">Anonymous identity</string>
+    <!-- Label for the password of the secured network -->
+    <string name="wifi_password">Password</string>
+    <!-- Label for the check box to show password -->
+    <string name="wifi_show_password">Show password</string>
+    <!-- Label for the spinner to show ip settings [CHAR LIMIT=25] -->
+    <string name="wifi_ip_settings">IP settings</string>
+    <!-- Hint for unchanged fields -->
+    <string name="wifi_unchanged">(unchanged)</string>
+    <!-- Hint for unspecified fields -->
+    <string name="wifi_unspecified">(unspecified)</string>
+    <!-- Summary for the remembered network. -->
+    <string name="wifi_remembered">Saved</string>
+    <!-- Status for networks disabled for unknown reason -->
+    <string name="wifi_disabled_generic">Disabled</string>
+    <!-- Status for networked disabled from a DNS or DHCP failure -->
+    <string name="wifi_disabled_network_failure">IP Configuration Failure</string>
+    <!-- Status for networked disabled from a wifi association failure -->
+    <string name="wifi_disabled_wifi_failure">WiFi Connection Failure</string>
+    <!-- Status for networks disabled from authentication failure (wrong password
+         or certificate). -->
+    <string name="wifi_disabled_password_failure">Authentication problem</string>
+    <!-- Summary for the remembered network but currently not in range. -->
+    <string name="wifi_not_in_range">Not in range</string>
+    <!-- Summary for the remembered network but no internet connection was detected. -->
+    <string name="wifi_no_internet">No Internet Access Detected, won\'t automatically reconnect.</string>
+    <!-- Substring of status line when Wi-Fi Protected Setup (WPS) is available and
+         string is listed first [CHAR LIMIT=20]-->
+    <string name="wifi_wps_available_first_item">WPS available</string>
+    <!-- Substring of wifi status when Wi-Fi Protected Setup (WPS) is available and
+         string is listed after a wifi_secured_* string-->
+    <string name="wifi_wps_available_second_item">\u0020(WPS available)</string>
+    <!-- Message in WriteWifiConfigToNfcDialog when prompted to enter network password [CHAR_LIMIT=40] -->
+    <string name="wifi_wps_nfc_enter_password">Enter your network password</string>
+
+    <!-- Do not translate.  Concise terminology for wifi with WEP security -->
+    <string name="wifi_security_short_wep">WEP</string>
+    <!-- Do not translate.  Concise terminology for wifi with WPA security -->
+    <string name="wifi_security_short_wpa">WPA</string>
+    <!-- Do not translate.  Concise terminology for wifi with WPA2 security -->
+    <string name="wifi_security_short_wpa2">WPA2</string>
+    <!-- Do not translate.  Concise terminology for wifi with both WPA/WPA2 security -->
+    <string name="wifi_security_short_wpa_wpa2">WPA/WPA2</string>
+    <!-- Do not translate.  Concise terminology for wifi with unknown PSK type -->
+    <string name="wifi_security_short_psk_generic">@string/wifi_security_short_wpa_wpa2</string>
+    <!-- Do not translate.  Concise terminology for wifi with 802.1x EAP security -->
+    <string name="wifi_security_short_eap">802.1x</string>
+
+    <!-- Used in Wi-Fi settings dialogs when Wi-Fi does not have any security. -->
+    <string name="wifi_security_none">None</string>
+
+    <!-- Do not translate.  Terminology for wifi with WEP security -->
+    <string name="wifi_security_wep">WEP</string>
+    <!-- Do not translate.  Terminology for wifi with WPA security -->
+    <string name="wifi_security_wpa">WPA PSK</string>
+    <!-- Do not translate.  Terminology for wifi with WPA2 security -->
+    <string name="wifi_security_wpa2">WPA2 PSK</string>
+    <!-- Do not translate.  Terminology for wifi with both WPA/WPA2 security, or unknown -->
+    <string name="wifi_security_wpa_wpa2">WPA/WPA2 PSK</string>
+    <!-- Do not translate.  Terminology for wifi with unknown PSK type -->
+    <string name="wifi_security_psk_generic">@string/wifi_security_wpa_wpa2</string>
+    <!-- Do not translate.  Concise terminology for wifi with 802.1x EAP security -->
+    <string name="wifi_security_eap">802.1x EAP</string>
+
+    <!-- Button label to connect to a Wi-Fi network -->
+    <string name="wifi_connect">Connect</string>
+    <!-- Failured notification for connect -->
+    <string name="wifi_failed_connect_message">Failed to connect to network</string>
+    <!-- Button label to delete a Wi-Fi network -->
+    <string name="wifi_forget">Forget</string>
+    <!-- Failured notification for forget -->
+    <string name="wifi_failed_forget_message">Failed to forget network</string>
+    <!-- Button label to save a Wi-Fi network configuration -->
+    <string name="wifi_save">Save</string>
+    <!-- Failured notification for save -->
+    <string name="wifi_failed_save_message">Failed to save network</string>
+    <!-- Button label to dismiss the dialog -->
+    <string name="wifi_cancel">Cancel</string>
+    <!-- Button for skipping a step after having been warned of a potential concern [CHAR LIMIT=30] -->
+    <string name="wifi_skip_anyway">Skip anyway</string>
+    <!-- Button for going to the previous screen or step [CHAR LIMIT=20] -->
+    <string name="wifi_dont_skip">Don\'t skip</string>
+
+</resources>

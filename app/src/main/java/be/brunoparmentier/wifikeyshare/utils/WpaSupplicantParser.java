@@ -1,0 +1,74 @@
+package be.brunoparmentier.wifikeyshare.utils;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import be.brunoparmentier.wifikeyshare.model.WifiAuthType;
+import be.brunoparmentier.wifikeyshare.model.WifiNetwork;
+
+public class WpaSupplicantParser {
+
+    private static final String TAG = WpaSupplicantParser.class.getSimpleName();
+
+    public static List<WifiNetwork> parse(String networkString) {
+        List<WifiNetwork> wifiNetworks = new ArrayList<>();
+        String[] networkSections = networkString.split("network=");
+        for (int i = 1; i < networkSections.length; i++) {
+            String networkSection = networkSections[i];
+            String name = parseToken(networkSection, "ssid");
+            String password = networkPassword(networkSection);
+            WifiAuthType authType = networkType(networkSection);
+            wifiNetworks.add(new WifiNetwork(name, authType, password, false));
+        }
+
+        return wifiNetworks;
+    }
+
+    private static WifiAuthType networkType(String networkSection) {
+        if (hasToken(networkSection, "wep_key0")) {
+            return WifiAuthType.WEP;
+        } else if (hasToken(networkSection, "psk")) {
+            return WifiAuthType.WPA_PSK;
+        } else if (hasToken(networkSection, "key_mgmt")
+                && parseToken(networkSection, "key_mgmt").startsWith("WPA-EAP")) {
+            return WifiAuthType.WPA_EAP;
+        } else {
+            return WifiAuthType.OPEN;
+        }
+    }
+
+    private static String networkPassword(String networkSection) {
+        switch (networkType(networkSection)) {
+            case WPA_PSK:
+            case WPA2_PSK:
+                return parseToken(networkSection, "psk");
+            case WEP:
+                return parseToken(networkSection, "wep_key0");
+            default:
+                return "";
+        }
+    }
+
+    private static boolean hasToken(String networkSection, String tokenName) {
+        return tokenLines(networkSection, tokenName).size() > 0;
+    }
+
+    private static List<String> tokenLines(String networkSection, String tokenName) {
+        List<String> lines = new ArrayList<>();
+        String[] tokenLines = networkSection.split("\n");
+        for (String line : tokenLines) {
+            if (line.trim().startsWith(tokenName)) {
+                lines.add(line.trim());
+            }
+        }
+
+        return lines;
+    }
+
+    private static String parseToken(String networkSection, String tokenName) {
+        //Log.d(TAG, networkSection);
+        List<String> tokenLines = tokenLines(networkSection, tokenName);
+
+        return tokenLines.get(0).split("=")[1].replace("\"", "");
+    }
+}

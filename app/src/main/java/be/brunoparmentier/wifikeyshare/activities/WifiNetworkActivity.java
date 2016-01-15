@@ -97,8 +97,8 @@ public class WifiNetworkActivity extends AppCompatActivity {
 
         wifiNetwork = (WifiNetwork) getIntent().getSerializableExtra(KEY_WIFI_NETWORK);
 
-        if (getIntent().getBooleanExtra(KEY_WIFI_NEEDS_PASSWORD, true)) {
-            buildWifiPasswordDialog();
+        if (wifiNetwork.isPasswordProtected() && wifiNetwork.getKey().isEmpty()) {
+            showWifiPasswordDialog();
         }
 
         writeTagDialog = new AlertDialog.Builder(this)
@@ -125,7 +125,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
     }
 
-    void buildWifiPasswordDialog() {
+    void showWifiPasswordDialog() {
         final LayoutInflater inflater = getLayoutInflater();
         final View wifiPasswordDialogLayout = inflater.inflate(R.layout.dialog_wifi_password, null);
 

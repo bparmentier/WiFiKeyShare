@@ -88,11 +88,8 @@ public class WifiNetworkAdapter extends RecyclerView.Adapter<WifiNetworkAdapter.
         @Override
         public void onClick(View view) {
             WifiNetwork wifiNetwork = wifiNetworks.get(getLayoutPosition());
-            boolean needsUserInputPassword = (wifiNetwork.isPasswordProtected()
-                    && wifiNetwork.getKey().isEmpty());
             Intent wifiIntent = new Intent(context, WifiNetworkActivity.class);
             wifiIntent.putExtra(KEY_WIFI_NETWORK, wifiNetwork);
-            wifiIntent.putExtra(KEY_WIFI_NEEDS_PASSWORD, needsUserInputPassword);
             /*ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
                     (Activity) context,
                     view.findViewById(R.id.wifi_ssid),

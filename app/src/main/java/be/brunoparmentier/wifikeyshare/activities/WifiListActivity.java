@@ -181,8 +181,10 @@ public class WifiListActivity extends AppCompatActivity {
                 List<WifiConfiguration> savedWifiConfigs = wifiManager.getConfiguredNetworks();
 
                 parsedWifiNetworks = new ArrayList<>();
-                for (WifiConfiguration wifiConfig : savedWifiConfigs) {
-                    parsedWifiNetworks.add(WifiNetwork.fromWifiConfiguration(wifiConfig));
+                if (savedWifiConfigs != null) {
+                    for (WifiConfiguration wifiConfig : savedWifiConfigs) {
+                        parsedWifiNetworks.add(WifiNetwork.fromWifiConfiguration(wifiConfig));
+                    }
                 }
 
                 return parsedWifiNetworks;

@@ -196,15 +196,10 @@ public class WifiNetworkActivity extends AppCompatActivity {
                         wifiPasswordWrapper.setError(null);
                         wifiNetwork.setKey(passwordEditText.getText().toString());
 
-                        // Get screen width
-                        DisplayMetrics dm = new DisplayMetrics();
-                        getWindowManager().getDefaultDisplay().getMetrics(dm);
-                        int width = (int) (dm.widthPixels * 0.5);
-
                         // Update QR code image
                         FragmentManager fm = getSupportFragmentManager();
                         QrCodeFragment qrCodeFragment = (QrCodeFragment) fm.getFragments().get(0);
-                        qrCodeFragment.updateQrCode(width, wifiNetwork);
+                        qrCodeFragment.updateQrCode(wifiNetwork);
 
                         wifiPasswordDialog.dismiss();
                     }
@@ -399,18 +394,17 @@ public class WifiNetworkActivity extends AppCompatActivity {
                 }
             });
 
-            DisplayMetrics dm = new DisplayMetrics();
-            getActivity().getWindowManager().getDefaultDisplay().getMetrics(dm);
-            int width = (int) (dm.widthPixels * 0.5);
-
-            updateQrCode(width, wifiNetwork);
+            updateQrCode(wifiNetwork);
 
             return rootView;
         }
 
-        public void updateQrCode(int width, WifiNetwork wifiNetwork) {
+        public void updateQrCode(WifiNetwork wifiNetwork) {
+            DisplayMetrics metrics = getContext().getResources().getDisplayMetrics();
+            float widthInDp = 200f;
+            int widthInPixels = (int) (metrics.density * widthInDp + 0.5f);
             try {
-                Bitmap qrCodeBitmap = QrCodeUtils.generateWifiQrCode(width, wifiNetwork);
+                Bitmap qrCodeBitmap = QrCodeUtils.generateWifiQrCode(widthInPixels, wifiNetwork);
                 qrCodeImageView.setImageBitmap(qrCodeBitmap);
             } catch (final WriterException e) {
                 Log.d(TAG, e.getMessage());

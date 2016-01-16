@@ -1,5 +1,7 @@
 # WiFiKeyShare
 
+[![Build Status](https://travis-ci.org/bparmentier/WiFiKeyShare.svg?branch=master)](https://travis-ci.org/bparmentier/WiFiKeyShare)
+
 WiFiKeyShare lets you easily share your Wi-Fi password by generating a QR code or by writing it to
 an NFC tag.
 

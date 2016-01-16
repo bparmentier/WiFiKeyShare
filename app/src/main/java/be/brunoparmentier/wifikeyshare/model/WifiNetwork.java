@@ -58,6 +58,10 @@ public class WifiNetwork implements Serializable {
                 || !key.isEmpty();
     }
 
+    public boolean needsPassword() {
+        return isPasswordProtected() && key.isEmpty();
+    }
+
     public static WifiNetwork fromWifiConfiguration(WifiConfiguration wifiConfiguration) {
         String ssid = getSsidFromWifiConfiguration(wifiConfiguration);
         WifiAuthType authType = getSecurityFromWifiConfiguration(wifiConfiguration);

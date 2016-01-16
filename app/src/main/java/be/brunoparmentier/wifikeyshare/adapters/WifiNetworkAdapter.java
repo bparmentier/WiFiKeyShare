@@ -18,6 +18,7 @@
 
 package be.brunoparmentier.wifikeyshare.adapters;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
@@ -33,8 +34,10 @@ import be.brunoparmentier.wifikeyshare.activities.WifiNetworkActivity;
 import be.brunoparmentier.wifikeyshare.model.WifiNetwork;
 
 public class WifiNetworkAdapter extends RecyclerView.Adapter<WifiNetworkAdapter.ViewHolder> {
+
     private static final String KEY_WIFI_NETWORK = "wifi_network";
-    private static final String KEY_WIFI_NEEDS_PASSWORD = "wifi_needs_password";
+    private static final String KEY_NETWORK_ID = "network_id";
+    private static final int PASSWORD_REQUEST = 1;
 
     private Context context;
     private List<WifiNetwork> wifiNetworks;
@@ -90,12 +93,12 @@ public class WifiNetworkAdapter extends RecyclerView.Adapter<WifiNetworkAdapter.
             WifiNetwork wifiNetwork = wifiNetworks.get(getLayoutPosition());
             Intent wifiIntent = new Intent(context, WifiNetworkActivity.class);
             wifiIntent.putExtra(KEY_WIFI_NETWORK, wifiNetwork);
-            /*ActivityOptionsCompat options = ActivityOptionsCompat.makeSceneTransitionAnimation(
-                    (Activity) context,
-                    view.findViewById(R.id.wifi_ssid),
-                    context.getString(R.string.transition_name_ssid));
-            ActivityCompat.startActivity((Activity) context, wifiIntent, options.toBundle());*/
-            context.startActivity(wifiIntent);
+            if (wifiNetwork.needsPassword()) {
+                wifiIntent.putExtra(KEY_NETWORK_ID, getLayoutPosition());
+                ((Activity) context).startActivityForResult(wifiIntent, PASSWORD_REQUEST);
+            } else {
+                context.startActivity(wifiIntent);
+            }
         }
     }
 }

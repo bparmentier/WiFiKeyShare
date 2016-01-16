@@ -58,6 +58,7 @@ import com.google.zxing.WriterException;
 import java.security.InvalidKeyException;
 
 import be.brunoparmentier.wifikeyshare.R;
+import be.brunoparmentier.wifikeyshare.db.WifiKeysDataSource;
 import be.brunoparmentier.wifikeyshare.model.WifiAuthType;
 import be.brunoparmentier.wifikeyshare.model.WifiNetwork;
 import be.brunoparmentier.wifikeyshare.utils.NfcUtils;
@@ -68,9 +69,10 @@ public class WifiNetworkActivity extends AppCompatActivity {
     private static final String TAG = WifiNetworkActivity.class.getSimpleName();
 
     private static final String KEY_WIFI_NETWORK = "wifi_network";
-    private static final String KEY_WIFI_NEEDS_PASSWORD = "wifi_needs_password";
+    private static final String KEY_NETWORK_ID = "network_id";
 
     private WifiNetwork wifiNetwork;
+    private int wifiNetworkId;
     private boolean isInWriteMode;
     private NfcAdapter nfcAdapter;
     private AlertDialog writeTagDialog;
@@ -97,7 +99,8 @@ public class WifiNetworkActivity extends AppCompatActivity {
 
         wifiNetwork = (WifiNetwork) getIntent().getSerializableExtra(KEY_WIFI_NETWORK);
 
-        if (wifiNetwork.isPasswordProtected() && wifiNetwork.getKey().isEmpty()) {
+        if (wifiNetwork.needsPassword()) {
+            wifiNetworkId = getIntent().getIntExtra(KEY_NETWORK_ID, -1);
             showWifiPasswordDialog();
         }
 
@@ -200,6 +203,13 @@ public class WifiNetworkActivity extends AppCompatActivity {
                         FragmentManager fm = getSupportFragmentManager();
                         QrCodeFragment qrCodeFragment = (QrCodeFragment) fm.getFragments().get(0);
                         qrCodeFragment.updateQrCode(wifiNetwork);
+
+                        WifiKeysDataSource wifiKeysDataSource = new WifiKeysDataSource(WifiNetworkActivity.this);
+                        wifiKeysDataSource.insertWifiKey(wifiNetwork);
+
+                        Intent passwordResultIntent = new Intent();
+                        passwordResultIntent.putExtra(KEY_NETWORK_ID, wifiNetworkId);
+                        setResult(RESULT_OK, passwordResultIntent);
 
                         wifiPasswordDialog.dismiss();
                     }

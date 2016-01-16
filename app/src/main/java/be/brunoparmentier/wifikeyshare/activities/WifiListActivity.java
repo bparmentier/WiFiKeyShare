@@ -20,6 +20,7 @@ package be.brunoparmentier.wifikeyshare.activities;
 
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
@@ -31,6 +32,7 @@ import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +43,7 @@ import java.util.List;
 import be.brunoparmentier.wifikeyshare.DividerItemDecoration;
 import be.brunoparmentier.wifikeyshare.R;
 import be.brunoparmentier.wifikeyshare.adapters.WifiNetworkAdapter;
+import be.brunoparmentier.wifikeyshare.db.WifiKeysDataSource;
 import be.brunoparmentier.wifikeyshare.model.WifiAuthType;
 import be.brunoparmentier.wifikeyshare.model.WifiNetwork;
 import be.brunoparmentier.wifikeyshare.utils.WpaSupplicantParser;
@@ -50,6 +53,9 @@ public class WifiListActivity extends AppCompatActivity {
     private static final String TAG = WifiListActivity.class.getSimpleName();
 
     private static final String FILE_WIFI_SUPPLICANT = "/data/misc/wifi/wpa_supplicant.conf";
+
+    private static final int PASSWORD_REQUEST = 1;
+    private static final String KEY_NETWORK_ID = "network_id";
 
     private List<WifiNetwork> wifiNetworks;
     private WifiNetworkAdapter wifiNetworkAdapter;
@@ -151,6 +157,28 @@ public class WifiListActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        Log.d(TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
+        if (requestCode == PASSWORD_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                int networkId = data.getIntExtra(KEY_NETWORK_ID, -1);
+                if (networkId != -1) {
+                    WifiKeysDataSource wifiKeysDataSource = new WifiKeysDataSource(this);
+                    String key = wifiKeysDataSource.getKey(
+                            wifiNetworks.get(networkId).getSsid(),
+                            wifiNetworks.get(networkId).getAuthType());
+                    wifiNetworks.get(networkId).setKey(key);
+
+                    wifiNetworkAdapter.notifyItemChanged(networkId);
+                } else {
+                    Log.e(TAG, "onActivityResult: invalid networkId");
+                }
+
+            }
+        }
+    }
+
     private class WifiListTask extends AsyncTask<Void, Void, List<WifiNetwork>> {
 
         private boolean isDeviceRooted;
@@ -212,6 +240,24 @@ public class WifiListActivity extends AppCompatActivity {
                         .setCancelable(false)
                         .create()
                         .show();
+                setSavedKeysToWifiNetworks();
+            }
+        }
+    }
+
+
+    private void setSavedKeysToWifiNetworks() {
+        WifiKeysDataSource wifiKeysDataSource = new WifiKeysDataSource(this);
+        List<WifiNetwork> wifiNetworksWithKey = wifiKeysDataSource.getSavedWifiWithKeys();
+
+        for (int i = 0; i < wifiNetworks.size(); i++) {
+            for (int j = 0; j < wifiNetworksWithKey.size(); j++) {
+                if (wifiNetworks.get(i).getSsid().equals(wifiNetworksWithKey.get(j).getSsid())
+                        && wifiNetworks.get(i).getAuthType() == wifiNetworksWithKey.get(j).getAuthType())
+                    if (wifiNetworks.get(i).needsPassword()) {
+                        wifiNetworks.get(i).setKey(wifiNetworksWithKey.get(j).getKey());
+                        wifiNetworkAdapter.notifyItemChanged(i);
+                    }
             }
         }
     }

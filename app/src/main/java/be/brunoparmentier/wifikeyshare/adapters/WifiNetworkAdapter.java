@@ -25,6 +25,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import java.util.List;
@@ -65,6 +66,15 @@ public class WifiNetworkAdapter extends RecyclerView.Adapter<WifiNetworkAdapter.
 
         TextView authTypeTextView = holder.authTypeTextView;
         authTypeTextView.setText(wifiNetwork.getAuthType().toString());
+
+        ImageView keyImageView = holder.keyImageView;
+        if (wifiNetwork.isPasswordProtected()) {
+            if (wifiNetwork.needsPassword()) {
+                keyImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_key_missing));
+            } else {
+                keyImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_key));
+            }
+        }
     }
 
     @Override
@@ -78,6 +88,7 @@ public class WifiNetworkAdapter extends RecyclerView.Adapter<WifiNetworkAdapter.
 
         public TextView ssidTextView;
         public TextView authTypeTextView;
+        public ImageView keyImageView;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -86,6 +97,7 @@ public class WifiNetworkAdapter extends RecyclerView.Adapter<WifiNetworkAdapter.
 
             ssidTextView = (TextView) itemView.findViewById(R.id.wifi_ssid);
             authTypeTextView = (TextView) itemView.findViewById(R.id.wifi_auth_type);
+            keyImageView = (ImageView) itemView.findViewById(R.id.wifi_key_icon);
         }
 
         @Override

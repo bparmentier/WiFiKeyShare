@@ -25,7 +25,6 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -35,7 +34,6 @@ import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -229,11 +227,9 @@ public class WifiListActivity extends AppCompatActivity {
             }
             if (!isDeviceRooted) {
                 new AlertDialog.Builder(WifiListActivity.this)
-                        .setTitle("No root detected")
-                        .setMessage("We couldn't get the Wi-Fi passwords as your device is not " +
-                                "rooted. You will have to add them manually for each network you " +
-                                "want to share.")
-                        .setPositiveButton("Got it!", new DialogInterface.OnClickListener() {
+                        .setTitle(getString(R.string.title_no_root_detected))
+                        .setMessage(getString(R.string.message_no_root_detected))
+                        .setPositiveButton(getString(R.string.button_got_it), new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
                                 dialogInterface.dismiss();

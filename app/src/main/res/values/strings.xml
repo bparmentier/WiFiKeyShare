@@ -142,4 +142,24 @@
     <!-- Button for going to the previous screen or step [CHAR LIMIT=20] -->
     <string name="wifi_dont_skip">Don\'t skip</string>
 
+
+    <string name="hint_password">Password</string>
+    <string name="title_no_root_detected">No root detected</string>
+    <string name="message_no_root_detected">Wi-Fi passwords couldn't be retrieved as your device is
+        not rooted. You will have to add them manually for each network you want to share.</string>
+    <string name="button_got_it">Got it</string>
+    <string name="title_write_to_tag">Write to tag</string>
+    <string name="message_write_to_tag">Scan a tag to write the Wi-Fi configuration</string>
+    <string name="button_cancel">Cancel</string>
+    <string name="title_wifi_password_needed">Wi-Fi password needed</string>
+    <string name="message_wifi_password_needed">Enter the Wi-Fi password for %s:</string>
+    <string name="button_ok">OK</string>
+    <string name="nfc_tag_written">Successfully wrote to NFC tag</string>
+    <string name="nfc_tag_read">NFC tag read</string>
+    <string name="action_write">Write</string>
+    <string name="error_turn_nfc_on">Please turn NFC on</string>
+    <string name="error_nfc_not_available">NFC is not available on your device</string>
+    <string name="fragment_title_qrcode">QR code</string>
+    <string name="fragment_title_nfc">NFC</string>
+
 </resources>

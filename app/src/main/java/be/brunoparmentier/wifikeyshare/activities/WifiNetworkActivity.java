@@ -106,9 +106,9 @@ public class WifiNetworkActivity extends AppCompatActivity {
         }
 
         writeTagDialog = new AlertDialog.Builder(this)
-                .setTitle("Write to tag")
-                .setMessage("Scan a tag to write the Wi-Fi configuration")
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setTitle(getString(R.string.title_write_to_tag))
+                .setMessage(getString(R.string.message_write_to_tag))
+                .setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         disableTagWriteMode();
@@ -137,16 +137,16 @@ public class WifiNetworkActivity extends AppCompatActivity {
         //setPasswordRestrictions(passwordEditText);
 
         final AlertDialog wifiPasswordDialog = new AlertDialog.Builder(this)
-                .setTitle("Wi-Fi password needed")
-                .setMessage("Enter the Wi-Fi password for " + wifiNetwork.getSsid() + ":")
+                .setTitle(getString(R.string.title_wifi_password_needed))
+                .setMessage(String.format(getString(R.string.message_wifi_password_needed), wifiNetwork.getSsid()))
                 .setView(wifiPasswordDialogLayout)
-                .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // this method gets overriden after we show the dialog
                     }
                 })
-                .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         finish();
@@ -332,7 +332,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
                     || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
 
                 if (NfcUtils.writeTag(wifiNetwork, tag)) {
-                    Toast.makeText(this, "Successfully wrote to NFC tag", Toast.LENGTH_LONG)
+                    Toast.makeText(this, R.string.nfc_tag_written, Toast.LENGTH_LONG)
                             .show();
                 }
                 disableTagWriteMode();
@@ -349,7 +349,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
                 Log.d(TAG, wifiConfiguration.toString());
             }
 
-            Toast.makeText(this, "NFC tag read", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, R.string.nfc_tag_read, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -442,7 +442,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
             View rootView = inflater.inflate(R.layout.fragment_nfc, container, false);
 
             writeNfcButton = (Button) rootView.findViewById(R.id.nfc_write_button);
-            writeNfcButton.setText("Write");
+            writeNfcButton.setText(R.string.action_write);
             writeNfcButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -468,7 +468,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
             if (enabled) {
                 nfcStatusTextView.setText(null);
             } else {
-                nfcStatusTextView.setText("Please turn NFC on");
+                nfcStatusTextView.setText(R.string.error_turn_nfc_on);
             }
         }
 
@@ -477,7 +477,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
             if (available) {
                 nfcStatusTextView.setText(null);
             } else {
-                nfcStatusTextView.setText("NFC is not available on your device");
+                nfcStatusTextView.setText(R.string.error_nfc_not_available);
             }
         }
     }
@@ -510,9 +510,9 @@ public class WifiNetworkActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return "QR code";
+                    return getString(R.string.fragment_title_qrcode);
                 case 1:
-                    return "NFC";
+                    return getString(R.string.fragment_title_nfc);
             }
             return null;
         }

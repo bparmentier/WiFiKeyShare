@@ -18,8 +18,6 @@
 
 package be.brunoparmentier.wifikeyshare.activities;
 
-import android.app.Activity;
-import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -62,7 +60,6 @@ import java.security.InvalidKeyException;
 
 import be.brunoparmentier.wifikeyshare.R;
 import be.brunoparmentier.wifikeyshare.db.WifiKeysDataSource;
-import be.brunoparmentier.wifikeyshare.model.WifiAuthType;
 import be.brunoparmentier.wifikeyshare.model.WifiNetwork;
 import be.brunoparmentier.wifikeyshare.utils.NfcUtils;
 import be.brunoparmentier.wifikeyshare.utils.QrCodeUtils;
@@ -181,7 +178,8 @@ public class WifiNetworkActivity extends AppCompatActivity {
                         .setEnabled(editable.length() >= 5);
                 if (wifiPasswordWrapper.getError() != null) {
                     try {
-                        if (isValidPasswordLength(editable.toString())) {
+                        if (WifiNetwork.isValidKeyLength(wifiNetwork.getAuthType(),
+                                editable.toString())) {
                             wifiPasswordWrapper.setError(null);
                         }
                     } catch (final InvalidKeyException e) {
@@ -198,7 +196,9 @@ public class WifiNetworkActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 try {
-                    if (isValidPasswordLength(passwordEditText.getText().toString())) {
+                    if (WifiNetwork.isValidKeyLength(wifiNetwork.getAuthType(),
+                            passwordEditText.getText().toString())) {
+
                         wifiPasswordWrapper.setError(null);
                         wifiNetwork.setKey(passwordEditText.getText().toString());
 
@@ -221,23 +221,6 @@ public class WifiNetworkActivity extends AppCompatActivity {
                 }
             }
         });
-    }
-
-    // TODO: check characters validity (printable ASCII, etc.)
-    private boolean isValidPasswordLength(String password) throws InvalidKeyException {
-        int passwordLength = password.length();
-
-        if (wifiNetwork.getAuthType() == WifiAuthType.WEP) {
-            if (passwordLength != 5 && passwordLength != 13) {
-                throw new InvalidKeyException("WEP password must be 5 or 13 characters");
-            }
-        } else { // WPA
-            if ((passwordLength >= 5 && passwordLength < 8) || passwordLength > 63) {
-                throw new InvalidKeyException("WPA password must be between 8 and 63 characters");
-            }
-        }
-
-        return true;
     }
 
     private static void setPasswordRestrictions(EditText editText) {

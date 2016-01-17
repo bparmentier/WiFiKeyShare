@@ -100,6 +100,7 @@ public class WifiListActivity extends AppCompatActivity {
         //rvWifiNetworks.setItemAnimator(new SlideInUpAnimator());
         //rvWifiNetworks.getItemAnimator().setAddDuration(1000);
 
+        /*
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -107,6 +108,7 @@ public class WifiListActivity extends AppCompatActivity {
                 addWifiNetwork();
             }
         });
+        */
 
         (new WifiListTask()).execute();
     }

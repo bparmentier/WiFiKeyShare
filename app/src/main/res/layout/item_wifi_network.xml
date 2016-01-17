@@ -32,7 +32,9 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:layout_alignParentLeft="true"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_toLeftOf="@+id/wifi_key_icon"
+        android:layout_toStartOf="@+id/wifi_key_icon" >
 
         <TextView
             android:id="@+id/wifi_ssid"
@@ -41,7 +43,9 @@
             android:layout_weight="1"
             android:textSize="16sp"
             android:fontFamily="sans-serif-medium"
-            android:textStyle="normal" />
+            android:textStyle="normal"
+            android:ellipsize="end"
+            android:maxLines="1" />
 
         <TextView
             android:id="@+id/wifi_auth_type"

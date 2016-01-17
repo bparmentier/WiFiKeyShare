@@ -134,7 +134,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
 
         final TextInputLayout wifiPasswordWrapper = (TextInputLayout) wifiPasswordDialogLayout.findViewById(R.id.wifi_key_wrapper);
         final EditText passwordEditText = (EditText) wifiPasswordDialogLayout.findViewById(R.id.wifi_key);
-        setPasswordRestrictions(passwordEditText);
+        //setPasswordRestrictions(passwordEditText);
 
         final AlertDialog wifiPasswordDialog = new AlertDialog.Builder(this)
                 .setTitle("Wi-Fi password needed")

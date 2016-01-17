@@ -145,7 +145,7 @@
 
     <string name="hint_password">Password</string>
     <string name="title_no_root_detected">No root detected</string>
-    <string name="message_no_root_detected">Wi-Fi passwords couldn't be retrieved as your device is
+    <string name="message_no_root_detected">Wi-Fi passwords couldn\'t be retrieved as your device is
         not rooted. You will have to add them manually for each network you want to share.</string>
     <string name="button_got_it">Got it</string>
     <string name="title_write_to_tag">Write to tag</string>

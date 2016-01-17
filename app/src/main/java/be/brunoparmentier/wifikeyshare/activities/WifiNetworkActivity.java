@@ -127,6 +127,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
 
         if (isNfcAvailable()) {
             initializeNfcStateChangeListener();
+            nfcAdapter.setNdefPushMessage(NfcUtils.generateNdefMessage(wifiNetwork), this);
         }
     }
 
@@ -270,14 +271,12 @@ public class WifiNetworkActivity extends AppCompatActivity {
                     switch (state) {
                         case NfcAdapter.STATE_OFF:
                         case NfcAdapter.STATE_TURNING_OFF:
-                            setupForegroundDispatch(WifiNetworkActivity.this, nfcAdapter);
                             onNfcDisabled();
                             break;
                         case NfcAdapter.STATE_TURNING_ON:
                             break;
                         case NfcAdapter.STATE_ON:
                             onNfcEnabled();
-                            stopForegroundDispatch(WifiNetworkActivity.this, nfcAdapter);
                             break;
                     }
                 }
@@ -289,7 +288,6 @@ public class WifiNetworkActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         if (isNfcAvailable()) {
-            stopForegroundDispatch(this, nfcAdapter);
             unregisterReceiver(nfcStateChangeBroadcastReceiver);
         }
     }
@@ -298,50 +296,9 @@ public class WifiNetworkActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         if (isNfcAvailable()) {
-            setupForegroundDispatch(this, nfcAdapter);
             IntentFilter filter = new IntentFilter(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED);
             registerReceiver(nfcStateChangeBroadcastReceiver, filter);
         }
-    }
-
-    /**
-     * @param activity The corresponding {@link Activity} requesting the foreground dispatch.
-     * @param adapter  The {@link NfcAdapter} used for the foreground dispatch.
-     */
-    public static void setupForegroundDispatch(final Activity activity, NfcAdapter adapter) {
-        final Intent intent = new Intent(activity.getApplicationContext(), activity.getClass());
-        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-
-        final PendingIntent pendingIntent = PendingIntent.getActivity(activity.getApplicationContext(), 0, intent, 0);
-
-        IntentFilter[] filters = new IntentFilter[3];
-        String[][] techList = new String[][]{};
-
-        filters[0] = new IntentFilter();
-        filters[0].addAction(NfcAdapter.ACTION_NDEF_DISCOVERED);
-        filters[0].addCategory(Intent.CATEGORY_DEFAULT);
-        filters[1] = new IntentFilter();
-        filters[1].addAction(NfcAdapter.ACTION_TECH_DISCOVERED);
-        filters[1].addCategory(Intent.CATEGORY_DEFAULT);
-        filters[2] = new IntentFilter();
-        filters[2].addAction(NfcAdapter.ACTION_TAG_DISCOVERED);
-        filters[2].addCategory(Intent.CATEGORY_DEFAULT);
-
-        try {
-            filters[0].addDataType("*/*");
-        } catch (IntentFilter.MalformedMimeTypeException e) {
-            Log.e(TAG, e.getMessage());
-        }
-
-        adapter.enableForegroundDispatch(activity, pendingIntent, filters, techList);
-    }
-
-    /**
-     * @param activity The corresponding {@link Activity} requesting to stop the foreground dispatch.
-     * @param adapter  The {@link NfcAdapter} used for the foreground dispatch.
-     */
-    public static void stopForegroundDispatch(final Activity activity, NfcAdapter adapter) {
-        adapter.disableForegroundDispatch(activity);
     }
 
     private void enableTagWriteMode() {

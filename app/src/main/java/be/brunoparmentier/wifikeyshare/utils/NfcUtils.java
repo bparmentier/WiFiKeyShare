@@ -66,7 +66,16 @@ public class NfcUtils {
      * @return true if the configuration has successfully been written to the tag, false otherwise
      */
     public static boolean writeTag(WifiNetwork wifiNetwork, Tag tag) {
+        return NfcUtils.writeTag(generateNdefMessage(wifiNetwork), tag);
+    }
 
+    /**
+     * Generate an NDEF message containing the given Wi-Fi configuration
+     *
+     * @param wifiNetwork the Wi-Fi configuration to convert
+     * @return an NDEF message containing the given Wi-Fi configuration
+     */
+    public static NdefMessage generateNdefMessage(WifiNetwork wifiNetwork) {
         byte[] payload = generateNdefPayload(wifiNetwork);
 
         NdefRecord mimeRecord = new NdefRecord(
@@ -74,8 +83,7 @@ public class NfcUtils {
                 NfcUtils.NFC_TOKEN_MIME_TYPE.getBytes(Charset.forName("US-ASCII")),
                 new byte[0],
                 payload);
-        NdefMessage message = new NdefMessage(new NdefRecord[]{mimeRecord});
-        return NfcUtils.writeTag(message, tag);
+        return new NdefMessage(new NdefRecord[]{mimeRecord});
     }
 
     private static byte[] generateNdefPayload(WifiNetwork wifiNetwork) {

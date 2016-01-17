@@ -20,6 +20,8 @@ package be.brunoparmentier.wifikeyshare.activities;
 
 import android.app.Activity;
 import android.app.PendingIntent;
+import android.content.BroadcastReceiver;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
@@ -51,6 +53,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.zxing.WriterException;
@@ -75,6 +78,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
     private int wifiNetworkId;
     private boolean isInWriteMode;
     private NfcAdapter nfcAdapter;
+    private BroadcastReceiver nfcStateChangeBroadcastReceiver;
     private AlertDialog writeTagDialog;
     private int screenWidth;
 
@@ -110,22 +114,20 @@ public class WifiNetworkActivity extends AppCompatActivity {
                 .setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
+                        disableTagWriteMode();
                         writeTagDialog.hide();
                     }
                 })
                 .setCancelable(false)
-                .setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialog) {
-                        disableTagWriteMode();
-                    }
-
-                })
                 .create();
 
         isInWriteMode = false;
         getSupportActionBar().setTitle(wifiNetwork.getSsid());
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
+
+        if (isNfcAvailable()) {
+            initializeNfcStateChangeListener();
+        }
     }
 
     void showWifiPasswordDialog() {
@@ -256,16 +258,50 @@ public class WifiNetworkActivity extends AppCompatActivity {
         editText.setFilters(new InputFilter[]{filter});
     }
 
+    void initializeNfcStateChangeListener() {
+        nfcStateChangeBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                final String action = intent.getAction();
+
+                if (action.equals(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED)) {
+                    final int state = intent.getIntExtra(NfcAdapter.EXTRA_ADAPTER_STATE, NfcAdapter.STATE_OFF);
+
+                    switch (state) {
+                        case NfcAdapter.STATE_OFF:
+                        case NfcAdapter.STATE_TURNING_OFF:
+                            setupForegroundDispatch(WifiNetworkActivity.this, nfcAdapter);
+                            onNfcDisabled();
+                            break;
+                        case NfcAdapter.STATE_TURNING_ON:
+                            break;
+                        case NfcAdapter.STATE_ON:
+                            onNfcEnabled();
+                            stopForegroundDispatch(WifiNetworkActivity.this, nfcAdapter);
+                            break;
+                    }
+                }
+            }
+        };
+    }
+
     @Override
     protected void onPause() {
         super.onPause();
-        stopForegroundDispatch(this, nfcAdapter);
+        if (isNfcAvailable()) {
+            stopForegroundDispatch(this, nfcAdapter);
+            unregisterReceiver(nfcStateChangeBroadcastReceiver);
+        }
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        setupForegroundDispatch(this, nfcAdapter);
+        if (isNfcAvailable()) {
+            setupForegroundDispatch(this, nfcAdapter);
+            IntentFilter filter = new IntentFilter(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED);
+            registerReceiver(nfcStateChangeBroadcastReceiver, filter);
+        }
     }
 
     /**
@@ -316,6 +352,28 @@ public class WifiNetworkActivity extends AppCompatActivity {
     private void disableTagWriteMode() {
         isInWriteMode = false;
         writeTagDialog.hide();
+    }
+
+    protected boolean isNfcAvailable() {
+        return (nfcAdapter != null);
+    }
+
+    protected boolean isNfcEnabled() {
+        return (isNfcAvailable() && nfcAdapter.isEnabled());
+    }
+
+    protected void onNfcEnabled() {
+        // Update NFC write button and status text
+        FragmentManager fm = getSupportFragmentManager();
+        NfcFragment nfcFragment = (NfcFragment) fm.getFragments().get(1);
+        nfcFragment.setNfcStateEnabled(true);
+    }
+
+    protected void onNfcDisabled() {
+        // Update NFC write button and status text
+        FragmentManager fm = getSupportFragmentManager();
+        NfcFragment nfcFragment = (NfcFragment) fm.getFragments().get(1);
+        nfcFragment.setNfcStateEnabled(false);
     }
 
     @Override
@@ -424,13 +482,12 @@ public class WifiNetworkActivity extends AppCompatActivity {
 
     public static class NfcFragment extends Fragment {
 
+        private Button writeNfcButton;
+        private TextView nfcStatusTextView;
+
         public NfcFragment() {
         }
 
-        /**
-         * Returns a new instance of this fragment for the given section
-         * number.
-         */
         public static NfcFragment newInstance(WifiNetwork wifiNetwork) {
             NfcFragment fragment = new NfcFragment();
             Bundle args = new Bundle();
@@ -444,7 +501,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_nfc, container, false);
 
-            Button writeNfcButton = (Button) rootView.findViewById(R.id.nfc_write_button);
+            writeNfcButton = (Button) rootView.findViewById(R.id.nfc_write_button);
             writeNfcButton.setText("Write");
             writeNfcButton.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -452,8 +509,36 @@ public class WifiNetworkActivity extends AppCompatActivity {
                     ((WifiNetworkActivity) getActivity()).enableTagWriteMode();
                 }
             });
+            nfcStatusTextView = (TextView) rootView.findViewById(R.id.nfc_status);
+
+            boolean isNfcAvailable = ((WifiNetworkActivity) getActivity()).isNfcAvailable();
+            boolean isNfcEnabled = (((WifiNetworkActivity) getActivity()).isNfcEnabled());
+
+            if (!isNfcAvailable) {
+                setNfcStateAvailable(false);
+            } else if (!isNfcEnabled) {
+                setNfcStateEnabled(false);
+            }
 
             return rootView;
+        }
+
+        public void setNfcStateEnabled(boolean enabled) {
+            writeNfcButton.setEnabled(enabled);
+            if (enabled) {
+                nfcStatusTextView.setText(null);
+            } else {
+                nfcStatusTextView.setText("Please turn NFC on");
+            }
+        }
+
+        public void setNfcStateAvailable(boolean available) {
+            writeNfcButton.setEnabled(available);
+            if (available) {
+                nfcStatusTextView.setText(null);
+            } else {
+                nfcStatusTextView.setText("NFC is not available on your device");
+            }
         }
     }
 

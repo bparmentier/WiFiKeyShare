@@ -18,6 +18,7 @@
 
 package be.brunoparmentier.wifikeyshare.activities;
 
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -81,6 +82,9 @@ public class WifiNetworkActivity extends AppCompatActivity {
     private BroadcastReceiver nfcStateChangeBroadcastReceiver;
     private AlertDialog writeTagDialog;
     private int screenWidth;
+    private PendingIntent nfcPendingIntent;
+    private IntentFilter[] nfcIntentFilters;
+    private String[][] nfcTechLists;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -127,6 +131,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
 
         if (isNfcAvailable()) {
             initializeNfcStateChangeListener();
+            setupForegroundDispatch();
             nfcAdapter.setNdefPushMessage(NfcUtils.generateNdefMessage(wifiNetwork), this);
         }
     }
@@ -287,6 +292,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
     protected void onPause() {
         super.onPause();
         if (isNfcAvailable()) {
+            stopForegroundDispatch();
             unregisterReceiver(nfcStateChangeBroadcastReceiver);
         }
     }
@@ -297,6 +303,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
         if (isNfcAvailable()) {
             IntentFilter filter = new IntentFilter(NfcAdapter.ACTION_ADAPTER_STATE_CHANGED);
             registerReceiver(nfcStateChangeBroadcastReceiver, filter);
+            startForegroundDispatch();
         }
     }
 
@@ -332,6 +339,38 @@ public class WifiNetworkActivity extends AppCompatActivity {
         nfcFragment.setNfcStateEnabled(false);
     }
 
+    private void setupForegroundDispatch() {
+        /* initialize the PendingIntent to start for the dispatch */
+        nfcPendingIntent = PendingIntent.getActivity(
+                this, 0, new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+
+        /* initialize the IntentFilters to override dispatching for */
+        nfcIntentFilters = new IntentFilter[3];
+        nfcIntentFilters[0] = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
+        nfcIntentFilters[0].addCategory(Intent.CATEGORY_DEFAULT);
+        nfcIntentFilters[1] = new IntentFilter(NfcAdapter.ACTION_TECH_DISCOVERED);
+        nfcIntentFilters[1].addCategory(Intent.CATEGORY_DEFAULT);
+        nfcIntentFilters[2] = new IntentFilter(NfcAdapter.ACTION_TAG_DISCOVERED);
+        nfcIntentFilters[2].addCategory(Intent.CATEGORY_DEFAULT);
+        try {
+            nfcIntentFilters[0].addDataType("*/*"); // Handle all MIME based dispatches.
+        } catch (IntentFilter.MalformedMimeTypeException e) {
+            Log.e(TAG, "setupForegroundDispatch: " + e.getMessage());
+        }
+
+        /* Initialize the tech lists used to perform matching for dispatching of the
+         * ACTION_TECH_DISCOVERED intent */
+        nfcTechLists = new String[][] {};
+    }
+
+    private void startForegroundDispatch() {
+        nfcAdapter.enableForegroundDispatch(this, nfcPendingIntent, nfcIntentFilters, nfcTechLists);
+    }
+
+    private void stopForegroundDispatch() {
+        nfcAdapter.disableForegroundDispatch(this);
+    }
+
     @Override
     protected void onNewIntent(Intent intent) {
         handleIntent(intent);
@@ -339,7 +378,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
 
     private void handleIntent(Intent intent) {
         Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-
+        Log.d(TAG, "handleIntent: action=" + intent.getAction());
         if (isInWriteMode) {
             /* Write tag */
             Log.d(TAG, "Writing tag");

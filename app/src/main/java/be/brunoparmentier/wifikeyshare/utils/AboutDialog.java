@@ -40,7 +40,7 @@ public class AboutDialog extends AlertDialog {
         setTitle(R.string.title_about);
         buildAboutMessage();
         setMessage(""); // will be set in @AboutDialog#show
-        setButton(BUTTON_POSITIVE, "Close", new OnClickListener() {
+        setButton(BUTTON_POSITIVE, getContext().getString(R.string.action_close), new OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                 dismiss();

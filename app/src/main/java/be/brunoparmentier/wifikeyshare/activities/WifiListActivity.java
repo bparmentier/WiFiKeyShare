@@ -25,6 +25,7 @@ import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -54,6 +55,7 @@ public class WifiListActivity extends AppCompatActivity {
 
     private static final int PASSWORD_REQUEST = 1;
     private static final String KEY_NETWORK_ID = "network_id";
+    private static final String PREF_KEY_HAS_READ_NO_ROOT_DIALOG = "has_read_no_root_dialog";
 
     private List<WifiNetwork> wifiNetworks;
     private WifiNetworkAdapter wifiNetworkAdapter;
@@ -209,18 +211,27 @@ public class WifiListActivity extends AppCompatActivity {
                 wifiNetworkAdapter.notifyItemInserted(wifiNetworkAdapter.getItemCount() - 1);
             }
             if (!isDeviceRooted) {
-                new AlertDialog.Builder(WifiListActivity.this)
-                        .setTitle(getString(R.string.title_no_root_detected))
-                        .setMessage(getString(R.string.message_no_root_detected))
-                        .setPositiveButton(getString(R.string.button_got_it), new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                dialogInterface.dismiss();
-                            }
-                        })
-                        .setCancelable(false)
-                        .create()
-                        .show();
+                boolean hasReadNoRootDialog = PreferenceManager
+                        .getDefaultSharedPreferences(WifiListActivity.this)
+                        .getBoolean(PREF_KEY_HAS_READ_NO_ROOT_DIALOG, false);
+                if (!hasReadNoRootDialog) {
+                    new AlertDialog.Builder(WifiListActivity.this)
+                            .setTitle(getString(R.string.title_no_root_detected))
+                            .setMessage(getString(R.string.message_no_root_detected))
+                            .setPositiveButton(getString(R.string.button_got_it), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    PreferenceManager.getDefaultSharedPreferences(WifiListActivity.this)
+                                            .edit()
+                                            .putBoolean(PREF_KEY_HAS_READ_NO_ROOT_DIALOG, true)
+                                            .apply();
+                                    dialogInterface.dismiss();
+                                }
+                            })
+                            .setCancelable(false)
+                            .create()
+                            .show();
+                }
                 setSavedKeysToWifiNetworks();
             }
         }

@@ -112,23 +112,6 @@ public class WifiListActivity extends AppCompatActivity {
     }
 
     private void addWifiNetwork() {
-//
-//        //FrameLayout fl = (FrameLayout) findViewById(android.R.id.custom);
-//        LayoutInflater inflater = (LayoutInflater) getSystemService
-//                (Context.LAYOUT_INFLATER_SERVICE);
-//        View v = inflater.inflate(R.layout.dialog_add_wifi, null);
-//        //fl.addView(v);
-//
-//        AlertDialog.Builder builder = new AlertDialog.Builder(this);
-//        builder.setTitle("Add Wi-Fi network");
-//        builder.setView(v);
-//        builder.show();
-//        //new AddWifiDialog(this).show();
-//
-//
-//        //AddWifiDialog fragment = new AddWifiDialog();
-//        //fragment.show(getSupportFragmentManager(), "Add Wi-Fi");
-
         // TODO: Show dialog box to configure new Wi-Fi AP
 
         wifiNetworks.add(new WifiNetwork("Test1", WifiAuthType.WEP, "mykey", false));

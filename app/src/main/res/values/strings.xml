@@ -40,5 +40,6 @@
     <string name="error_nfc_not_available">NFC is not available on your device</string>
     <string name="fragment_title_qrcode">QR code</string>
     <string name="fragment_title_nfc">NFC</string>
+    <string name="show_password">Show password</string>
 
 </resources>

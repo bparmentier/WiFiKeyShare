@@ -39,6 +39,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
 import android.text.InputFilter;
+import android.text.InputType;
 import android.text.Spanned;
 import android.text.TextWatcher;
 import android.util.DisplayMetrics;
@@ -49,6 +50,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -135,6 +138,19 @@ public class WifiNetworkActivity extends AppCompatActivity {
         final TextInputLayout wifiPasswordWrapper = (TextInputLayout) wifiPasswordDialogLayout.findViewById(R.id.wifi_key_wrapper);
         final EditText passwordEditText = (EditText) wifiPasswordDialogLayout.findViewById(R.id.wifi_key);
         //setPasswordRestrictions(passwordEditText);
+        final CheckBox showPasswordCheckBox = (CheckBox) wifiPasswordDialogLayout.findViewById(R.id.show_password_checkbox);
+        showPasswordCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton compoundButton, boolean isChecked) {
+                int selectionIndex = passwordEditText.getSelectionStart();
+                if (isChecked) {
+                    passwordEditText.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
+                } else {
+                    passwordEditText.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+                }
+                passwordEditText.setSelection(selectionIndex);
+            }
+        });
 
         final AlertDialog wifiPasswordDialog = new AlertDialog.Builder(this)
                 .setTitle(getString(R.string.title_wifi_password_needed))

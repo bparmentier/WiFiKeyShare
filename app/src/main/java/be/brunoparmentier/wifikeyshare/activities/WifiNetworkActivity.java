@@ -65,6 +65,7 @@ import java.security.InvalidKeyException;
 import be.brunoparmentier.wifikeyshare.R;
 import be.brunoparmentier.wifikeyshare.db.WifiKeysDataSource;
 import be.brunoparmentier.wifikeyshare.model.WifiNetwork;
+import be.brunoparmentier.wifikeyshare.utils.AboutDialog;
 import be.brunoparmentier.wifikeyshare.utils.NfcUtils;
 import be.brunoparmentier.wifikeyshare.utils.QrCodeUtils;
 
@@ -408,7 +409,6 @@ public class WifiNetworkActivity extends AppCompatActivity {
         }
     }
 
-
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_wifi_network, menu);
@@ -420,7 +420,9 @@ public class WifiNetworkActivity extends AppCompatActivity {
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
+        if (id == R.id.action_about) {
+            final AlertDialog aboutDialog = new AboutDialog(this);
+            aboutDialog.show();
             return true;
         }
 

@@ -19,7 +19,8 @@
 <resources>
     <string name="app_name">WiFiKeyShare</string>
 
-    <string name="action_settings">Settings</string>
+    <string name="action_about">About</string>
+    <string name="title_about">@string/action_about</string>
     <string name="title_activity_main">WiFiKeyShare</string>
     <string name="title_activity_wifi_network">Wi-Fi Network</string>
     <string name="hint_password">Password</string>
@@ -42,5 +43,60 @@
     <string name="fragment_title_nfc">NFC</string>
     <string name="show_password">Show password</string>
     <string name="clear_password">Clear saved password</string>
+    <string name="action_close">Close</string>
+
+
+     <!-- HTML text for the About dialog box -->
+     <!-- Note: please keep the <![CDATA[...]]> section -->
+    <string name="message_about_description">
+        <![CDATA[
+        <p>Version %s</p>
+
+        <p>WiFiKeyShare lets you easily share your Wi-Fi password by generating a QR code or by writing it to an NFC tag.<p>
+
+        <p>This application is free software (GPLv3+). You can find the source code at
+        <a href="https://github.com/bparmentier/WiFiKeyShare">https://github.com/bparmentier/WiFiKeyShare</a>.</p>
+
+        <p>Please report any issue at <a href="https://github.com/bparmentier/WiFiKeyShare/issues">https://github.com/bparmentier/WiFiKeyShare/issues</a>.</p>
+        ]]>
+    </string>
+    <string name="message_about_license_title">
+        <![CDATA[
+        <strong>License</strong>
+        ]]>
+    </string>
+    <string name="message_about_license">
+        <![CDATA[
+        <p>Copyright &copy; 2016 Bruno Parmentier</p>
+
+        <p>This program is free software: you can redistribute it and/or modify
+        it under the terms of the GNU General Public License as published by
+        the Free Software Foundation, either version 3 of the License, or
+        (at your option) any later version.</p>
+
+        <p>This program is distributed in the hope that it will be useful,
+        but WITHOUT ANY WARRANTY; without even the implied warranty of
+        MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+        GNU General Public License for more details.</p>
+
+        <p>You should have received a copy of the GNU General Public License
+        along with this program. If not, see
+        <a href="http://www.gnu.org/licenses/">http://www.gnu.org/licenses/</a>.</p>
+        ]]>
+    </string>
+    <string name="message_about_credits_title">
+        <![CDATA[
+        <strong>Credits</strong>
+        ]]>
+    </string>
+    <string name="message_about_credits">
+        <![CDATA[
+        <p>WiFiKeyShare was built using the following libraries:</p>
+
+        &nbsp;&nbsp;&bull;&nbsp;<a href="https://developer.android.com/tools/support-library/index.html">Android Support</a><br />
+        &nbsp;&nbsp;&bull;&nbsp;<a href="https://github.com/Chainfire/libsuperuser">libsuperuser</a><br />
+        &nbsp;&nbsp;&bull;&nbsp;<a href="https://github.com/zxing/zxing">ZXing</a>
+        ]]>
+    </string>
 
 </resources>

@@ -41,5 +41,6 @@
     <string name="fragment_title_qrcode">QR code</string>
     <string name="fragment_title_nfc">NFC</string>
     <string name="show_password">Show password</string>
+    <string name="clear_password">Clear saved password</string>
 
 </resources>

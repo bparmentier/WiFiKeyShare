@@ -81,7 +81,7 @@ public class WifiKeysDataSource {
         return wifiNetworks;
     }
 
-    public String getKey(String ssid, WifiAuthType authType) {
+    public String getWifiKey(String ssid, WifiAuthType authType) {
         SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // Define a projection that specifies which columns from the database
@@ -137,5 +137,19 @@ public class WifiKeysDataSource {
 
         // Insert the new row, returning the primary key value of the new row
         return db.insert(WifiKeysContract.WifiKeys.TABLE_NAME, null, values);
+    }
+
+    public int removeWifiKey(String ssid, WifiAuthType authType) {
+        // Gets the data repository in write mode
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
+        String whereClause = WifiKeysContract.WifiKeys.COLUMN_NAME_SSID + " = ? AND " +
+                WifiKeysContract.WifiKeys.COLUMN_NAME_AUTH_TYPE + " = ?";
+        String[] whereArgs = {
+                ssid,
+                authType.toString()
+        };
+
+        return db.delete(WifiKeysContract.WifiKeys.TABLE_NAME, whereClause, whereArgs);
     }
 }

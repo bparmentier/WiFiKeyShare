@@ -17,18 +17,8 @@
   ~ along with this program.  If not, see <http://www.gnu.org/licenses/>.
   -->
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context=".activities.WifiListActivity"
-    tools:showIn="@layout/activity_wifi_list">
-
-    <be.brunoparmentier.wifikeyshare.utils.ContextMenuRecyclerView
-        android:id="@+id/rvWifiNetwork"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
-
-</RelativeLayout>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+  <item
+      android:id="@+id/context_menu_wifi_list_clear_password"
+      android:title="Clear saved password" />
+</menu>

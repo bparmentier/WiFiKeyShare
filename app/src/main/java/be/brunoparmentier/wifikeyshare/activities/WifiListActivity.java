@@ -33,8 +33,11 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.ContextMenu;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,6 +48,7 @@ import be.brunoparmentier.wifikeyshare.adapters.WifiNetworkAdapter;
 import be.brunoparmentier.wifikeyshare.db.WifiKeysDataSource;
 import be.brunoparmentier.wifikeyshare.model.WifiAuthType;
 import be.brunoparmentier.wifikeyshare.model.WifiNetwork;
+import be.brunoparmentier.wifikeyshare.utils.ContextMenuRecyclerView;
 import be.brunoparmentier.wifikeyshare.utils.WpaSupplicantParser;
 import eu.chainfire.libsuperuser.Shell;
 
@@ -59,7 +63,7 @@ public class WifiListActivity extends AppCompatActivity {
 
     private List<WifiNetwork> wifiNetworks;
     private WifiNetworkAdapter wifiNetworkAdapter;
-    private RecyclerView rvWifiNetworks;
+    private ContextMenuRecyclerView rvWifiNetworks;
     private WifiManager wifiManager;
 
     @Override
@@ -83,7 +87,7 @@ public class WifiListActivity extends AppCompatActivity {
     private void setupWifiNetworksList() {
         wifiNetworks = new ArrayList<>();
 
-        rvWifiNetworks = (RecyclerView) findViewById(R.id.rvWifiNetwork);
+        rvWifiNetworks = (ContextMenuRecyclerView) findViewById(R.id.rvWifiNetwork);
 
         wifiNetworkAdapter = new WifiNetworkAdapter(this, wifiNetworks);
         rvWifiNetworks.setAdapter(wifiNetworkAdapter);
@@ -96,6 +100,7 @@ public class WifiListActivity extends AppCompatActivity {
         rvWifiNetworks.addItemDecoration(itemDecoration);
         rvWifiNetworks.setHasFixedSize(true);
         rvWifiNetworks.setItemAnimator(new DefaultItemAnimator());
+        registerForContextMenu(rvWifiNetworks);
 
         //rvWifiNetworks.setItemAnimator(new SlideInUpAnimator());
         //rvWifiNetworks.getItemAnimator().setAddDuration(1000);
@@ -143,6 +148,48 @@ public class WifiListActivity extends AppCompatActivity {
     }
 
     @Override
+    public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
+        super.onCreateContextMenu(menu, v, menuInfo);
+        int position = ((ContextMenuRecyclerView.RecyclerContextMenuInfo) menuInfo).position;
+
+        menu.setHeaderTitle(wifiNetworks.get(position).getSsid());
+        MenuInflater menuInflater = getMenuInflater();
+        menuInflater.inflate(R.menu.context_menu, menu);
+
+        if (wifiNetworks.get(position).needsPassword()
+                || wifiNetworks.get(position).getKey().isEmpty()) {
+            MenuItem clearPasswordMenuItem = menu.findItem(R.id.context_menu_wifi_list_clear_password);
+            clearPasswordMenuItem.setEnabled(false);
+        }
+    }
+
+    @Override
+    public boolean onContextItemSelected(MenuItem item) {
+        int position = ((ContextMenuRecyclerView.RecyclerContextMenuInfo) item.getMenuInfo()).position;
+        removeSavedWifiKey(position);
+
+        //return true;
+        return super.onContextItemSelected(item);
+    }
+
+    private void removeSavedWifiKey(int position) {
+        /* Reset key in local Wi-Fi list */
+        wifiNetworks.get(position).setKey("");
+
+        /* Notify adapter that the Wi-Fi network has changed */
+        wifiNetworkAdapter.notifyItemChanged(position);
+
+        /* Remove key from saved keys database */
+        WifiKeysDataSource wifiKeysDataSource = new WifiKeysDataSource(this);
+        WifiNetwork wifiNetwork = wifiNetworks.get(position);
+        String ssid = wifiNetwork.getSsid();
+        WifiAuthType authType = wifiNetwork.getAuthType();
+        if (wifiKeysDataSource.removeWifiKey(ssid, authType) == 0) {
+            Log.e(TAG, "No key was removed from database");
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         Log.d(TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
         if (requestCode == PASSWORD_REQUEST) {
@@ -150,7 +197,7 @@ public class WifiListActivity extends AppCompatActivity {
                 int networkId = data.getIntExtra(KEY_NETWORK_ID, -1);
                 if (networkId != -1) {
                     WifiKeysDataSource wifiKeysDataSource = new WifiKeysDataSource(this);
-                    String key = wifiKeysDataSource.getKey(
+                    String key = wifiKeysDataSource.getWifiKey(
                             wifiNetworks.get(networkId).getSsid(),
                             wifiNetworks.get(networkId).getAuthType());
                     wifiNetworks.get(networkId).setKey(key);

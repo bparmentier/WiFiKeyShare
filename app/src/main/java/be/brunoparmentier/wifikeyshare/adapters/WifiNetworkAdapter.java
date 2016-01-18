@@ -75,6 +75,8 @@ public class WifiNetworkAdapter extends RecyclerView.Adapter<WifiNetworkAdapter.
                 keyImageView.setImageDrawable(context.getResources().getDrawable(R.drawable.ic_key));
             }
         }
+
+        holder.itemView.setLongClickable(true);
     }
 
     @Override

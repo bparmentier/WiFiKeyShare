@@ -67,6 +67,7 @@ public class WifiListActivity extends AppCompatActivity {
     private WifiNetworkAdapter wifiNetworkAdapter;
     private ContextMenuRecyclerView rvWifiNetworks;
     private WifiManager wifiManager;
+    private boolean isDeviceRooted = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -154,19 +155,22 @@ public class WifiListActivity extends AppCompatActivity {
     @Override
     public void onCreateContextMenu(ContextMenu menu, View v, ContextMenu.ContextMenuInfo menuInfo) {
         super.onCreateContextMenu(menu, v, menuInfo);
-        int position = ((ContextMenuRecyclerView.RecyclerContextMenuInfo) menuInfo).position;
+        int itemPosition = ((ContextMenuRecyclerView.RecyclerContextMenuInfo) menuInfo).position;
 
-        menu.setHeaderTitle(wifiNetworks.get(position).getSsid());
+        menu.setHeaderTitle(wifiNetworks.get(itemPosition).getSsid());
         MenuInflater menuInflater = getMenuInflater();
         menuInflater.inflate(R.menu.context_menu, menu);
 
-        if (wifiNetworks.get(position).needsPassword()
-                || wifiNetworks.get(position).getKey().isEmpty()) {
-            MenuItem viewPasswordMenuItem = menu.findItem(R.id.context_menu_wifi_list_view_password);
-            MenuItem clearPasswordMenuItem = menu.findItem(R.id.context_menu_wifi_list_clear_password);
-            viewPasswordMenuItem.setEnabled(false);
-            clearPasswordMenuItem.setEnabled(false);
-        }
+        boolean canViewPasword = wifiNetworks.get(itemPosition).isPasswordProtected()
+                && !wifiNetworks.get(itemPosition).getKey().isEmpty();
+        boolean canClearPassword = canViewPasword;
+
+        MenuItem viewPasswordMenuItem = menu.findItem(R.id.context_menu_wifi_list_view_password);
+        viewPasswordMenuItem.setEnabled(canViewPasword);
+
+        MenuItem clearPasswordMenuItem = menu.findItem(R.id.context_menu_wifi_list_clear_password);
+        clearPasswordMenuItem.setEnabled(canClearPassword);
+        clearPasswordMenuItem.setVisible(!isDeviceRooted);
     }
 
     @Override
@@ -244,8 +248,6 @@ public class WifiListActivity extends AppCompatActivity {
 
     private class WifiListTask extends AsyncTask<Void, Void, List<WifiNetwork>> {
 
-        private boolean isDeviceRooted;
-
         @Override
         protected List<WifiNetwork> doInBackground(Void... params) {
             List<WifiNetwork> parsedWifiNetworks;
@@ -266,9 +268,6 @@ public class WifiListActivity extends AppCompatActivity {
                 }*/
                 return parsedWifiNetworks;
             } else {
-                isDeviceRooted = false;
-
-
                 List<WifiConfiguration> savedWifiConfigs = wifiManager.getConfiguredNetworks();
 
                 parsedWifiNetworks = new ArrayList<>();
@@ -314,7 +313,6 @@ public class WifiListActivity extends AppCompatActivity {
             }
         }
     }
-
 
     private void setSavedKeysToWifiNetworks() {
         WifiKeysDataSource wifiKeysDataSource = new WifiKeysDataSource(this);

@@ -23,7 +23,7 @@
     <string name="title_about">@string/action_about</string>
     <string name="title_activity_main">WiFiKeyShare</string>
     <string name="title_activity_wifi_network">Wi-Fi Network</string>
-    <string name="hint_password">Password</string>
+    <string name="hint_password">@string/password</string>
     <string name="title_no_root_detected">No root detected</string>
     <string name="message_no_root_detected">Wi-Fi passwords couldn\'t be retrieved as your device is
         not rooted. You will have to add them manually for each network you want to share.</string>
@@ -44,7 +44,12 @@
     <string name="show_password">Show password</string>
     <string name="clear_password">Clear saved password</string>
     <string name="action_close">Close</string>
-
+    <string name="menu_view_password">@string/action_view_password</string>
+    <string name="menu_clear_password">Clear saved password</string>
+    <string name="action_view_password">View password</string>
+    <string name="title_ssid">SSID</string>
+    <string name="title_auth_type">Security</string>
+    <string name="password">Password</string>
 
      <!-- HTML text for the About dialog box -->
      <!-- Note: please keep the <![CDATA[...]]> section -->

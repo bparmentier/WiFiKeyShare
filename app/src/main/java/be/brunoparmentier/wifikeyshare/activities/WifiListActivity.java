@@ -38,6 +38,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -161,17 +162,44 @@ public class WifiListActivity extends AppCompatActivity {
 
         if (wifiNetworks.get(position).needsPassword()
                 || wifiNetworks.get(position).getKey().isEmpty()) {
+            MenuItem viewPasswordMenuItem = menu.findItem(R.id.context_menu_wifi_list_view_password);
             MenuItem clearPasswordMenuItem = menu.findItem(R.id.context_menu_wifi_list_clear_password);
+            viewPasswordMenuItem.setEnabled(false);
             clearPasswordMenuItem.setEnabled(false);
         }
     }
 
     @Override
     public boolean onContextItemSelected(MenuItem item) {
-        int position = ((ContextMenuRecyclerView.RecyclerContextMenuInfo) item.getMenuInfo()).position;
-        removeSavedWifiKey(position);
+        int itemPosition = ((ContextMenuRecyclerView.RecyclerContextMenuInfo) item.getMenuInfo()).position;
+        switch (item.getItemId()) {
+            case (R.id.context_menu_wifi_list_view_password):
+                final AlertDialog viewPasswordDialog = new AlertDialog.Builder(this)
+                        .setTitle(getString(R.string.action_view_password))
+                        .setView(R.layout.dialog_show_password)
+                        .setPositiveButton(R.string.action_close, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .create();
+                viewPasswordDialog.show();
 
-        //return true;
+                /* Set SSID, security and password values */
+                TextView ssidTextView = (TextView) viewPasswordDialog.findViewById(R.id.ssid_value);
+                TextView authTypeTextView = (TextView) viewPasswordDialog.findViewById(R.id.auth_type_value);
+                TextView passwordTextView = (TextView) viewPasswordDialog.findViewById(R.id.password_value);
+                ssidTextView.setText(wifiNetworks.get(itemPosition).getSsid());
+                authTypeTextView.setText(wifiNetworks.get(itemPosition).getAuthType().toString());
+                passwordTextView.setText(wifiNetworks.get(itemPosition).getKey());
+                passwordTextView.setTextIsSelectable(true);
+                return true;
+            case (R.id.context_menu_wifi_list_clear_password):
+                removeSavedWifiKey(itemPosition);
+                return true;
+        }
+
         return super.onContextItemSelected(item);
     }
 

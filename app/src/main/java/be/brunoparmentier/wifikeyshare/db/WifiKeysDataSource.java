@@ -21,6 +21,7 @@ package be.brunoparmentier.wifikeyshare.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
@@ -31,10 +32,21 @@ import be.brunoparmentier.wifikeyshare.model.WifiNetwork;
 
 public class WifiKeysDataSource {
 
-    WifiKeysDbHelper dbHelper;
+    private static final String TAG = WifiKeysDataSource.class.getSimpleName();
+
+    private SQLiteDatabase database;
+    private WifiKeysDbHelper dbHelper;
 
     public WifiKeysDataSource(Context context) {
         dbHelper = new WifiKeysDbHelper(context);
+    }
+
+    public void open() throws SQLException {
+        database = dbHelper.getWritableDatabase();
+    }
+
+    public void close() {
+        dbHelper.close();
     }
 
     /**
@@ -43,7 +55,6 @@ public class WifiKeysDataSource {
      */
     public List<WifiNetwork> getSavedWifiWithKeys() {
         List<WifiNetwork> wifiNetworks = new ArrayList<>();
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
         // Define a projection that specifies which columns from the database
         // you will actually use after this query.
@@ -57,7 +68,7 @@ public class WifiKeysDataSource {
         // How you want the results sorted in the resulting Cursor
         //String sortOrder = WifiKeysContract.WifiKeys.COLUMN_NAME_SSID + " DESC";
 
-        Cursor cursor = db.query(
+        Cursor cursor = database.query(
                 WifiKeysContract.WifiKeys.TABLE_NAME,   // The table to query
                 projection,                             // The columns to return
                 null,                                   // The columns for the WHERE clause
@@ -77,13 +88,12 @@ public class WifiKeysDataSource {
                 cursor.moveToNext();
             }
         }
+        cursor.close();
 
         return wifiNetworks;
     }
 
     public String getWifiKey(String ssid, WifiAuthType authType) {
-        SQLiteDatabase db = dbHelper.getReadableDatabase();
-
         // Define a projection that specifies which columns from the database
         // you will actually use after this query.
         String[] projection = {
@@ -102,7 +112,7 @@ public class WifiKeysDataSource {
         // How you want the results sorted in the resulting Cursor
         //String sortOrder = WifiKeysContract.WifiKeys.COLUMN_NAME_SSID + " DESC";
 
-        Cursor cursor = db.query(
+        Cursor cursor = database.query(
                 WifiKeysContract.WifiKeys.TABLE_NAME,   // The table to query
                 projection,                             // The columns to return
                 selection,                              // The columns for the WHERE clause
@@ -113,8 +123,9 @@ public class WifiKeysDataSource {
         );
 
         if (cursor.moveToFirst()) {
-                String key = cursor.getString(3);
-                return key;
+            String key = cursor.getString(3);
+            cursor.close();
+            return key;
         }
 
         return null;
@@ -126,9 +137,6 @@ public class WifiKeysDataSource {
      * @return the primary key value of the newly inserted row
      */
     public long insertWifiKey(WifiNetwork wifiNetwork) {
-        // Gets the data repository in write mode
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(WifiKeysContract.WifiKeys.COLUMN_NAME_SSID, wifiNetwork.getSsid());
@@ -136,13 +144,10 @@ public class WifiKeysDataSource {
         values.put(WifiKeysContract.WifiKeys.COLUMN_NAME_KEY, wifiNetwork.getKey());
 
         // Insert the new row, returning the primary key value of the new row
-        return db.insert(WifiKeysContract.WifiKeys.TABLE_NAME, null, values);
+        return database.insert(WifiKeysContract.WifiKeys.TABLE_NAME, null, values);
     }
 
     public int removeWifiKey(String ssid, WifiAuthType authType) {
-        // Gets the data repository in write mode
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
         String whereClause = WifiKeysContract.WifiKeys.COLUMN_NAME_SSID + " = ? AND " +
                 WifiKeysContract.WifiKeys.COLUMN_NAME_AUTH_TYPE + " = ?";
         String[] whereArgs = {
@@ -150,6 +155,6 @@ public class WifiKeysDataSource {
                 authType.toString()
         };
 
-        return db.delete(WifiKeysContract.WifiKeys.TABLE_NAME, whereClause, whereArgs);
+        return database.delete(WifiKeysContract.WifiKeys.TABLE_NAME, whereClause, whereArgs);
     }
 }

@@ -230,7 +230,9 @@ public class WifiNetworkActivity extends AppCompatActivity {
                         qrCodeFragment.updateQrCode(wifiNetwork);
 
                         WifiKeysDataSource wifiKeysDataSource = new WifiKeysDataSource(WifiNetworkActivity.this);
+                        wifiKeysDataSource.open();
                         wifiKeysDataSource.insertWifiKey(wifiNetwork);
+                        wifiKeysDataSource.close();
 
                         Intent passwordResultIntent = new Intent();
                         passwordResultIntent.putExtra(KEY_NETWORK_ID, wifiNetworkId);

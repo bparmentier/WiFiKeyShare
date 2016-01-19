@@ -63,11 +63,13 @@ public class WifiListActivity extends AppCompatActivity {
     private static final String KEY_NETWORK_ID = "network_id";
     private static final String PREF_KEY_HAS_READ_NO_ROOT_DIALOG = "has_read_no_root_dialog";
 
+    private WifiKeysDataSource wifiKeysDataSource;
     private List<WifiNetwork> wifiNetworks;
     private WifiNetworkAdapter wifiNetworkAdapter;
     private ContextMenuRecyclerView rvWifiNetworks;
     private WifiManager wifiManager;
     private boolean isDeviceRooted = false;
+    private int networkIdToUpdate = -1; // index of item to update in networks list
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -83,6 +85,9 @@ public class WifiListActivity extends AppCompatActivity {
         if (!wifiManager.isWifiEnabled()) {
             wifiManager.setWifiEnabled(true);
         }
+
+        wifiKeysDataSource = new WifiKeysDataSource(this);
+        wifiKeysDataSource.open();
 
         setupWifiNetworksList();
     }
@@ -127,6 +132,31 @@ public class WifiListActivity extends AppCompatActivity {
         wifiNetworks.add(new WifiNetwork("Test1", WifiAuthType.WEP, "mykey", false));
         wifiNetworkAdapter.notifyItemInserted(wifiNetworks.size() - 1);
         rvWifiNetworks.scrollToPosition(wifiNetworkAdapter.getItemCount() - 1);
+    }
+
+    @Override
+    protected void onResume() {
+        wifiKeysDataSource.open();
+
+        if (networkIdToUpdate > -1) {
+            String key = wifiKeysDataSource.getWifiKey(
+                    wifiNetworks.get(networkIdToUpdate).getSsid(),
+                    wifiNetworks.get(networkIdToUpdate).getAuthType());
+            if (key == null) {
+                Log.d(TAG, "onResume: key is null");
+            } else {
+                wifiNetworks.get(networkIdToUpdate).setKey(key);
+                wifiNetworkAdapter.notifyItemChanged(networkIdToUpdate);
+            }
+            networkIdToUpdate = -1;
+        }
+        super.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        wifiKeysDataSource.close();
+        super.onPause();
     }
 
     @Override
@@ -215,7 +245,6 @@ public class WifiListActivity extends AppCompatActivity {
         wifiNetworkAdapter.notifyItemChanged(position);
 
         /* Remove key from saved keys database */
-        WifiKeysDataSource wifiKeysDataSource = new WifiKeysDataSource(this);
         WifiNetwork wifiNetwork = wifiNetworks.get(position);
         String ssid = wifiNetwork.getSsid();
         WifiAuthType authType = wifiNetwork.getAuthType();
@@ -229,19 +258,7 @@ public class WifiListActivity extends AppCompatActivity {
         Log.d(TAG, "onActivityResult: requestCode=" + requestCode + ", resultCode=" + resultCode);
         if (requestCode == PASSWORD_REQUEST) {
             if (resultCode == RESULT_OK) {
-                int networkId = data.getIntExtra(KEY_NETWORK_ID, -1);
-                if (networkId != -1) {
-                    WifiKeysDataSource wifiKeysDataSource = new WifiKeysDataSource(this);
-                    String key = wifiKeysDataSource.getWifiKey(
-                            wifiNetworks.get(networkId).getSsid(),
-                            wifiNetworks.get(networkId).getAuthType());
-                    wifiNetworks.get(networkId).setKey(key);
-
-                    wifiNetworkAdapter.notifyItemChanged(networkId);
-                } else {
-                    Log.e(TAG, "onActivityResult: invalid networkId");
-                }
-
+                networkIdToUpdate = data.getIntExtra(KEY_NETWORK_ID, -1);
             }
         }
     }
@@ -315,7 +332,6 @@ public class WifiListActivity extends AppCompatActivity {
     }
 
     private void setSavedKeysToWifiNetworks() {
-        WifiKeysDataSource wifiKeysDataSource = new WifiKeysDataSource(this);
         List<WifiNetwork> wifiNetworksWithKey = wifiKeysDataSource.getSavedWifiWithKeys();
 
         for (int i = 0; i < wifiNetworks.size(); i++) {

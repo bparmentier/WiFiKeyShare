@@ -405,7 +405,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
                 Log.d(TAG, wifiConfiguration.toString());
             }
 
-            Toast.makeText(this, R.string.nfc_tag_read, Toast.LENGTH_LONG).show();
+            //Toast.makeText(this, R.string.nfc_tag_read, Toast.LENGTH_LONG).show();
         }
     }
 

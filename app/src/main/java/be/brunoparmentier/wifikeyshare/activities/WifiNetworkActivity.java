@@ -479,7 +479,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
 
     public static class NfcFragment extends Fragment {
 
-        private Button writeNfcButton;
+        private Button writeTagButton;
         private TextView nfcStatusTextView;
 
         public NfcFragment() {
@@ -498,14 +498,14 @@ public class WifiNetworkActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_nfc, container, false);
 
-            writeNfcButton = (Button) rootView.findViewById(R.id.nfc_write_button);
-            writeNfcButton.setText(R.string.action_write);
-            writeNfcButton.setOnClickListener(new View.OnClickListener() {
+            writeTagButton = (Button) rootView.findViewById(R.id.nfc_write_button);
+            writeTagButton.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     ((WifiNetworkActivity) getActivity()).enableTagWriteMode();
                 }
             });
+
             nfcStatusTextView = (TextView) rootView.findViewById(R.id.nfc_status);
 
             boolean isNfcAvailable = ((WifiNetworkActivity) getActivity()).isNfcAvailable();
@@ -521,7 +521,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
         }
 
         public void setNfcStateEnabled(boolean enabled) {
-            writeNfcButton.setEnabled(enabled);
+            writeTagButton.setEnabled(enabled);
             if (enabled) {
                 nfcStatusTextView.setText(null);
             } else {
@@ -530,7 +530,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
         }
 
         public void setNfcStateAvailable(boolean available) {
-            writeNfcButton.setEnabled(available);
+            writeTagButton.setEnabled(available);
             if (available) {
                 nfcStatusTextView.setText(null);
             } else {

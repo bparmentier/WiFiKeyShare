@@ -485,11 +485,8 @@ public class WifiNetworkActivity extends AppCompatActivity {
         public NfcFragment() {
         }
 
-        public static NfcFragment newInstance(WifiNetwork wifiNetwork) {
+        public static NfcFragment newInstance() {
             NfcFragment fragment = new NfcFragment();
-            Bundle args = new Bundle();
-            args.putSerializable(KEY_WIFI_NETWORK, wifiNetwork);
-            fragment.setArguments(args);
             return fragment;
         }
 
@@ -552,7 +549,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             if (position == 1) {
-                return NfcFragment.newInstance(wifiNetwork);
+                return NfcFragment.newInstance();
             } else {
                 return QrCodeFragment.newInstance(wifiNetwork);
             }

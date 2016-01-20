@@ -120,7 +120,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         disableTagWriteMode();
-                        writeTagDialog.hide();
+                        dialogInterface.dismiss();
                     }
                 })
                 .setCancelable(false)
@@ -317,7 +317,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
 
     private void disableTagWriteMode() {
         isInWriteMode = false;
-        writeTagDialog.hide();
+        writeTagDialog.dismiss();
     }
 
     protected boolean isNfcAvailable() {

@@ -42,11 +42,15 @@ public class NfcUtils {
     public static final String NFC_TOKEN_MIME_TYPE = "application/vnd.wfa.wsc";
     /*
      * ID into configuration record for SSID and Network Key in hex.
-     * Obtained from WFA Wifi Simple Configuration Technical Specification v2.0.2.1.
+     * Obtained from WFA Wi-Fi Simple Configuration Technical Specification v2.0.5.
      */
     public static final short CREDENTIAL_FIELD_ID = 0x100E;
+
+    public static final short NETWORK_INDEX_FIELD_ID = 0x1026;
+    public static final byte NETWORK_INDEX_DEFAULT_VALUE = (byte) 0x1;
+
     public static final short SSID_FIELD_ID = 0x1045;
-    public static final short NETWORK_KEY_FIELD_ID = 0x1027;
+
     public static final short AUTH_TYPE_FIELD_ID = 0x1003;
     public static final short AUTH_TYPE_EXPECTED_SIZE = 2;
     public static final short AUTH_TYPE_OPEN = 0;
@@ -54,6 +58,22 @@ public class NfcUtils {
     public static final short AUTH_TYPE_WPA_EAP = 0x0008;
     public static final short AUTH_TYPE_WPA2_EAP = 0x0010;
     public static final short AUTH_TYPE_WPA2_PSK = 0x0020;
+
+    public static final short ENC_TYPE_FIELD_ID = 0x100F;
+    public static final short ENC_TYPE_NONE = 0x0001;
+    public static final short ENC_TYPE_WEP = 0x0002; // deprecated
+    public static final short ENC_TYPE_TKIP = 0x0004; // deprecated -> only with mixed mode (0x000c)
+    public static final short ENC_TYPE_AES = 0x0008; // includes CCMP and GCMP
+    public static final short ENC_TYPE_AES_TKIP = 0x000c; // mixed mode
+
+    public static final short NETWORK_KEY_FIELD_ID = 0x1027;
+    // WPA2-personal (passphrase): 8-63 ASCII characters
+    // WPA2-personal: 64 hex characters
+
+    public static final short MAC_ADDRESS_FIELD_ID = 0x1020;
+
+    public static final int MAX_SSID_SIZE_BYTES = 32;
+    public static final int MAX_MAC_ADDRESS_SIZE_BYTES = 6;
     public static final int MAX_NETWORK_KEY_SIZE_BYTES = 64;
 
     /**
@@ -106,36 +126,68 @@ public class NfcUtils {
                 break;
             default:
                 authType = AUTH_TYPE_OPEN;
+                break;
         }
+
+        /*short encType;
+        switch (wifiNetwork.getEncType()) {
+            case WEP:
+                encType = ENC_TYPE_WEP;
+                break;
+            case TKIP:
+                encType = ENC_TYPE_TKIP;
+                break;
+            case AES:
+                encType = ENC_TYPE_AES;
+                break;
+            case AES_TKIP:
+                encType = ENC_TYPE_AES_TKIP;
+                break;
+            default:
+                encType = ENC_TYPE_NONE;
+                break;
+        }*/
 
         String networkKey = wifiNetwork.getKey();
         short networkKeySize = (short) networkKey.getBytes().length;
 
-        int bufferSize;
-
-        if (networkKeySize > 0) {
-            bufferSize = 18 + ssidSize + networkKeySize;
-        } else {
-            bufferSize = 14 + ssidSize;
+        byte[] macAddress = new byte[MAX_MAC_ADDRESS_SIZE_BYTES];
+        for (int i = 0; i < MAX_MAC_ADDRESS_SIZE_BYTES; i++) {
+            macAddress[i] = (byte) 0xff;
         }
 
+        /* Fill buffer */
+
+        int bufferSize = 39 + ssidSize + networkKeySize; // size of required credential attributes
+
         ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
-        buffer.putShort(NfcUtils.CREDENTIAL_FIELD_ID);
+        buffer.putShort(CREDENTIAL_FIELD_ID);
         buffer.putShort((short) (bufferSize - 4));
 
-        buffer.putShort(NfcUtils.SSID_FIELD_ID);
+        buffer.putShort(NETWORK_INDEX_FIELD_ID);
+        buffer.putShort((short) 1);
+        buffer.put(NETWORK_INDEX_DEFAULT_VALUE);
+
+        buffer.putShort(SSID_FIELD_ID);
         buffer.putShort(ssidSize);
         buffer.put(ssid.getBytes());
 
-        buffer.putShort(NfcUtils.AUTH_TYPE_FIELD_ID);
+        buffer.putShort(AUTH_TYPE_FIELD_ID);
         buffer.putShort((short) 2);
         buffer.putShort(authType);
 
-        if (networkKeySize > 0) {
-            buffer.putShort(NfcUtils.NETWORK_KEY_FIELD_ID);
-            buffer.putShort(networkKeySize);
-            buffer.put(networkKey.getBytes());
-        }
+        buffer.putShort(ENC_TYPE_FIELD_ID);
+        buffer.putShort((short) 2);
+        buffer.putShort(ENC_TYPE_NONE); // FIXME
+
+        buffer.putShort(NETWORK_KEY_FIELD_ID);
+        buffer.putShort(networkKeySize);
+        buffer.put(networkKey.getBytes());
+
+        buffer.putShort(MAC_ADDRESS_FIELD_ID);
+        buffer.putShort((short) MAX_MAC_ADDRESS_SIZE_BYTES);
+        buffer.put(macAddress);
+
         return buffer.array();
     }
 

@@ -25,7 +25,6 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
-import android.net.wifi.WifiConfiguration;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.os.Bundle;
@@ -381,11 +380,11 @@ public class WifiNetworkActivity extends AppCompatActivity {
 
     private void handleIntent(Intent intent) {
         Tag tag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
-        Log.d(TAG, "handleIntent: action=" + intent.getAction());
+        String action = intent.getAction();
+        Log.d(TAG, "handleIntent: action=" + action);
         if (isInWriteMode) {
             /* Write tag */
             Log.d(TAG, "Writing tag");
-            String action = intent.getAction();
             if (NfcAdapter.ACTION_TAG_DISCOVERED.equals(action)
                     || NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
 
@@ -398,16 +397,13 @@ public class WifiNetworkActivity extends AppCompatActivity {
         } else {
             /* Read tag */
             Log.d(TAG, "Reading tag");
+            if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
+                Intent configureNetworkIntent = new Intent(intent)
+                        .setClass(this, ConfirmConnectToWifiNetworkActivity.class)
+                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-            WifiConfiguration wifiConfiguration = NfcUtils.readTag(tag);
-
-            if (wifiConfiguration == null) {
-                Log.d(TAG, "Not a Wi-Fi configuration tag");
-            } else {
-                Log.d(TAG, wifiConfiguration.toString());
+                startActivity(configureNetworkIntent);
             }
-
-            //Toast.makeText(this, R.string.nfc_tag_read, Toast.LENGTH_LONG).show();
         }
     }
 

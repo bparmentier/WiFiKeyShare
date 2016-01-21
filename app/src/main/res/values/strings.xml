@@ -32,7 +32,7 @@
     <string name="message_write_to_tag">Scan an NFC tag to write the Wi-Fi configuration</string>
     <string name="button_cancel">Cancel</string>
     <string name="title_wifi_password_needed">Wi-Fi password needed</string>
-    <string name="message_wifi_password_needed">Enter the Wi-Fi password for %s:</string>
+    <string name="message_wifi_password_needed">Enter the Wi-Fi password for %1$s:</string>
     <string name="button_ok">OK</string>
     <string name="nfc_tag_written">Successfully wrote to NFC tag</string>
     <string name="nfc_tag_read">NFC tag read</string>
@@ -50,6 +50,11 @@
     <string name="title_ssid">SSID</string>
     <string name="title_auth_type">Security</string>
     <string name="password">Password</string>
+    <string name="wifi_connect">Connect</string>
+    <string name="status_unable_to_connect">Unable to connect to network</string>
+    <string name="status_wifi_connected">Connected</string>
+    <string name="title_connect_to_network">Connect to network</string>
+    <string name="prompt_connect_to_network">Connect to network %1$s?</string>
 
      <!-- HTML text for the About dialog box -->
      <!-- Note: please keep the <![CDATA[...]]> section -->

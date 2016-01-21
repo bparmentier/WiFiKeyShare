@@ -46,10 +46,10 @@ public class WpaSupplicantParser {
         if (hasToken(networkSection, "wep_key0")) {
             return WifiAuthType.WEP;
         } else if (hasToken(networkSection, "psk")) {
-            return WifiAuthType.WPA_PSK;
+            return WifiAuthType.WPA2_PSK;
         } else if (hasToken(networkSection, "key_mgmt")
                 && parseToken(networkSection, "key_mgmt").startsWith("WPA-EAP")) {
-            return WifiAuthType.WPA_EAP;
+            return WifiAuthType.WPA2_EAP;
         } else {
             return WifiAuthType.OPEN;
         }

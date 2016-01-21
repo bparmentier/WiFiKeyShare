@@ -81,15 +81,21 @@ public class WifiNetwork implements Serializable {
         }
     }
 
-    // FIXME?
-    // Source: http://stackoverflow.com/a/19567423/3997816
     private static WifiAuthType getSecurityFromWifiConfiguration(WifiConfiguration wifiConfiguration) {
         if (wifiConfiguration.allowedKeyManagement.get(WifiConfiguration.KeyMgmt.WPA_PSK)) {
-            return WifiAuthType.WPA_PSK;
+            if (wifiConfiguration.allowedProtocols.get(WifiConfiguration.Protocol.RSN)) {
+                return WifiAuthType.WPA2_PSK;
+            } else { // WifiConfiguration.Protocol.WPA
+                return WifiAuthType.WPA_PSK;
+            }
         }
         if (wifiConfiguration.allowedKeyManagement.get(WifiConfiguration.KeyMgmt.WPA_EAP) ||
                 wifiConfiguration.allowedKeyManagement.get(WifiConfiguration.KeyMgmt.IEEE8021X)) {
-            return WifiAuthType.WPA_EAP;
+            if (wifiConfiguration.allowedProtocols.get(WifiConfiguration.Protocol.RSN)) {
+                return WifiAuthType.WPA2_EAP;
+            } else { // WifiConfiguration.Protocol.WPA
+                return WifiAuthType.WPA_EAP;
+            }
         }
         return (wifiConfiguration.wepKeys[0] != null) ? WifiAuthType.WEP : WifiAuthType.OPEN;
     }
@@ -117,7 +123,7 @@ public class WifiNetwork implements Serializable {
                 throw new InvalidKeyException("WEP password must be 5 or 13 characters");
             }
         } else { // WPA
-            if ((keyLength >= 5 && keyLength < 8) || keyLength > 63) {
+            if ((keyLength >= 5 && keyLength < 8) || keyLength > 63) { // TODO: support hex key (64)
                 throw new InvalidKeyException("WPA password must be between 8 and 63 characters");
             }
         }

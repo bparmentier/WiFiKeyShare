@@ -53,6 +53,7 @@ public class ConfirmConnectToWifiNetworkActivity extends Activity {
     private AlertDialog alertDialog;
     private boolean isEnableWifiInProgress;
     private Handler handler;
+    private boolean isWifiBroadcastReceiverRegistered;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,60 +61,62 @@ public class ConfirmConnectToWifiNetworkActivity extends Activity {
 
         wifiConfiguration = NfcUtils.readTag(tag);
 
-        if (wifiConfiguration == null) {
-            Log.e(TAG, "onCreate: Wi-Fi configuration is null");
-            return;
-        }
-        String printableSsid = getPrintableSsid(wifiConfiguration.SSID);
-        alertDialog = new AlertDialog.Builder(this)
-                .setTitle(R.string.title_connect_to_network)
-                .setMessage(String.format(getResources().getString(R.string.prompt_connect_to_network),
-                        printableSsid))
-                .setOnDismissListener(new DialogInterface.OnDismissListener() {
-                    @Override
-                    public void onDismiss(DialogInterface dialogInterface) {
-                        if (!isEnableWifiInProgress) {
-                            finish();
+        if (wifiConfiguration != null) {
+            String printableSsid = getPrintableSsid(wifiConfiguration.SSID);
+            alertDialog = new AlertDialog.Builder(this)
+                    .setTitle(R.string.title_connect_to_network)
+                    .setMessage(String.format(getResources().getString(R.string.prompt_connect_to_network),
+                            printableSsid))
+                    .setOnDismissListener(new DialogInterface.OnDismissListener() {
+                        @Override
+                        public void onDismiss(DialogInterface dialogInterface) {
+                            if (!isEnableWifiInProgress) {
+                                finish();
+                            }
                         }
-                    }
-                })
-                .setNegativeButton(R.string.button_cancel, null)
-                .setPositiveButton(R.string.wifi_connect, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(DialogInterface dialogInterface, int i) {
-                        WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
+                    })
+                    .setNegativeButton(R.string.button_cancel, null)
+                    .setPositiveButton(R.string.wifi_connect, new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
 
-                        if (!wifiManager.isWifiEnabled()) {
-                            wifiManager.setWifiEnabled(true);
-                            isEnableWifiInProgress = true;
+                            if (!wifiManager.isWifiEnabled()) {
+                                wifiManager.setWifiEnabled(true);
+                                isEnableWifiInProgress = true;
 
-                            handler.postDelayed(new Runnable() {
-                                @Override
-                                public void run() {
-                                    if (getAndClearEnableWifiInProgress()) {
-                                        showFailToast();
-                                        ConfirmConnectToWifiNetworkActivity.this.finish();
+                                handler.postDelayed(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        if (getAndClearEnableWifiInProgress()) {
+                                            showFailToast();
+                                            ConfirmConnectToWifiNetworkActivity.this.finish();
+                                        }
                                     }
-                                }
-                            }, ENABLE_WIFI_TIMEOUT_MILLIS);
+                                }, ENABLE_WIFI_TIMEOUT_MILLIS);
 
-                        } else {
-                            doConnect(wifiManager);
+                            } else {
+                                doConnect(wifiManager);
+                            }
+
+                            alertDialog.dismiss();
                         }
+                    })
+                    .create();
 
-                        alertDialog.dismiss();
-                    }
-                })
-                .create();
+            isEnableWifiInProgress = false;
+            handler = new Handler();
 
-        isEnableWifiInProgress = false;
-        handler = new Handler();
+            IntentFilter intentFilter = new IntentFilter();
+            intentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
+            registerReceiver(wifiStateBroadcastReceiver, intentFilter);
+            isWifiBroadcastReceiverRegistered = true;
 
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction(WifiManager.WIFI_STATE_CHANGED_ACTION);
-        registerReceiver(wifiStateBroadcastReceiver, intentFilter);
-
-        alertDialog.show();
+            alertDialog.show();
+        } else {
+            Log.e(TAG, "onCreate: Wi-Fi configuration is null");
+            finish();
+        }
 
         super.onCreate(savedInstanceState);
     }
@@ -142,7 +145,9 @@ public class ConfirmConnectToWifiNetworkActivity extends Activity {
 
     @Override
     protected void onDestroy() {
-        ConfirmConnectToWifiNetworkActivity.this.unregisterReceiver(wifiStateBroadcastReceiver);
+        if (isWifiBroadcastReceiverRegistered) {
+            ConfirmConnectToWifiNetworkActivity.this.unregisterReceiver(wifiStateBroadcastReceiver);
+        }
         super.onDestroy();
     }
 

@@ -397,12 +397,17 @@ public class WifiNetworkActivity extends AppCompatActivity {
         } else {
             /* Read tag */
             Log.d(TAG, "Reading tag");
-            if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
-                Intent configureNetworkIntent = new Intent(intent)
-                        .setClass(this, ConfirmConnectToWifiNetworkActivity.class)
-                        .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                startActivity(configureNetworkIntent);
+            if (NfcAdapter.ACTION_NDEF_DISCOVERED.equals(action)) {
+                if (NfcUtils.NFC_TOKEN_MIME_TYPE.equals(intent.getType())) {
+                    Intent configureNetworkIntent = new Intent(intent)
+                            .setClass(this, ConfirmConnectToWifiNetworkActivity.class)
+                            .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+
+                    startActivity(configureNetworkIntent);
+                } else {
+                    Log.d(TAG, "Not a Wi-Fi configuration tag");
+                }
             }
         }
     }

@@ -106,7 +106,7 @@ public class WifiKeysDataSource {
                 WifiKeysContract.WifiKeys.COLUMN_NAME_AUTH_TYPE + " = ?";
         String[] selectionArgs = {
                 ssid,
-                authType.toString()
+                authType.name()
         };
 
         // How you want the results sorted in the resulting Cursor
@@ -140,7 +140,7 @@ public class WifiKeysDataSource {
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(WifiKeysContract.WifiKeys.COLUMN_NAME_SSID, wifiNetwork.getSsid());
-        values.put(WifiKeysContract.WifiKeys.COLUMN_NAME_AUTH_TYPE, wifiNetwork.getAuthType().toString());
+        values.put(WifiKeysContract.WifiKeys.COLUMN_NAME_AUTH_TYPE, wifiNetwork.getAuthType().name());
         values.put(WifiKeysContract.WifiKeys.COLUMN_NAME_KEY, wifiNetwork.getKey());
 
         // Insert the new row, returning the primary key value of the new row
@@ -152,7 +152,7 @@ public class WifiKeysDataSource {
                 WifiKeysContract.WifiKeys.COLUMN_NAME_AUTH_TYPE + " = ?";
         String[] whereArgs = {
                 ssid,
-                authType.toString()
+                authType.name()
         };
 
         return database.delete(WifiKeysContract.WifiKeys.TABLE_NAME, whereClause, whereArgs);

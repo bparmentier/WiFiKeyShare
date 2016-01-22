@@ -77,11 +77,17 @@ public class QrCodeUtils {
 
         StringBuilder output = new StringBuilder(100);
         output.append("WIFI:");
-        output.append("S:").append(ssid).append(';');
-        if (authType != null && authType != WifiAuthType.OPEN) {
-            maybeAppend(output, "T:", authType.toString());
+        output.append("T:");
+        if (authType == WifiAuthType.OPEN) {
+            output.append("nopass");
+        } else if (authType == WifiAuthType.WEP) {
+            output.append("WEP");
+        } else {
+            output.append("WPA"); // FIXME: support EAP?
         }
+        output.append(";");
         maybeAppend(output, "P:", key);
+        output.append("S:").append(ssid).append(';');
         if (isHidden) {
             maybeAppend(output, "H:", "true");
         }

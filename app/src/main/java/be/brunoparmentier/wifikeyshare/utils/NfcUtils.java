@@ -267,6 +267,8 @@ public class NfcUtils {
                     short fieldSize = payload.getShort();
                     if (fieldId == CREDENTIAL_FIELD_ID) {
                         return parseCredential(payload, fieldSize);
+                    } else {
+                        payload.position(payload.position() + fieldSize);
                     }
                 }
             }

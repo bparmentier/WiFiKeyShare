@@ -64,8 +64,8 @@ public class ConfirmConnectToWifiNetworkActivity extends Activity {
         if (wifiConfiguration != null) {
             String printableSsid = getPrintableSsid(wifiConfiguration.SSID);
             alertDialog = new AlertDialog.Builder(this)
-                    .setTitle(R.string.title_connect_to_network)
-                    .setMessage(String.format(getResources().getString(R.string.prompt_connect_to_network),
+                    .setTitle(R.string.confirm_connection_title_connect_to_network)
+                    .setMessage(String.format(getResources().getString(R.string.confirm_connection_prompt_connect_to_network),
                             printableSsid))
                     .setOnDismissListener(new DialogInterface.OnDismissListener() {
                         @Override
@@ -75,8 +75,8 @@ public class ConfirmConnectToWifiNetworkActivity extends Activity {
                             }
                         }
                     })
-                    .setNegativeButton(R.string.button_cancel, null)
-                    .setPositiveButton(R.string.wifi_connect, new DialogInterface.OnClickListener() {
+                    .setNegativeButton(R.string.action_cancel, null)
+                    .setPositiveButton(R.string.confirm_connection_action_connect, new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
                             WifiManager wifiManager = (WifiManager) getSystemService(Context.WIFI_SERVICE);
@@ -130,7 +130,7 @@ public class ConfirmConnectToWifiNetworkActivity extends Activity {
             boolean connected = wifiManager.enableNetwork(networkId, true);
             if (connected) {
                 Toast.makeText(ConfirmConnectToWifiNetworkActivity.this,
-                        R.string.status_wifi_connected, Toast.LENGTH_SHORT).show();
+                        R.string.confirm_connection_status_wifi_connected, Toast.LENGTH_SHORT).show();
             } else {
                 showFailToast();
             }
@@ -140,7 +140,7 @@ public class ConfirmConnectToWifiNetworkActivity extends Activity {
 
     private void showFailToast() {
         Toast.makeText(ConfirmConnectToWifiNetworkActivity.this,
-                R.string.status_unable_to_connect, Toast.LENGTH_SHORT).show();
+                R.string.confirm_connection_status_unable_to_connect, Toast.LENGTH_SHORT).show();
     }
 
     @Override

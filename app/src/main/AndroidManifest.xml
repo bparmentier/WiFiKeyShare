@@ -43,7 +43,7 @@
 
         <activity
             android:name="be.brunoparmentier.wifikeyshare.activities.WifiNetworkActivity"
-            android:label="@string/title_activity_wifi_network"
+            android:label="@string/wifi_activity_title"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity

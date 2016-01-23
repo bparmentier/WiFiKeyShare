@@ -209,7 +209,7 @@ public class WifiListActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case (R.id.context_menu_wifi_list_view_password):
                 final AlertDialog viewPasswordDialog = new AlertDialog.Builder(this)
-                        .setTitle(getString(R.string.action_view_password))
+                        .setTitle(getString(R.string.wifilist_dialog_view_password))
                         .setView(R.layout.dialog_show_password)
                         .setPositiveButton(R.string.action_close, new DialogInterface.OnClickListener() {
                             @Override
@@ -310,9 +310,9 @@ public class WifiListActivity extends AppCompatActivity {
                         .getBoolean(PREF_KEY_HAS_READ_NO_ROOT_DIALOG, false);
                 if (!hasReadNoRootDialog) {
                     new AlertDialog.Builder(WifiListActivity.this)
-                            .setTitle(getString(R.string.title_no_root_detected))
-                            .setMessage(getString(R.string.message_no_root_detected))
-                            .setPositiveButton(getString(R.string.button_got_it), new DialogInterface.OnClickListener() {
+                            .setTitle(getString(R.string.wifilist_dialog_noroot_title))
+                            .setMessage(getString(R.string.wifilist_dialog_noroot_msg))
+                            .setPositiveButton(getString(R.string.action_got_it), new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                     PreferenceManager.getDefaultSharedPreferences(WifiListActivity.this)
@@ -328,6 +328,7 @@ public class WifiListActivity extends AppCompatActivity {
                 }
                 setSavedKeysToWifiNetworks();
             }
+            addWifiNetwork();
         }
     }
 

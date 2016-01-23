@@ -113,9 +113,9 @@ public class WifiNetworkActivity extends AppCompatActivity {
         }
 
         writeTagDialog = new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.title_write_to_tag))
-                .setMessage(getString(R.string.message_write_to_tag))
-                .setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+                .setTitle(getString(R.string.write_to_tag))
+                .setMessage(getString(R.string.write_to_tag_msg))
+                .setNegativeButton(getString(R.string.action_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         disableTagWriteMode();
@@ -130,9 +130,11 @@ public class WifiNetworkActivity extends AppCompatActivity {
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         if (isNfcAvailable()) {
-            initializeNfcStateChangeListener();
-            setupForegroundDispatch();
-            nfcAdapter.setNdefPushMessage(NfcUtils.generateNdefMessage(wifiNetwork), this);
+            //if (wifiNetwork.getAuthType() != WifiAuthType.WEP) { // writing WEP config is not supported
+                initializeNfcStateChangeListener();
+                setupForegroundDispatch();
+                nfcAdapter.setNdefPushMessage(NfcUtils.generateNdefMessage(wifiNetwork), this);
+            //}
         }
     }
 
@@ -158,16 +160,16 @@ public class WifiNetworkActivity extends AppCompatActivity {
         });
 
         final AlertDialog wifiPasswordDialog = new AlertDialog.Builder(this)
-                .setTitle(getString(R.string.title_wifi_password_needed))
-                .setMessage(String.format(getString(R.string.message_wifi_password_needed), wifiNetwork.getSsid()))
+                .setTitle(getString(R.string.wifi_dialog_password_title))
+                .setMessage(String.format(getString(R.string.wifi_dialog_password_msg), wifiNetwork.getSsid()))
                 .setView(wifiPasswordDialogLayout)
-                .setPositiveButton(getString(R.string.button_ok), new DialogInterface.OnClickListener() {
+                .setPositiveButton(getString(R.string.action_ok), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         // this method gets overriden after we show the dialog
                     }
                 })
-                .setNegativeButton(getString(R.string.button_cancel), new DialogInterface.OnClickListener() {
+                .setNegativeButton(getString(R.string.action_cancel), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         finish();
@@ -537,6 +539,11 @@ public class WifiNetworkActivity extends AppCompatActivity {
                 nfcStatusTextView.setText(R.string.error_nfc_not_available);
             }
         }
+
+        public void setIsWepNetwork() {
+            writeTagButton.setEnabled(false);
+            nfcStatusTextView.setText("Writing WEP configuration to NFC tag is not supported");
+        }
     }
 
     /**
@@ -567,9 +574,9 @@ public class WifiNetworkActivity extends AppCompatActivity {
         public CharSequence getPageTitle(int position) {
             switch (position) {
                 case 0:
-                    return getString(R.string.fragment_title_qrcode);
+                    return getString(R.string.qrcode_fragment_tab_title);
                 case 1:
-                    return getString(R.string.fragment_title_nfc);
+                    return getString(R.string.nfc_fragment_tab_title);
             }
             return null;
         }

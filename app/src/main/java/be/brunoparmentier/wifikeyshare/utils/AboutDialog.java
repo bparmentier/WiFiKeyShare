@@ -37,7 +37,7 @@ public class AboutDialog extends AlertDialog {
 
     public AboutDialog(Context context) {
         super(context);
-        setTitle(R.string.title_about);
+        setTitle(R.string.about_dialog_title);
         buildAboutMessage();
         setMessage(""); // will be set in @AboutDialog#show
         setButton(BUTTON_POSITIVE, getContext().getString(R.string.action_close), new OnClickListener() {
@@ -50,11 +50,11 @@ public class AboutDialog extends AlertDialog {
 
     private void buildAboutMessage() {
         String appVersion = BuildConfig.VERSION_NAME;
-        aboutMessage = String.format(getContext().getString(R.string.message_about_description), appVersion)
-                + getContext().getString(R.string.message_about_license_title)
-                + getContext().getString(R.string.message_about_license)
-                + getContext().getString(R.string.message_about_credits_title)
-                + getContext().getString(R.string.message_about_credits);
+        aboutMessage = String.format(getContext().getString(R.string.about_dialog_msg_description), appVersion)
+                + getContext().getString(R.string.about_dialog_msg_license_title)
+                + getContext().getString(R.string.about_dialog_msg_license)
+                + getContext().getString(R.string.about_dialog_msg_credits_title)
+                + getContext().getString(R.string.about_dialog_msg_credits);
     }
 
     @Override

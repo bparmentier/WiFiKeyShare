@@ -32,7 +32,7 @@
     <!-- Wi-Fi list activity -->
     <string name="wifilist_activity_title">@string/app_name</string>
     <!-- No root detected dialog -->
-    <string name="wifilist_dialog_noroot_title">No root detected</string>
+    <string name="wifilist_dialog_noroot_title">No root access</string>
     <string name="wifilist_dialog_noroot_msg">
         Wi-Fi passwords couldn\'t be retrieved as your device is not rooted. You will have to add
         them manually for each network you want to share.

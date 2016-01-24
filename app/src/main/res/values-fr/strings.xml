@@ -32,7 +32,7 @@
     <!-- Wi-Fi list activity -->
     <string name="wifilist_activity_title">@string/app_name</string>
     <!-- No root detected dialog -->
-    <string name="wifilist_dialog_noroot_title">Pas d\'accès root détecté</string>
+    <string name="wifilist_dialog_noroot_title">Pas d\'accès root</string>
     <string name="wifilist_dialog_noroot_msg">
         Les mots de passe Wi-Fi n\'ont pas pu être récupérés car votre appareil n\'est pas rooté.
         Vous devrez les ajouter manuellement pour chaque réseau que vous voudrez partager.

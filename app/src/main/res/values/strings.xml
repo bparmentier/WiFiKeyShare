@@ -83,6 +83,8 @@
         <![CDATA[
         <p>Version %s</p>
 
+        <p><a href="http://wifikeysha.re">http://wifikeysha.re</a></p>
+
         <p>WiFiKeyShare lets you easily share your Wi-Fi password by generating a QR code or by writing it to an NFC tag.<p>
 
         <p>This application is free software (GPLv3+). You can find the source code at

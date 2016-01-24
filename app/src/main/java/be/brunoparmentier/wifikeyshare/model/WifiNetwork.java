@@ -21,7 +21,8 @@ package be.brunoparmentier.wifikeyshare.model;
 import android.net.wifi.WifiConfiguration;
 
 import java.io.Serializable;
-import java.security.InvalidKeyException;
+
+import be.brunoparmentier.wifikeyshare.WifiException;
 
 public class WifiNetwork implements Serializable {
     private String ssid;
@@ -115,16 +116,16 @@ public class WifiNetwork implements Serializable {
     }
 
     public static boolean isValidKeyLength(WifiAuthType authType, String key)
-            throws InvalidKeyException {
+            throws WifiException {
         int keyLength = key.length();
 
         if (authType == WifiAuthType.WEP) {
             if (keyLength != 5 && keyLength != 13) {
-                throw new InvalidKeyException("WEP password must be 5 or 13 characters");
+                throw new WifiException(WifiException.WEP_KEY_LENGTH_ERROR);
             }
         } else { // WPA
             if ((keyLength >= 5 && keyLength < 8) || keyLength > 63) { // TODO: support hex key (64)
-                throw new InvalidKeyException("WPA password must be between 8 and 63 characters");
+                throw new WifiException(WifiException.WPA_KEY_LENGTH_ERROR);
             }
         }
 

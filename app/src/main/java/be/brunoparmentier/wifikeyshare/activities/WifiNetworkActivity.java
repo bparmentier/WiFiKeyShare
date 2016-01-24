@@ -59,9 +59,8 @@ import android.widget.Toast;
 
 import com.google.zxing.WriterException;
 
-import java.security.InvalidKeyException;
-
 import be.brunoparmentier.wifikeyshare.R;
+import be.brunoparmentier.wifikeyshare.WifiException;
 import be.brunoparmentier.wifikeyshare.db.WifiKeysDataSource;
 import be.brunoparmentier.wifikeyshare.model.WifiAuthType;
 import be.brunoparmentier.wifikeyshare.model.WifiNetwork;
@@ -204,8 +203,18 @@ public class WifiNetworkActivity extends AppCompatActivity {
                                 editable.toString())) {
                             wifiPasswordWrapper.setError(null);
                         }
-                    } catch (final InvalidKeyException e) {
-                        wifiPasswordWrapper.setError(e.getMessage());
+                    } catch (final WifiException e) {
+                        switch (e.getErrorCode()) {
+                            case WifiException.WEP_KEY_LENGTH_ERROR:
+                                wifiPasswordWrapper.setError(getString(R.string.error_wep_password_length));
+                                break;
+                            case WifiException.WPA_KEY_LENGTH_ERROR:
+                                wifiPasswordWrapper.setError(getString(R.string.error_wpa_password_length));
+                                break;
+                            default:
+                                wifiPasswordWrapper.setError(e.getMessage());
+                                break;
+                        }
                     }
                 }
             }
@@ -240,8 +249,18 @@ public class WifiNetworkActivity extends AppCompatActivity {
 
                         wifiPasswordDialog.dismiss();
                     }
-                } catch (InvalidKeyException e) {
-                    wifiPasswordWrapper.setError(e.getMessage());
+                } catch (WifiException e) {
+                    switch (e.getErrorCode()) {
+                        case WifiException.WEP_KEY_LENGTH_ERROR:
+                            wifiPasswordWrapper.setError(getString(R.string.error_wep_password_length));
+                            break;
+                        case WifiException.WPA_KEY_LENGTH_ERROR:
+                            wifiPasswordWrapper.setError(getString(R.string.error_wpa_password_length));
+                            break;
+                        default:
+                            wifiPasswordWrapper.setError(null);
+                            break;
+                    }
                 }
             }
         });

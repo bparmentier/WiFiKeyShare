@@ -64,6 +64,8 @@
     <string name="error_turn_nfc_on">Please turn NFC on</string>
     <string name="error_nfc_not_available">NFC is not available on your device</string>
     <string name="error_wep_to_nfc_not_supported">Writing WEP configuration to NFC tag is not supported</string>
+    <string name="error_wep_password_length">WEP password must be 5 or 13 characters</string>
+    <string name="error_wpa_password_length">WPA password must be between 8 and 63 characters</string>
 
     <!-- Confirm connect to Wi-Fi network activity -->
     <string name="confirm_connection_action_connect">Connect</string>

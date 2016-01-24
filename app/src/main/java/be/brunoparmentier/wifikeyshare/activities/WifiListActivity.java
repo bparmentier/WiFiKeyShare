@@ -328,7 +328,6 @@ public class WifiListActivity extends AppCompatActivity {
                 }
                 setSavedKeysToWifiNetworks();
             }
-            addWifiNetwork();
         }
     }
 

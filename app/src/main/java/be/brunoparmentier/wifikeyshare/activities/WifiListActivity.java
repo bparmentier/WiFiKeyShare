@@ -301,8 +301,12 @@ public class WifiListActivity extends AppCompatActivity {
         @Override
         protected void onPostExecute(List<WifiNetwork> parsedWifiNetworks) {
             for (WifiNetwork wifiNetwork : parsedWifiNetworks) {
-                wifiNetworks.add(wifiNetwork);
-                wifiNetworkAdapter.notifyItemInserted(wifiNetworkAdapter.getItemCount() - 1);
+                /* TODO: EAP networks are not yet supported */
+                if (wifiNetwork.getAuthType() != WifiAuthType.WPA_EAP
+                        && wifiNetwork.getAuthType() != WifiAuthType.WPA2_EAP) {
+                    wifiNetworks.add(wifiNetwork);
+                    wifiNetworkAdapter.notifyItemInserted(wifiNetworkAdapter.getItemCount() - 1);
+                }
             }
             if (!isDeviceRooted) {
                 boolean hasReadNoRootDialog = PreferenceManager

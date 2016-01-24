@@ -63,6 +63,7 @@ import java.security.InvalidKeyException;
 
 import be.brunoparmentier.wifikeyshare.R;
 import be.brunoparmentier.wifikeyshare.db.WifiKeysDataSource;
+import be.brunoparmentier.wifikeyshare.model.WifiAuthType;
 import be.brunoparmentier.wifikeyshare.model.WifiNetwork;
 import be.brunoparmentier.wifikeyshare.utils.AboutDialog;
 import be.brunoparmentier.wifikeyshare.utils.NfcUtils;
@@ -130,11 +131,9 @@ public class WifiNetworkActivity extends AppCompatActivity {
         nfcAdapter = NfcAdapter.getDefaultAdapter(this);
 
         if (isNfcAvailable()) {
-            //if (wifiNetwork.getAuthType() != WifiAuthType.WEP) { // writing WEP config is not supported
-                initializeNfcStateChangeListener();
-                setupForegroundDispatch();
-                nfcAdapter.setNdefPushMessage(NfcUtils.generateNdefMessage(wifiNetwork), this);
-            //}
+            initializeNfcStateChangeListener();
+            setupForegroundDispatch();
+            nfcAdapter.setNdefPushMessage(NfcUtils.generateNdefMessage(wifiNetwork), this);
         }
     }
 
@@ -330,17 +329,21 @@ public class WifiNetworkActivity extends AppCompatActivity {
     }
 
     protected void onNfcEnabled() {
-        // Update NFC write button and status text
-        FragmentManager fm = getSupportFragmentManager();
-        NfcFragment nfcFragment = (NfcFragment) fm.getFragments().get(1);
-        nfcFragment.setNfcStateEnabled(true);
+        if (wifiNetwork.getAuthType() != WifiAuthType.WEP) { // writing WEP config is not supported
+            // Update NFC write button and status text
+            FragmentManager fm = getSupportFragmentManager();
+            NfcFragment nfcFragment = (NfcFragment) fm.getFragments().get(1);
+            nfcFragment.setNfcStateEnabled(true);
+        }
     }
 
     protected void onNfcDisabled() {
-        // Update NFC write button and status text
-        FragmentManager fm = getSupportFragmentManager();
-        NfcFragment nfcFragment = (NfcFragment) fm.getFragments().get(1);
-        nfcFragment.setNfcStateEnabled(false);
+        if (wifiNetwork.getAuthType() != WifiAuthType.WEP) { // writing WEP config is not supported
+            // Update NFC write button and status text
+            FragmentManager fm = getSupportFragmentManager();
+            NfcFragment nfcFragment = (NfcFragment) fm.getFragments().get(1);
+            nfcFragment.setNfcStateEnabled(false);
+        }
     }
 
     private void setupForegroundDispatch() {
@@ -490,8 +493,11 @@ public class WifiNetworkActivity extends AppCompatActivity {
         public NfcFragment() {
         }
 
-        public static NfcFragment newInstance() {
+        public static NfcFragment newInstance(WifiNetwork wifiNetwork) {
             NfcFragment fragment = new NfcFragment();
+            Bundle args = new Bundle();
+            args.putSerializable(KEY_WIFI_NETWORK, wifiNetwork);
+            fragment.setArguments(args);
             return fragment;
         }
 
@@ -499,6 +505,8 @@ public class WifiNetworkActivity extends AppCompatActivity {
         public View onCreateView(LayoutInflater inflater, ViewGroup container,
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_nfc, container, false);
+
+            WifiNetwork wifiNetwork = (WifiNetwork) getArguments().getSerializable(KEY_WIFI_NETWORK);
 
             writeTagButton = (Button) rootView.findViewById(R.id.nfc_write_button);
             writeTagButton.setOnClickListener(new View.OnClickListener() {
@@ -510,13 +518,18 @@ public class WifiNetworkActivity extends AppCompatActivity {
 
             nfcStatusTextView = (TextView) rootView.findViewById(R.id.nfc_status);
 
-            boolean isNfcAvailable = ((WifiNetworkActivity) getActivity()).isNfcAvailable();
-            boolean isNfcEnabled = (((WifiNetworkActivity) getActivity()).isNfcEnabled());
+            if (wifiNetwork.getAuthType() == WifiAuthType.WEP) {
+                writeTagButton.setEnabled(false);
+                nfcStatusTextView.setText(R.string.error_wep_to_nfc_not_supported);
+            } else {
+                boolean isNfcAvailable = ((WifiNetworkActivity) getActivity()).isNfcAvailable();
+                boolean isNfcEnabled = (((WifiNetworkActivity) getActivity()).isNfcEnabled());
 
-            if (!isNfcAvailable) {
-                setNfcStateAvailable(false);
-            } else if (!isNfcEnabled) {
-                setNfcStateEnabled(false);
+                if (!isNfcAvailable) {
+                    setNfcStateAvailable(false);
+                } else if (!isNfcEnabled) {
+                    setNfcStateEnabled(false);
+                }
             }
 
             return rootView;
@@ -539,11 +552,6 @@ public class WifiNetworkActivity extends AppCompatActivity {
                 nfcStatusTextView.setText(R.string.error_nfc_not_available);
             }
         }
-
-        public void setIsWepNetwork() {
-            writeTagButton.setEnabled(false);
-            nfcStatusTextView.setText("Writing WEP configuration to NFC tag is not supported");
-        }
     }
 
     /**
@@ -559,7 +567,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
         @Override
         public Fragment getItem(int position) {
             if (position == 1) {
-                return NfcFragment.newInstance();
+                return NfcFragment.newInstance(wifiNetwork);
             } else {
                 return QrCodeFragment.newInstance(wifiNetwork);
             }

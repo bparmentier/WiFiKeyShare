@@ -63,6 +63,7 @@
     <string name="nfc_tag_read">NFC tag read</string>
     <string name="error_turn_nfc_on">Please turn NFC on</string>
     <string name="error_nfc_not_available">NFC is not available on your device</string>
+    <string name="error_wep_to_nfc_not_supported">Writing WEP configuration to NFC tag is not supported</string>
 
     <!-- Confirm connect to Wi-Fi network activity -->
     <string name="confirm_connection_action_connect">Connect</string>

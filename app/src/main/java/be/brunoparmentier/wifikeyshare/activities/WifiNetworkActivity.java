@@ -27,7 +27,9 @@ import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.support.design.widget.TabLayout;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
@@ -508,6 +510,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
 
         private Button writeTagButton;
         private TextView nfcStatusTextView;
+        private Button nfcSettingsButton;
 
         public NfcFragment() {
         }
@@ -537,9 +540,24 @@ public class WifiNetworkActivity extends AppCompatActivity {
 
             nfcStatusTextView = (TextView) rootView.findViewById(R.id.nfc_status);
 
+            nfcSettingsButton = (Button) rootView.findViewById(R.id.open_nfc_settings);
+            nfcSettingsButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent;
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                        intent = new Intent(Settings.ACTION_NFC_SETTINGS);
+                    } else {
+                        intent = new Intent(Settings.ACTION_WIRELESS_SETTINGS);
+                    }
+                    startActivity(intent);
+                }
+            });
+
             if (wifiNetwork.getAuthType() == WifiAuthType.WEP) {
                 writeTagButton.setEnabled(false);
                 nfcStatusTextView.setText(R.string.error_wep_to_nfc_not_supported);
+                nfcStatusTextView.setVisibility(View.VISIBLE);
             } else {
                 boolean isNfcAvailable = ((WifiNetworkActivity) getActivity()).isNfcAvailable();
                 boolean isNfcEnabled = (((WifiNetworkActivity) getActivity()).isNfcEnabled());
@@ -557,18 +575,24 @@ public class WifiNetworkActivity extends AppCompatActivity {
         public void setNfcStateEnabled(boolean enabled) {
             writeTagButton.setEnabled(enabled);
             if (enabled) {
+                nfcSettingsButton.setVisibility(View.GONE);
+                nfcStatusTextView.setVisibility(View.GONE);
                 nfcStatusTextView.setText(null);
             } else {
                 nfcStatusTextView.setText(R.string.error_turn_nfc_on);
+                nfcStatusTextView.setVisibility(View.VISIBLE);
+                nfcSettingsButton.setVisibility(View.VISIBLE);
             }
         }
 
         public void setNfcStateAvailable(boolean available) {
             writeTagButton.setEnabled(available);
             if (available) {
+                nfcStatusTextView.setVisibility(View.GONE);
                 nfcStatusTextView.setText(null);
             } else {
                 nfcStatusTextView.setText(R.string.error_nfc_not_available);
+                nfcStatusTextView.setVisibility(View.VISIBLE);
             }
         }
     }

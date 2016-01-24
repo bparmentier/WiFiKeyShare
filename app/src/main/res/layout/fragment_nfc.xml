@@ -46,6 +46,16 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerHorizontal="true"
-        android:layout_below="@id/nfc_write_button" />
+        android:layout_below="@id/nfc_write_button"
+        android:visibility="gone" />
+
+    <Button
+        android:id="@+id/open_nfc_settings"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/nfc_status"
+        android:text="@string/open_nfc_settings"
+        android:visibility="gone" />
 
 </RelativeLayout>

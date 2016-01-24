@@ -62,7 +62,16 @@
         <TextView
             android:id="@+id/nfc_status"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            android:visibility="gone" />
+
+        <Button
+            android:id="@+id/open_nfc_settings"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/open_nfc_settings"
+            android:visibility="gone" />
+
     </LinearLayout>
 
 </RelativeLayout>

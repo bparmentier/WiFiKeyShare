@@ -61,6 +61,7 @@
     <string name="write_to_tag_msg">Scan now an NFC tag to write the Wi-Fi configuration</string>
     <string name="nfc_tag_written">Successfully wrote to NFC tag</string>
     <string name="nfc_tag_read">NFC tag read</string>
+    <string name="open_nfc_settings">Open NFC settings</string>
     <string name="error_turn_nfc_on">Please turn NFC on</string>
     <string name="error_nfc_not_available">NFC is not available on your device</string>
     <string name="error_wep_to_nfc_not_supported">Writing WEP configuration to NFC tag is not supported</string>

@@ -1,0 +1,43 @@
+# ----------------------- #
+#      Main Configs       #
+# ----------------------- #
+
+url: http://wifikeysha.re
+title: WiFiKeyShare
+email: dev@brunoparmentier.be
+author: Bruno Parmentier
+description: >
+  Share Wi-Fi passwords with QR codes and NFC tags
+copyright: 'Copyright &copy; 2016 Bruno Parmentier. All Rights Reserved.'
+credits: 'Credits: Landing Page is a free to use, open source Bootstrap theme created by <a href="http://startbootstrap.com/">Start Bootstrap</a>.<br />Android, Google Play and the Google Play logo are trademarks of Google Inc.'
+
+# ----------------------- #
+#    Jekyll & Plugins     #
+# ----------------------- #
+
+# Build settings
+markdown: kramdown
+permalink: pretty
+
+# ----------------------- #
+#   3rd Party Settings    #
+# ----------------------- #
+
+social:
+  - title: Twitter
+    icon: twitter
+    url: https://twitter.com/bparmentier
+  - title: E-mail
+    icon: at
+    url: mailto:dev@brunoparmentier.be
+  - title: GitHub
+    icon: github
+    url: https://github.com/bparmentier/WiFiKeyShare
+
+download:
+  - title: Download on Google Play
+    img: img/google-play-badge.png
+    url: https://play.google.com/store/apps/details?id=be.brunoparmentier.wifikeyshare
+  - title: Download on F-Droid
+    img: img/f-droid-button.png
+    url: https://f-droid.org/repository/browse/?fdid=be.brunoparmentier.wifikeyshare

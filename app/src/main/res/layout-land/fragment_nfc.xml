@@ -41,6 +41,8 @@
         android:layout_alignEnd="@id/dummy_view"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true"
+        android:layout_centerVertical="true"
+        android:layout_centerHorizontal="true"
         android:src="@drawable/ic_write_tag" />
 
     <LinearLayout

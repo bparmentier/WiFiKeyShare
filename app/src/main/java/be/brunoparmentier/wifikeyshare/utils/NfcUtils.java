@@ -31,6 +31,7 @@ import java.nio.ByteBuffer;
 import java.nio.charset.Charset;
 import java.util.BitSet;
 
+import be.brunoparmentier.wifikeyshare.BuildConfig;
 import be.brunoparmentier.wifikeyshare.model.WifiNetwork;
 
 /**
@@ -39,6 +40,7 @@ import be.brunoparmentier.wifikeyshare.model.WifiNetwork;
 public class NfcUtils {
     private static final String TAG = NfcUtils.class.getSimpleName();
 
+    private static final String PACKAGE_NAME = BuildConfig.APPLICATION_ID;
     public static final String NFC_TOKEN_MIME_TYPE = "application/vnd.wfa.wsc";
     /*
      * ID into configuration record for SSID and Network Key in hex.
@@ -103,7 +105,9 @@ public class NfcUtils {
                 NfcUtils.NFC_TOKEN_MIME_TYPE.getBytes(Charset.forName("US-ASCII")),
                 new byte[0],
                 payload);
-        return new NdefMessage(new NdefRecord[]{mimeRecord});
+        NdefRecord aarRecord = NdefRecord.createApplicationRecord(PACKAGE_NAME);
+
+        return new NdefMessage(new NdefRecord[] {mimeRecord, aarRecord});
     }
 
     private static byte[] generateNdefPayload(WifiNetwork wifiNetwork) {

@@ -18,9 +18,11 @@
 
 package be.brunoparmentier.wifikeyshare.activities;
 
+import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
@@ -70,6 +72,8 @@ public class WifiListActivity extends AppCompatActivity {
     private WifiManager wifiManager;
     private boolean isDeviceRooted = false;
     private int networkIdToUpdate = -1; // index of item to update in networks list
+    private BroadcastReceiver wifiStateChangeBroadcastReceiver;
+    private boolean waitingForWifiToTurnOn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -84,6 +88,8 @@ public class WifiListActivity extends AppCompatActivity {
         /* Enable Wi-Fi if disabled */
         if (!wifiManager.isWifiEnabled()) {
             wifiManager.setWifiEnabled(true);
+            waitingForWifiToTurnOn = true;
+            initializeWifiStateChangeListener();
         }
 
         wifiKeysDataSource = new WifiKeysDataSource(this);
@@ -123,7 +129,28 @@ public class WifiListActivity extends AppCompatActivity {
         });
         */
 
-        (new WifiListTask()).execute();
+        if (!waitingForWifiToTurnOn) {
+            (new WifiListTask()).execute();
+        }
+    }
+
+    void initializeWifiStateChangeListener() {
+        wifiStateChangeBroadcastReceiver = new BroadcastReceiver() {
+            @Override
+            public void onReceive(Context context, Intent intent) {
+                final String action = intent.getAction();
+
+                if (action.equals(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION)) {
+                    final boolean isConnected = intent.getBooleanExtra(WifiManager.EXTRA_SUPPLICANT_CONNECTED, false);
+
+                    if (isConnected) {
+                        if (waitingForWifiToTurnOn) {
+                            (new WifiListTask()).execute();
+                        }
+                    }
+                }
+            }
+        };
     }
 
     private void addWifiNetwork() {
@@ -136,6 +163,9 @@ public class WifiListActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        IntentFilter wifiStateIntentFilter = new IntentFilter();
+        wifiStateIntentFilter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
+        registerReceiver(wifiStateChangeBroadcastReceiver, wifiStateIntentFilter);
         wifiKeysDataSource.open();
 
         if (networkIdToUpdate > -1) {
@@ -155,6 +185,7 @@ public class WifiListActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
+        unregisterReceiver(wifiStateChangeBroadcastReceiver);
         wifiKeysDataSource.close();
         super.onPause();
     }
@@ -331,6 +362,10 @@ public class WifiListActivity extends AppCompatActivity {
                             .show();
                 }
                 setSavedKeysToWifiNetworks();
+                if (waitingForWifiToTurnOn) {
+                    wifiManager.setWifiEnabled(false);
+                    waitingForWifiToTurnOn = false;
+                }
             }
         }
     }
@@ -341,11 +376,12 @@ public class WifiListActivity extends AppCompatActivity {
         for (int i = 0; i < wifiNetworks.size(); i++) {
             for (int j = 0; j < wifiNetworksWithKey.size(); j++) {
                 if (wifiNetworks.get(i).getSsid().equals(wifiNetworksWithKey.get(j).getSsid())
-                        && wifiNetworks.get(i).getAuthType() == wifiNetworksWithKey.get(j).getAuthType())
+                        && wifiNetworks.get(i).getAuthType() == wifiNetworksWithKey.get(j).getAuthType()) {
                     if (wifiNetworks.get(i).needsPassword()) {
                         wifiNetworks.get(i).setKey(wifiNetworksWithKey.get(j).getKey());
                         wifiNetworkAdapter.notifyItemChanged(i);
                     }
+                }
             }
         }
     }

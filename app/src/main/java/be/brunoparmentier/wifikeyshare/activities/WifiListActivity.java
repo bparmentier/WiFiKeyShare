@@ -163,9 +163,12 @@ public class WifiListActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
-        IntentFilter wifiStateIntentFilter = new IntentFilter();
-        wifiStateIntentFilter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
-        registerReceiver(wifiStateChangeBroadcastReceiver, wifiStateIntentFilter);
+        if (waitingForWifiToTurnOn) {
+            IntentFilter wifiStateIntentFilter = new IntentFilter();
+            wifiStateIntentFilter.addAction(WifiManager.SUPPLICANT_CONNECTION_CHANGE_ACTION);
+            registerReceiver(wifiStateChangeBroadcastReceiver, wifiStateIntentFilter);
+        }
+
         wifiKeysDataSource.open();
 
         if (networkIdToUpdate > -1) {
@@ -185,7 +188,9 @@ public class WifiListActivity extends AppCompatActivity {
 
     @Override
     protected void onPause() {
-        unregisterReceiver(wifiStateChangeBroadcastReceiver);
+        if (waitingForWifiToTurnOn) {
+            unregisterReceiver(wifiStateChangeBroadcastReceiver);
+        }
         wifiKeysDataSource.close();
         super.onPause();
     }
@@ -365,6 +370,7 @@ public class WifiListActivity extends AppCompatActivity {
                 if (waitingForWifiToTurnOn) {
                     wifiManager.setWifiEnabled(false);
                     waitingForWifiToTurnOn = false;
+                    unregisterReceiver(wifiStateChangeBroadcastReceiver);
                 }
             }
         }

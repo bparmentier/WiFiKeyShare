@@ -21,7 +21,7 @@
     <!-- These settings headers are only used on tablets. -->
 
     <header
-        android:fragment="be.brunoparmentier.wifikeyshare.activities.SettingsActivity$PinLockFragment"
+        android:fragment="be.brunoparmentier.wifikeyshare.ui.activities.SettingsActivity$PinLockFragment"
         android:icon="@drawable/ic_lock_black_24dp"
         android:title="@string/pin_lock_title"
         android:summary="@string/pin_lock_summary" />

@@ -22,7 +22,7 @@ import android.app.Application;
 
 import org.wordpress.passcodelock.AppLockManager;
 
-import be.brunoparmentier.wifikeyshare.activities.ConfirmConnectToWifiNetworkActivity;
+import be.brunoparmentier.wifikeyshare.ui.activities.ConfirmConnectToWifiNetworkActivity;
 
 public class WifiKeyShareApp extends Application {
     @Override

@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package be.brunoparmentier.wifikeyshare.activities;
+package be.brunoparmentier.wifikeyshare.ui.activities;
 
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;

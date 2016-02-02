@@ -24,7 +24,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:fitsSystemWindows="true"
-    tools:context=".activities.WifiNetworkActivity">
+    tools:context=".ui.activities.WifiNetworkActivity">
 
     <android.support.design.widget.AppBarLayout
         android:id="@+id/appbar"

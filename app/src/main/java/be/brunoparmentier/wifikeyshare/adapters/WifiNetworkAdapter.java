@@ -31,8 +31,8 @@ import android.widget.TextView;
 import java.util.List;
 
 import be.brunoparmentier.wifikeyshare.R;
-import be.brunoparmentier.wifikeyshare.activities.WifiNetworkActivity;
 import be.brunoparmentier.wifikeyshare.model.WifiNetwork;
+import be.brunoparmentier.wifikeyshare.ui.activities.WifiNetworkActivity;
 
 public class WifiNetworkAdapter extends RecyclerView.Adapter<WifiNetworkAdapter.ViewHolder> {
 

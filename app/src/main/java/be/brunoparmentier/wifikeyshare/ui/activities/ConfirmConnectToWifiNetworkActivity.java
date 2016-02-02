@@ -22,7 +22,7 @@
  * limitations under the License.
  */
 
-package be.brunoparmentier.wifikeyshare.activities;
+package be.brunoparmentier.wifikeyshare.ui.activities;
 
 import android.app.Activity;
 import android.content.BroadcastReceiver;

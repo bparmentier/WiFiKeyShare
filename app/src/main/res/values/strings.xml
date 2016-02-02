@@ -138,4 +138,17 @@
     <string name="pin_lock_title">PIN lock</string>
     <string name="pin_lock_summary">Protect app by PIN</string>
 
+    <!-- Passcode lock -->
+    <string name="passcode_manage">Manage PIN lock</string>
+    <string name="passcode_enter_passcode">Enter your PIN</string>
+    <string name="passcode_enter_old_passcode">Enter your old PIN</string>
+    <string name="passcode_re_enter_passcode">Re-enter your PIN</string>
+    <string name="passcode_change_passcode">Change PIN</string>
+    <string name="passcode_set">PIN set</string>
+    <string name="passcode_wrong_passcode">Wrong PIN</string>
+    <string name="passcode_preference_title">PIN lock</string>
+    <string name="passcode_turn_off">Turn PIN lock off</string>
+    <string name="passcode_turn_on">Turn PIN lock on</string>
+    <string name="passcodelock_prompt_message">Enter your PIN</string>
+    <string name="passcodelock_hint"></string>
 </resources>

@@ -446,16 +446,17 @@ public class WifiNetworkActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_about) {
-            final AlertDialog aboutDialog = new AboutDialog(this);
-            aboutDialog.show();
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                startActivity(new Intent(this, SettingsActivity.class));
+                return true;
+            case R.id.action_about:
+                final AlertDialog aboutDialog = new AboutDialog(this);
+                aboutDialog.show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-
-        return super.onOptionsItemSelected(item);
     }
 
     public static class QrCodeFragment extends Fragment {

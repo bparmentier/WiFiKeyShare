@@ -36,4 +36,5 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.1.1'
     compile 'eu.chainfire:libsuperuser:1.0.0.+'
     compile 'com.google.zxing:core:3.2.1'
+    compile 'org.wordpress:passcodelock:1.+'
 }

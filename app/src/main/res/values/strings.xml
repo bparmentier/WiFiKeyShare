@@ -132,4 +132,10 @@
         ]]>
     </string>
 
+    <!-- Strings related to Settings -->
+    <string name="settings_activity_title">@string/settings</string>
+    <string name="settings">Settings</string>
+    <string name="pin_lock_title">PIN lock</string>
+    <string name="pin_lock_summary">Protect app by PIN</string>
+
 </resources>

@@ -169,8 +169,6 @@ public class WifiListActivity extends AppCompatActivity {
             registerReceiver(wifiStateChangeBroadcastReceiver, wifiStateIntentFilter);
         }
 
-        wifiKeysDataSource.open();
-
         if (networkIdToUpdate > -1) {
             String key = wifiKeysDataSource.getWifiKey(
                     wifiNetworks.get(networkIdToUpdate).getSsid(),
@@ -191,8 +189,13 @@ public class WifiListActivity extends AppCompatActivity {
         if (waitingForWifiToTurnOn) {
             unregisterReceiver(wifiStateChangeBroadcastReceiver);
         }
-        wifiKeysDataSource.close();
         super.onPause();
+    }
+
+    @Override
+    protected void onDestroy() {
+        wifiKeysDataSource.close();
+        super.onDestroy();
     }
 
     @Override
@@ -204,18 +207,18 @@ public class WifiListActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-        if (id == R.id.action_about) {
-            final AlertDialog aboutDialog = new AboutDialog(this);
-            aboutDialog.show();
-            return true;
+        switch (item.getItemId()) {
+            case R.id.action_settings:
+                Intent settingsIntent = new Intent(this, SettingsActivity.class);
+                startActivity(settingsIntent);
+                return true;
+            case R.id.action_about:
+                final AlertDialog aboutDialog = new AboutDialog(this);
+                aboutDialog.show();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
-        return super.onOptionsItemSelected(item);
     }
 
     @Override

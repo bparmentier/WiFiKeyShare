@@ -16,7 +16,7 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package be.brunoparmentier.wifikeyshare;
+package be.brunoparmentier.wifikeyshare.model;
 
 public class WifiException extends Exception {
 

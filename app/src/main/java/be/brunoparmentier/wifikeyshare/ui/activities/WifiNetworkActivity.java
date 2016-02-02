@@ -62,9 +62,9 @@ import android.widget.Toast;
 import com.google.zxing.WriterException;
 
 import be.brunoparmentier.wifikeyshare.R;
-import be.brunoparmentier.wifikeyshare.WifiException;
 import be.brunoparmentier.wifikeyshare.db.WifiKeysDataSource;
 import be.brunoparmentier.wifikeyshare.model.WifiAuthType;
+import be.brunoparmentier.wifikeyshare.model.WifiException;
 import be.brunoparmentier.wifikeyshare.model.WifiNetwork;
 import be.brunoparmentier.wifikeyshare.utils.AboutDialog;
 import be.brunoparmentier.wifikeyshare.utils.NfcUtils;

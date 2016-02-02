@@ -22,8 +22,6 @@ import android.net.wifi.WifiConfiguration;
 
 import java.io.Serializable;
 
-import be.brunoparmentier.wifikeyshare.WifiException;
-
 public class WifiNetwork implements Serializable {
     private String ssid;
     private String key;

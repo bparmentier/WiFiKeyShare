@@ -45,14 +45,14 @@ import android.widget.TextView;
 import java.util.ArrayList;
 import java.util.List;
 
-import be.brunoparmentier.wifikeyshare.DividerItemDecoration;
 import be.brunoparmentier.wifikeyshare.R;
 import be.brunoparmentier.wifikeyshare.adapters.WifiNetworkAdapter;
 import be.brunoparmentier.wifikeyshare.db.WifiKeysDataSource;
 import be.brunoparmentier.wifikeyshare.model.WifiAuthType;
 import be.brunoparmentier.wifikeyshare.model.WifiNetwork;
-import be.brunoparmentier.wifikeyshare.utils.AboutDialog;
-import be.brunoparmentier.wifikeyshare.utils.ContextMenuRecyclerView;
+import be.brunoparmentier.wifikeyshare.ui.AboutDialog;
+import be.brunoparmentier.wifikeyshare.ui.ContextMenuRecyclerView;
+import be.brunoparmentier.wifikeyshare.ui.DividerItemDecoration;
 import be.brunoparmentier.wifikeyshare.utils.WpaSupplicantParser;
 import eu.chainfire.libsuperuser.Shell;
 

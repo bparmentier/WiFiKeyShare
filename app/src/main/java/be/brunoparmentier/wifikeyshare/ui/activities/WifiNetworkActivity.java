@@ -66,7 +66,7 @@ import be.brunoparmentier.wifikeyshare.db.WifiKeysDataSource;
 import be.brunoparmentier.wifikeyshare.model.WifiAuthType;
 import be.brunoparmentier.wifikeyshare.model.WifiException;
 import be.brunoparmentier.wifikeyshare.model.WifiNetwork;
-import be.brunoparmentier.wifikeyshare.utils.AboutDialog;
+import be.brunoparmentier.wifikeyshare.ui.AboutDialog;
 import be.brunoparmentier.wifikeyshare.utils.NfcUtils;
 import be.brunoparmentier.wifikeyshare.utils.QrCodeUtils;
 

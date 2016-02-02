@@ -129,8 +129,26 @@
 
         &nbsp;&nbsp;&bull;&nbsp;<a href="https://developer.android.com/tools/support-library/index.html">Android Support</a><br />
         &nbsp;&nbsp;&bull;&nbsp;<a href="https://github.com/Chainfire/libsuperuser">libsuperuser</a><br />
-        &nbsp;&nbsp;&bull;&nbsp;<a href="https://github.com/zxing/zxing">ZXing</a>
+        &nbsp;&nbsp;&bull;&nbsp;<a href="https://github.com/zxing/zxing">ZXing</a><br />
+        &nbsp;&nbsp;&bull;&nbsp;<a href="https://github.com/wordpress-mobile/PasscodeLock-Android">PasscodeLock-Android</a>
         ]]>
     </string>
 
+    <!-- Strings related to Settings -->
+    <string name="settings_activity_title">@string/settings</string>
+    <string name="settings">Paramètres</string>
+    <string name="pin_lock_title">Code PIN</string>
+    <string name="pin_lock_summary">Protéger l\'application par code PIN</string>
+
+    <!-- Passcode lock -->
+    <string name="passcode_manage">Gérer le code PIN</string>
+    <string name="passcode_enter_old_passcode">Entrez l\'ancien code PIN</string>
+    <string name="passcode_re_enter_passcode">Re-entrez votre code PIN</string>
+    <string name="passcode_change_passcode">Changer le code PIN</string>
+    <string name="passcode_set">Code PIN changé</string>
+    <string name="passcode_wrong_passcode">Mauvais code PIN</string>
+    <string name="passcode_preference_title">Code PIN</string>
+    <string name="passcode_turn_off">Désactiver le code PIN</string>
+    <string name="passcode_turn_on">Activer le code PIN</string>
+    <string name="passcodelock_prompt_message">Entrez votre code PIN</string>
 </resources>

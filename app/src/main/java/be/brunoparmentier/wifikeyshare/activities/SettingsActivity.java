@@ -116,6 +116,11 @@ public class SettingsActivity extends AppCompatPreferenceActivity {
             super.onCreate(savedInstanceState);
             addPreferencesFromResource(R.xml.pref_pin_lock);
             setHasOptionsMenu(true);
+        }
+
+        @Override
+        public void onStart() {
+            super.onStart();
 
             setPreferences(findPreference(getString(R.string.pref_key_passcode_toggle)),
                     findPreference(getString(R.string.pref_key_change_passcode)));

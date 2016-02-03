@@ -306,8 +306,23 @@ public class WifiListActivity extends AppCompatActivity {
 
         @Override
         protected List<WifiNetwork> doInBackground(Void... params) {
-            List<WifiNetwork> parsedWifiNetworks;
 
+            List<WifiNetwork> wifiManagerNetworks = new ArrayList<>();
+            List<WifiConfiguration> savedWifiConfigs = wifiManager.getConfiguredNetworks();
+            if (waitingForWifiToTurnOn) {
+                wifiManager.setWifiEnabled(false);
+                waitingForWifiToTurnOn = false;
+                unregisterReceiver(wifiStateChangeBroadcastReceiver);
+            }
+
+            /* Populate WifiNetwork list from WifiManager */
+            if (savedWifiConfigs != null) {
+                for (WifiConfiguration wifiConfig : savedWifiConfigs) {
+                    wifiManagerNetworks.add(WifiNetwork.fromWifiConfiguration(wifiConfig));
+                }
+            }
+
+            /* Get passwords from wpa_supplicant if root is available */
             if (Shell.SU.available()) {
                 isDeviceRooted = true;
 
@@ -317,29 +332,26 @@ public class WifiListActivity extends AppCompatActivity {
                     strRes += line + "\n";
                     //Log.d(TAG, line);
                 }
-                parsedWifiNetworks = WpaSupplicantParser.parse(strRes);
+                List<WifiNetwork> wpaSupplicantNetworks = WpaSupplicantParser.parse(strRes);
 
-                /*for (WifiNetwork network : parsedWifiNetworks) {
-                    Log.d(TAG, network.toString());
-                }*/
-                return parsedWifiNetworks;
-            } else {
-                List<WifiConfiguration> savedWifiConfigs = wifiManager.getConfiguredNetworks();
-
-                parsedWifiNetworks = new ArrayList<>();
-                if (savedWifiConfigs != null) {
-                    for (WifiConfiguration wifiConfig : savedWifiConfigs) {
-                        parsedWifiNetworks.add(WifiNetwork.fromWifiConfiguration(wifiConfig));
+                for (WifiNetwork wifiManagerNetwork : wifiManagerNetworks) {
+                    if (wifiManagerNetwork.getAuthType() != WifiAuthType.OPEN) {
+                        for (WifiNetwork wpaSupplicantNetwork : wpaSupplicantNetworks) {
+                            if (wifiManagerNetwork.getSsid().equals(wpaSupplicantNetwork.getSsid())) {
+                                wifiManagerNetwork.setKey(wpaSupplicantNetwork.getKey());
+                                break;
+                            }
+                        }
                     }
                 }
-
-                return parsedWifiNetworks;
             }
+
+            return wifiManagerNetworks;
         }
 
         @Override
-        protected void onPostExecute(List<WifiNetwork> parsedWifiNetworks) {
-            for (WifiNetwork wifiNetwork : parsedWifiNetworks) {
+        protected void onPostExecute(List<WifiNetwork> wifiManagerNetworks) {
+            for (WifiNetwork wifiNetwork : wifiManagerNetworks) {
                 /* TODO: EAP networks are not yet supported */
                 if (wifiNetwork.getAuthType() != WifiAuthType.WPA_EAP
                         && wifiNetwork.getAuthType() != WifiAuthType.WPA2_EAP) {
@@ -348,6 +360,8 @@ public class WifiListActivity extends AppCompatActivity {
                 }
             }
             if (!isDeviceRooted) {
+                setSavedKeysToWifiNetworks();
+
                 boolean hasReadNoRootDialog = PreferenceManager
                         .getDefaultSharedPreferences(WifiListActivity.this)
                         .getBoolean(PREF_KEY_HAS_READ_NO_ROOT_DIALOG, false);
@@ -368,12 +382,6 @@ public class WifiListActivity extends AppCompatActivity {
                             .setCancelable(false)
                             .create()
                             .show();
-                }
-                setSavedKeysToWifiNetworks();
-                if (waitingForWifiToTurnOn) {
-                    wifiManager.setWifiEnabled(false);
-                    waitingForWifiToTurnOn = false;
-                    unregisterReceiver(wifiStateChangeBroadcastReceiver);
                 }
             }
         }

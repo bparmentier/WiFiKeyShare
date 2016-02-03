@@ -28,6 +28,7 @@
 
     <!-- Various -->
     <string name="password">Mot de passe</string>
+    <string name="view_password">Voir le mot de passe</string>
 
     <!-- Wi-Fi list activity -->
     <string name="wifilist_activity_title">@string/app_name</string>
@@ -38,7 +39,7 @@
         Vous devrez les ajouter manuellement pour chaque réseau que vous voudrez partager.
     </string>
     <!-- Long-tap on Wi-Fi network dialog -->
-    <string name="wifilist_dialog_view_password">Voir le mot de passe</string>
+    <string name="wifilist_dialog_view_password">@string/view_password</string>
     <string name="wifilist_dialog_clear_password">Effacer le mot de passe</string>
     <string name="wifilist_dialog_title_ssid">SSID</string>
     <string name="wifilist_dialog_title_security">Sécurité</string>
@@ -51,6 +52,7 @@
     <string name="wifi_dialog_password_msg">Entrez le mot de passe Wi-Fi pour %1$s\u00A0:</string>
     <string name="wifi_dialog_password_hint">@string/password</string>
     <string name="wifi_dialog_password_show">Afficher le mot de passe</string>
+    <string name="wifi_dialog_view_password">@string/view_password</string>
 
     <!-- QR code fragment -->
     <string name="qrcode_fragment_tab_title">QR code</string>

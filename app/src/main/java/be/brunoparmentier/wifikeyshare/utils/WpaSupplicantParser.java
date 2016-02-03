@@ -33,13 +33,21 @@ public class WpaSupplicantParser {
         String[] networkSections = networkString.split("network=");
         for (int i = 1; i < networkSections.length; i++) {
             String networkSection = networkSections[i];
-            String name = parseToken(networkSection, "ssid");
-            String password = networkPassword(networkSection);
+            String name = networkName(networkSection);
             WifiAuthType authType = networkType(networkSection);
+            String password = networkPassword(networkSection);
             wifiNetworks.add(new WifiNetwork(name, authType, password, false));
         }
 
         return wifiNetworks;
+    }
+
+    private static String networkName(String networkSection) {
+        if (hasToken(networkSection, "ssid")) {
+            return parseToken(networkSection, "ssid");
+        }
+
+        return "";
     }
 
     private static WifiAuthType networkType(String networkSection) {
@@ -85,8 +93,11 @@ public class WpaSupplicantParser {
 
     private static String parseToken(String networkSection, String tokenName) {
         //Log.d(TAG, networkSection);
-        List<String> tokenLines = tokenLines(networkSection, tokenName);
+        if (hasToken(networkSection, tokenName)) {
+            List<String> tokenLines = tokenLines(networkSection, tokenName);
+            return tokenLines.get(0).split("=")[1].replace("\"", "");
+        }
 
-        return tokenLines.get(0).split("=")[1].replace("\"", "");
+        return "";
     }
 }

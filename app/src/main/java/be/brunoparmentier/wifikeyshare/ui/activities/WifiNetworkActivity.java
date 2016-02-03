@@ -447,6 +447,29 @@ public class WifiNetworkActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
+            case R.id.action_view_password:
+                // FIXME: redundant with @WifiListActivity#onContextItemSelected
+                final AlertDialog viewPasswordDialog = new AlertDialog.Builder(this)
+                        .setTitle(getString(R.string.wifi_dialog_view_password))
+                        .setView(R.layout.dialog_view_password)
+                        .setPositiveButton(R.string.action_close, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                dialogInterface.dismiss();
+                            }
+                        })
+                        .create();
+                viewPasswordDialog.show();
+
+                /* Set SSID, security and password values */
+                TextView ssidTextView = (TextView) viewPasswordDialog.findViewById(R.id.ssid_value);
+                TextView authTypeTextView = (TextView) viewPasswordDialog.findViewById(R.id.auth_type_value);
+                TextView passwordTextView = (TextView) viewPasswordDialog.findViewById(R.id.password_value);
+                ssidTextView.setText(wifiNetwork.getSsid());
+                authTypeTextView.setText(wifiNetwork.getAuthType().toString());
+                passwordTextView.setText(wifiNetwork.getKey());
+                passwordTextView.setTextIsSelectable(true);
+                return true;
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
                 return true;

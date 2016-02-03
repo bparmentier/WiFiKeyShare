@@ -28,6 +28,7 @@
 
     <!-- Various -->
     <string name="password">Password</string>
+    <string name="view_password">View password</string>
 
     <!-- Wi-Fi list activity -->
     <string name="wifilist_activity_title">@string/app_name</string>
@@ -38,7 +39,7 @@
         them manually for each network you want to share.
     </string>
     <!-- Long-tap on Wi-Fi network dialog -->
-    <string name="wifilist_dialog_view_password">View password</string>
+    <string name="wifilist_dialog_view_password">@string/view_password</string>
     <string name="wifilist_dialog_clear_password">Clear saved password</string>
     <string name="wifilist_dialog_title_ssid">SSID</string>
     <string name="wifilist_dialog_title_security">Security</string>
@@ -51,6 +52,7 @@
     <string name="wifi_dialog_password_msg">Enter the Wi-Fi password for %1$s:</string>
     <string name="wifi_dialog_password_hint">@string/password</string>
     <string name="wifi_dialog_password_show">Show password</string>
+    <string name="wifi_dialog_view_password">@string/view_password</string>
 
     <!-- QR code fragment -->
     <string name="qrcode_fragment_tab_title">QR code</string>

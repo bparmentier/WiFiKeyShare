@@ -21,6 +21,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.activities.WifiNetworkActivity">
     <item
+        android:id="@+id/action_view_password"
+        android:title="@string/wifi_dialog_view_password"
+        android:orderInCategory="98"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/action_settings"
         android:title="@string/settings"
         android:orderInCategory="99"

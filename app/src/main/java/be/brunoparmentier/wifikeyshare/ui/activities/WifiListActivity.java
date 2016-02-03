@@ -249,7 +249,7 @@ public class WifiListActivity extends AppCompatActivity {
             case (R.id.context_menu_wifi_list_view_password):
                 final AlertDialog viewPasswordDialog = new AlertDialog.Builder(this)
                         .setTitle(getString(R.string.wifilist_dialog_view_password))
-                        .setView(R.layout.dialog_show_password)
+                        .setView(R.layout.dialog_view_password)
                         .setPositiveButton(R.string.action_close, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {

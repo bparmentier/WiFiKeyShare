@@ -65,7 +65,6 @@ public class WifiListActivity extends AppCompatActivity {
     private static final String KEY_NETWORK_ID = "network_id";
     private static final String PREF_KEY_HAS_READ_NO_ROOT_DIALOG = "has_read_no_root_dialog";
 
-    private WifiKeysDataSource wifiKeysDataSource;
     private List<WifiNetwork> wifiNetworks;
     private WifiNetworkAdapter wifiNetworkAdapter;
     private ContextMenuRecyclerView rvWifiNetworks;
@@ -91,9 +90,6 @@ public class WifiListActivity extends AppCompatActivity {
             waitingForWifiToTurnOn = true;
             initializeWifiStateChangeListener();
         }
-
-        wifiKeysDataSource = new WifiKeysDataSource(this);
-        wifiKeysDataSource.open();
 
         setupWifiNetworksList();
     }
@@ -170,7 +166,7 @@ public class WifiListActivity extends AppCompatActivity {
         }
 
         if (networkIdToUpdate > -1) {
-            String key = wifiKeysDataSource.getWifiKey(
+            String key = WifiKeysDataSource.getInstance().getWifiKey(
                     wifiNetworks.get(networkIdToUpdate).getSsid(),
                     wifiNetworks.get(networkIdToUpdate).getAuthType());
             if (key == null) {
@@ -190,12 +186,6 @@ public class WifiListActivity extends AppCompatActivity {
             unregisterReceiver(wifiStateChangeBroadcastReceiver);
         }
         super.onPause();
-    }
-
-    @Override
-    protected void onDestroy() {
-        wifiKeysDataSource.close();
-        super.onDestroy();
     }
 
     @Override
@@ -287,7 +277,7 @@ public class WifiListActivity extends AppCompatActivity {
         WifiNetwork wifiNetwork = wifiNetworks.get(position);
         String ssid = wifiNetwork.getSsid();
         WifiAuthType authType = wifiNetwork.getAuthType();
-        if (wifiKeysDataSource.removeWifiKey(ssid, authType) == 0) {
+        if (WifiKeysDataSource.getInstance().removeWifiKey(ssid, authType) == 0) {
             Log.e(TAG, "No key was removed from database");
         }
     }
@@ -388,7 +378,7 @@ public class WifiListActivity extends AppCompatActivity {
     }
 
     private void setSavedKeysToWifiNetworks() {
-        List<WifiNetwork> wifiNetworksWithKey = wifiKeysDataSource.getSavedWifiWithKeys();
+        List<WifiNetwork> wifiNetworksWithKey = WifiKeysDataSource.getInstance().getSavedWifiWithKeys();
 
         for (int i = 0; i < wifiNetworks.size(); i++) {
             for (int j = 0; j < wifiNetworksWithKey.size(); j++) {

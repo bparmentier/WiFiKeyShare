@@ -21,7 +21,6 @@ package be.brunoparmentier.wifikeyshare.db;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
-import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 
 import java.util.ArrayList;
@@ -34,19 +33,21 @@ public class WifiKeysDataSource {
 
     private static final String TAG = WifiKeysDataSource.class.getSimpleName();
 
-    private SQLiteDatabase database;
+    private static WifiKeysDataSource instance;
     private WifiKeysDbHelper dbHelper;
 
-    public WifiKeysDataSource(Context context) {
+    public static void init(Context context) {
+        if (instance == null) {
+            instance = new WifiKeysDataSource(context);
+        }
+    }
+
+    public static WifiKeysDataSource getInstance() {
+        return instance;
+    }
+
+    private WifiKeysDataSource(Context context) {
         dbHelper = new WifiKeysDbHelper(context);
-    }
-
-    public void open() throws SQLException {
-        database = dbHelper.getWritableDatabase();
-    }
-
-    public void close() {
-        dbHelper.close();
     }
 
     /**
@@ -68,7 +69,9 @@ public class WifiKeysDataSource {
         // How you want the results sorted in the resulting Cursor
         //String sortOrder = WifiKeysContract.WifiKeys.COLUMN_NAME_SSID + " DESC";
 
-        Cursor cursor = database.query(
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
+        Cursor cursor = db.query(
                 WifiKeysContract.WifiKeys.TABLE_NAME,   // The table to query
                 projection,                             // The columns to return
                 null,                                   // The columns for the WHERE clause
@@ -78,17 +81,20 @@ public class WifiKeysDataSource {
                 null                                    // The sort order
         );
 
-        if (cursor.moveToFirst()) {
-            while (!cursor.isAfterLast()) {
-                String ssid = cursor.getString(1);
-                WifiAuthType authType = WifiAuthType.valueOf(cursor.getString(2));
-                String key = cursor.getString(3);
-                wifiNetworks.add(new WifiNetwork(ssid, authType, key, false));
+        try {
+            if (cursor.moveToFirst()) {
+                while (!cursor.isAfterLast()) {
+                    String ssid = cursor.getString(1);
+                    WifiAuthType authType = WifiAuthType.valueOf(cursor.getString(2));
+                    String key = cursor.getString(3);
+                    wifiNetworks.add(new WifiNetwork(ssid, authType, key, false));
 
-                cursor.moveToNext();
+                    cursor.moveToNext();
+                }
             }
+        } finally {
+            cursor.close();
         }
-        cursor.close();
 
         return wifiNetworks;
     }
@@ -111,8 +117,9 @@ public class WifiKeysDataSource {
 
         // How you want the results sorted in the resulting Cursor
         //String sortOrder = WifiKeysContract.WifiKeys.COLUMN_NAME_SSID + " DESC";
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
 
-        Cursor cursor = database.query(
+        Cursor cursor = db.query(
                 WifiKeysContract.WifiKeys.TABLE_NAME,   // The table to query
                 projection,                             // The columns to return
                 selection,                              // The columns for the WHERE clause
@@ -122,10 +129,12 @@ public class WifiKeysDataSource {
                 null                                    // The sort order
         );
 
-        if (cursor.moveToFirst()) {
-            String key = cursor.getString(3);
+        try {
+            if (cursor.moveToFirst()) {
+                return cursor.getString(3);
+            }
+        } finally {
             cursor.close();
-            return key;
         }
 
         return null;
@@ -137,6 +146,8 @@ public class WifiKeysDataSource {
      * @return the primary key value of the newly inserted row
      */
     public long insertWifiKey(WifiNetwork wifiNetwork) {
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+
         // Create a new map of values, where column names are the keys
         ContentValues values = new ContentValues();
         values.put(WifiKeysContract.WifiKeys.COLUMN_NAME_SSID, wifiNetwork.getSsid());
@@ -144,10 +155,12 @@ public class WifiKeysDataSource {
         values.put(WifiKeysContract.WifiKeys.COLUMN_NAME_KEY, wifiNetwork.getKey());
 
         // Insert the new row, returning the primary key value of the new row
-        return database.insert(WifiKeysContract.WifiKeys.TABLE_NAME, null, values);
+        return db.insert(WifiKeysContract.WifiKeys.TABLE_NAME, null, values);
     }
 
     public int removeWifiKey(String ssid, WifiAuthType authType) {
+        SQLiteDatabase db = dbHelper.getReadableDatabase();
+
         String whereClause = WifiKeysContract.WifiKeys.COLUMN_NAME_SSID + " = ? AND " +
                 WifiKeysContract.WifiKeys.COLUMN_NAME_AUTH_TYPE + " = ?";
         String[] whereArgs = {
@@ -155,6 +168,6 @@ public class WifiKeysDataSource {
                 authType.name()
         };
 
-        return database.delete(WifiKeysContract.WifiKeys.TABLE_NAME, whereClause, whereArgs);
+        return db.delete(WifiKeysContract.WifiKeys.TABLE_NAME, whereClause, whereArgs);
     }
 }

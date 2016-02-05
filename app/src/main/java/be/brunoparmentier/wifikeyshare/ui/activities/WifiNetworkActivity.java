@@ -414,6 +414,9 @@ public class WifiNetworkActivity extends AppCompatActivity {
                 if (NfcUtils.writeTag(wifiNetwork, tag)) {
                     Toast.makeText(this, R.string.nfc_tag_written, Toast.LENGTH_LONG)
                             .show();
+                } else {
+                    Toast.makeText(this, R.string.error_nfc_tag_write, Toast.LENGTH_LONG)
+                            .show();
                 }
                 disableTagWriteMode();
             }

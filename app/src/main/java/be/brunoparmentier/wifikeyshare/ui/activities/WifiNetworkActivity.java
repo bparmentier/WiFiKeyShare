@@ -529,6 +529,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
 
     public static class NfcFragment extends Fragment {
 
+        private WifiNetwork wifiNetwork;
         private Button writeTagButton;
         private TextView nfcStatusTextView;
         private Button nfcSettingsButton;
@@ -549,7 +550,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
                                  Bundle savedInstanceState) {
             View rootView = inflater.inflate(R.layout.fragment_nfc, container, false);
 
-            WifiNetwork wifiNetwork = (WifiNetwork) getArguments().getSerializable(KEY_WIFI_NETWORK);
+            wifiNetwork = (WifiNetwork) getArguments().getSerializable(KEY_WIFI_NETWORK);
 
             writeTagButton = (Button) rootView.findViewById(R.id.nfc_write_button);
             writeTagButton.setOnClickListener(new View.OnClickListener() {
@@ -575,6 +576,13 @@ public class WifiNetworkActivity extends AppCompatActivity {
                 }
             });
 
+            return rootView;
+        }
+
+        @Override
+        public void onResume() {
+            super.onResume();
+
             if (wifiNetwork.getAuthType() == WifiAuthType.WEP) {
                 writeTagButton.setEnabled(false);
                 nfcStatusTextView.setText(R.string.error_wep_to_nfc_not_supported);
@@ -587,10 +595,11 @@ public class WifiNetworkActivity extends AppCompatActivity {
                     setNfcStateAvailable(false);
                 } else if (!isNfcEnabled) {
                     setNfcStateEnabled(false);
+                } else {
+                    setNfcStateAvailable(true);
+                    setNfcStateEnabled(true);
                 }
             }
-
-            return rootView;
         }
 
         public void setNfcStateEnabled(boolean enabled) {

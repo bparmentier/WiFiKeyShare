@@ -43,6 +43,8 @@ import android.view.View;
 import android.widget.TextView;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import be.brunoparmentier.wifikeyshare.R;
@@ -335,6 +337,13 @@ public class WifiListActivity extends AppCompatActivity {
                     }
                 }
             }
+
+            Collections.sort(wifiManagerNetworks, new Comparator<WifiNetwork>() {
+                @Override
+                public int compare(WifiNetwork w1, WifiNetwork w2) {
+                    return w1.getSsid().toLowerCase().compareTo(w2.getSsid().toLowerCase());
+                }
+            });
 
             return wifiManagerNetworks;
         }

@@ -92,6 +92,67 @@ public class NfcUtils {
     }
 
     /**
+     * Write the given NDEF message to the NFC tag.
+     *
+     * The NDEF message should contain two NDEF records: the actual Wi-Fi configuration and an
+     * AAR (Android Application Record) with the application package id.
+     * If the message size is greater than the maximum writable size, the AAR is removed from the
+     * NDEF message. If it is still too big, the message is not written.
+     *
+     * @param message the NDEF message to write
+     * @param tag the NFC tag
+     * @return true if the NDEF message was successfully written to the tag, false otherwise
+     */
+    private static boolean writeTag(NdefMessage message, Tag tag) {
+        int messageSize = message.toByteArray().length;
+
+        try {
+            Ndef ndef = Ndef.get(tag);
+            if (ndef != null) {
+                ndef.connect();
+                if (!ndef.isWritable()) {
+                    Log.w(TAG, "Tag not writable");
+                    return false;
+                }
+                int ndefMaxSize = ndef.getMaxSize();
+                if (messageSize > ndefMaxSize) {
+                    /* Try to write the NDEF message without the Android Application Record */
+                    NdefMessage newMessage = new NdefMessage(new NdefRecord[]{message.getRecords()[0]});
+                    int newMessageSize = newMessage.toByteArray().length;
+                    if (newMessageSize > ndefMaxSize) {
+                        Log.w(TAG, "Tag too small");
+                        return false;
+                    } else {
+                        Log.d(TAG, "Writing tag without AAR");
+                        ndef.writeNdefMessage(newMessage);
+                        return true;
+                    }
+                }
+                ndef.writeNdefMessage(message);
+                return true;
+            } else {
+                NdefFormatable ndefFormatable = NdefFormatable.get(tag);
+                if (ndefFormatable != null) {
+                    try {
+                        ndefFormatable.connect();
+                        ndefFormatable.format(message); // FIXME: try without AAR if message too big
+                        return true;
+                    } catch (IOException e) {
+                        Log.w(TAG, "Tag not formatted");
+                        return false;
+                    }
+                } else {
+                    Log.d(TAG, "ndefFormatable is null");
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            Log.w(TAG, "Writing to tag failed", e);
+            return false;
+        }
+    }
+
+    /**
      * Generate an NDEF message containing the given Wi-Fi configuration
      *
      * @param wifiNetwork the Wi-Fi configuration to convert
@@ -105,9 +166,9 @@ public class NfcUtils {
                 NfcUtils.NFC_TOKEN_MIME_TYPE.getBytes(Charset.forName("US-ASCII")),
                 new byte[0],
                 payload);
-        //NdefRecord aarRecord = NdefRecord.createApplicationRecord(PACKAGE_NAME);
+        NdefRecord aarRecord = NdefRecord.createApplicationRecord(PACKAGE_NAME);
 
-        return new NdefMessage(new NdefRecord[] {mimeRecord/*, aarRecord*/});
+        return new NdefMessage(new NdefRecord[] {mimeRecord, aarRecord});
     }
 
     private static byte[] generateNdefPayload(WifiNetwork wifiNetwork) {
@@ -193,49 +254,6 @@ public class NfcUtils {
 //        buffer.put(macAddress);
 
         return buffer.array();
-    }
-
-    /**
-     * Write the given NDEF message to the NFC tag
-     * TODO: throw exception on error
-     *
-     * @param message the NDEF message to write
-     * @param tag the NFC tag
-     * @return true if the NDEF message was successfully written to the tag, false otherwise
-     */
-    private static boolean writeTag(NdefMessage message, Tag tag) {
-        int size = message.toByteArray().length;
-        try {
-            Ndef ndef = Ndef.get(tag);
-            if (ndef != null) {
-                ndef.connect();
-                if (!ndef.isWritable()) {
-                    Log.d(TAG, "Error: tag not writable");
-                    return false;
-                }
-                if (ndef.getMaxSize() < size) {
-                    Log.d(TAG, "Error: tag too small");
-                    return false;
-                }
-                ndef.writeNdefMessage(message);
-                return true;
-            } else {
-                NdefFormatable format = NdefFormatable.get(tag);
-                if (format != null) {
-                    try {
-                        format.connect();
-                        format.format(message);
-                        return true;
-                    } catch (IOException e) {
-                        return false;
-                    }
-                } else {
-                    return false;
-                }
-            }
-        } catch (Exception e) {
-            return false;
-        }
     }
 
     public static WifiConfiguration readTag(Tag tag) {

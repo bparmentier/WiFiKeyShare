@@ -162,15 +162,15 @@ public class NfcUtils {
 
         /* Fill buffer */
 
-        int bufferSize = 39 + ssidSize + networkKeySize; // size of required credential attributes
+        int bufferSize = 18 + ssidSize + networkKeySize; // size of required credential attributes
 
         ByteBuffer buffer = ByteBuffer.allocate(bufferSize);
         buffer.putShort(CREDENTIAL_FIELD_ID);
         buffer.putShort((short) (bufferSize - 4));
 
-        buffer.putShort(NETWORK_INDEX_FIELD_ID);
-        buffer.putShort((short) 1);
-        buffer.put(NETWORK_INDEX_DEFAULT_VALUE);
+//        buffer.putShort(NETWORK_INDEX_FIELD_ID);
+//        buffer.putShort((short) 1);
+//        buffer.put(NETWORK_INDEX_DEFAULT_VALUE);
 
         buffer.putShort(SSID_FIELD_ID);
         buffer.putShort(ssidSize);
@@ -180,17 +180,17 @@ public class NfcUtils {
         buffer.putShort((short) 2);
         buffer.putShort(authType);
 
-        buffer.putShort(ENC_TYPE_FIELD_ID);
-        buffer.putShort((short) 2);
-        buffer.putShort(ENC_TYPE_NONE); // FIXME
+//        buffer.putShort(ENC_TYPE_FIELD_ID);
+//        buffer.putShort((short) 2);
+//        buffer.putShort(ENC_TYPE_NONE); // FIXME
 
         buffer.putShort(NETWORK_KEY_FIELD_ID);
         buffer.putShort(networkKeySize);
         buffer.put(networkKey.getBytes());
 
-        buffer.putShort(MAC_ADDRESS_FIELD_ID);
-        buffer.putShort((short) MAX_MAC_ADDRESS_SIZE_BYTES);
-        buffer.put(macAddress);
+//        buffer.putShort(MAC_ADDRESS_FIELD_ID);
+//        buffer.putShort((short) MAX_MAC_ADDRESS_SIZE_BYTES);
+//        buffer.put(macAddress);
 
         return buffer.array();
     }

@@ -46,22 +46,22 @@ public class NfcUtils {
      * ID into configuration record for SSID and Network Key in hex.
      * Obtained from WFA Wi-Fi Simple Configuration Technical Specification v2.0.5.
      */
-    public static final short CREDENTIAL_FIELD_ID = 0x100E;
+    public static final short CREDENTIAL_FIELD_ID = 0x100e;
 
     public static final short NETWORK_INDEX_FIELD_ID = 0x1026;
-    public static final byte NETWORK_INDEX_DEFAULT_VALUE = (byte) 0x1;
+    public static final byte NETWORK_INDEX_DEFAULT_VALUE = (byte) 0x01;
 
     public static final short SSID_FIELD_ID = 0x1045;
 
     public static final short AUTH_TYPE_FIELD_ID = 0x1003;
     public static final short AUTH_TYPE_EXPECTED_SIZE = 2;
-    public static final short AUTH_TYPE_OPEN = 0;
+    public static final short AUTH_TYPE_OPEN = 0x0001;
     public static final short AUTH_TYPE_WPA_PSK = 0x0002;
     public static final short AUTH_TYPE_WPA_EAP = 0x0008;
     public static final short AUTH_TYPE_WPA2_EAP = 0x0010;
     public static final short AUTH_TYPE_WPA2_PSK = 0x0020;
 
-    public static final short ENC_TYPE_FIELD_ID = 0x100F;
+    public static final short ENC_TYPE_FIELD_ID = 0x100f;
     public static final short ENC_TYPE_NONE = 0x0001;
     public static final short ENC_TYPE_WEP = 0x0002; // deprecated
     public static final short ENC_TYPE_TKIP = 0x0004; // deprecated -> only with mixed mode (0x000c)

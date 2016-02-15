@@ -336,10 +336,10 @@ public class NfcUtils {
                     break;
             }
         }
-        if (result.preSharedKey != null && result.SSID != null) {
-            return result;
+        if (result.allowedKeyManagement.get(WifiConfiguration.KeyMgmt.NONE)) {
+            result.preSharedKey = null;
         }
-        return null;
+        return result;
     }
 
     private static void populateAllowedKeyManagement(BitSet allowedKeyManagement, short authType) {

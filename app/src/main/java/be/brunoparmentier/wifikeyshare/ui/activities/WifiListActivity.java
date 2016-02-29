@@ -310,7 +310,10 @@ public class WifiListActivity extends AppCompatActivity {
             /* Populate WifiNetwork list from WifiManager */
             if (savedWifiConfigs != null) {
                 for (WifiConfiguration wifiConfig : savedWifiConfigs) {
-                    wifiManagerNetworks.add(WifiNetwork.fromWifiConfiguration(wifiConfig));
+                    WifiNetwork newNetwork = WifiNetwork.fromWifiConfiguration(wifiConfig);
+                    if (!newNetwork.getSsid().isEmpty()) {
+                        wifiManagerNetworks.add(newNetwork);
+                    }
                 }
             }
 

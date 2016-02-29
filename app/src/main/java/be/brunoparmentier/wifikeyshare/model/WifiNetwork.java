@@ -73,11 +73,14 @@ public class WifiNetwork implements Serializable {
 
     private static String getSsidFromWifiConfiguration(WifiConfiguration wifiConfiguration) {
         String ssid = wifiConfiguration.SSID;
-        if (ssid.startsWith("\"") && ssid.endsWith("\"")) {
-            return ssid.substring(1, ssid.length() - 1);
-        } else {
-            return ssid; // FIXME: convert hex string to ascii string
+        if (ssid != null) {
+            if (ssid.startsWith("\"") && ssid.endsWith("\"")) {
+                return ssid.substring(1, ssid.length() - 1);
+            } else {
+                return ssid; // FIXME: convert hex string to ascii string
+            }
         }
+        return "";
     }
 
     private static WifiAuthType getSecurityFromWifiConfiguration(WifiConfiguration wifiConfiguration) {

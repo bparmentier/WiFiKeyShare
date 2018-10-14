@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_ok">OK</string>
+    <string name="password">Passwort</string>
+    <string name="view_password">Passwort anzeigen</string>
+    <string name="wifilist_dialog_noroot_title">Root-Zugriff nicht verfügbar</string>
+    <string name="wifilist_dialog_noroot_msg">WLAN-Passwörter wurden nicht geladen, weil ihr Gerät nicht gerootet ist. Sie werden die Passwörter manuell angeben müssen.</string>
+    <string name="wifilist_dialog_clear_password">Gespeichertes Passwort löschen</string>
+    <string name="wifilist_dialog_title_ssid">SSID</string>
+    <string name="wifilist_dialog_title_security">Sicherheit</string>
+    <string name="wifi_activity_title">WLAN</string>
+    <string name="wifi_dialog_password_title">WLAN-Passwort benötigt</string>
+    <string name="action_cancel">Abbrechen</string>
+    <string name="action_close">Schließen</string>
+    <string name="action_got_it">OK</string>
+    <string name="wifi_dialog_password_msg">WLAN-Passwort für %1$s:</string>
+    <string name="wifi_dialog_password_show">Passwort anzeigen</string>
+    <string name="qrcode_fragment_tab_title">QR-Code</string>
+    <string name="nfc_fragment_tab_title">NFC</string>
+    <string name="open_nfc_settings">NFC-Einstellung öffnen</string>
+    <string name="error_turn_nfc_on">Bitte aktivieren sie NFC</string>
+    <string name="error_nfc_not_available">NFC ist auf ihrem Gerät nicht verfügbar</string>
+    <string name="error_wep_to_nfc_not_supported">WEP-Konfigurationsdaten können nicht auf NFC-Tags geschrieben werden</string>
+    <string name="error_wep_password_length">WEP-Passwort muss 5 oder 13 Zeichen lang sein</string>
+    <string name="error_wpa_password_length">WPA-Passwort muss 8 bis 63 Zeichen haben</string>
+    <string name="error_nfc_tag_write">Fehler beim Schreiben auf den Tag</string>
+    <string name="confirm_connection_action_connect">Verbinden</string>
+    <string name="nfc_tag_written">NFC-Tag erfolgreich beschrieben</string>
+    <string name="write_to_tag">Tag beschreiben</string>
+    <string name="write_to_tag_msg">Scanne jetzt einen NFC-Tag um die WLAN-Konfiguration zu schreiben</string>
+    <string name="nfc_tag_read">NFC-Tag gelesen</string>
+    <string name="confirm_connection_status_unable_to_connect">Konnte nicht mit Netzwerk verbinden</string>
+    <string name="confirm_connection_status_wifi_connected">Verbunden</string>
+    <string name="confirm_connection_title_connect_to_network">Mit Netzwerk verbinden</string>
+    <string name="confirm_connection_prompt_connect_to_network">Mit Netzwerk %1$s verbinden?</string>
+    <string name="about_dialog_title">Über</string>
+    <string name="settings">Einstellungen</string>
+    <string name="pin_lock_title">PIN-Sperre</string>
+    <string name="pin_lock_summary">App mit PIN schützen</string>
+    <string name="passcode_manage">PIN-Sperre managen</string>
+    <string name="passcode_enter_old_passcode">Alte PIN eingeben</string>
+    <string name="passcode_change_passcode">PIN ändern</string>
+    <string name="passcode_re_enter_passcode">PIN erneut eingeben</string>
+    <string name="passcode_turn_on">PIN-Sperre aktivieren</string>
+    <string name="passcode_turn_off">PIN-Sperre deaktivieren</string>
+    <string name="passcode_wrong_passcode">Falsche PIN</string>
+    <string name="passcode_set">PIN gesetzt</string>
+    <string name="passcode_preference_title">PIN-Sperre</string>
+    <string name="passcodelock_prompt_message">PIN eingeben</string>
+    <string name="about_dialog_msg_description">
+        <![CDATA[
+        <p>Version %s</p>
+
+        <p><a href="http://wifikeysha.re">http://wifikeysha.re</a></p>
+
+        <p>WiFiKeyShare ermöglicht ihnen, WLAN-Passwörter einfach durch QR-Codes oder NFC-Tags zu teilen.<p>
+
+        <p>Diese Applikation ist frei Software (GPLv3+). Sie können den Quelltext hier abrufen:
+        <a href="https://github.com/bparmentier/WiFiKeyShare">https://github.com/bparmentier/WiFiKeyShare</a>.</p>
+
+        <p>Bitte melden sie Probleme hier: <a href="https://github.com/bparmentier/WiFiKeyShare/issues">https://github.com/bparmentier/WiFiKeyShare/issues</a>.</p>
+        ]]>
+    </string>
+    <string name="about_dialog_msg_license_title">
+        <![CDATA[
+        <strong>Lizenz</strong>
+        ]]>
+    </string>
+    <string name="about_dialog_msg_credits_title">
+        <![CDATA[
+        <strong>Anerkennungen</strong>
+        ]]>
+    </string>
+    <string name="about_dialog_msg_credits">
+        <![CDATA[
+        <p>WiFiKeyShare wurde mit folgenden Programmbibliotheken entwickelt:</p>
+
+        &nbsp;&nbsp;&bull;&nbsp;<a href="https://developer.android.com/tools/support-library/index.html">Android Support</a><br />
+        &nbsp;&nbsp;&bull;&nbsp;<a href="https://github.com/Chainfire/libsuperuser">libsuperuser</a><br />
+        &nbsp;&nbsp;&bull;&nbsp;<a href="https://github.com/zxing/zxing">ZXing</a><br />
+        &nbsp;&nbsp;&bull;&nbsp;<a href="https://github.com/wordpress-mobile/PasscodeLock-Android">PasscodeLock-Android</a>
+        ]]>
+    </string>
+</resources>

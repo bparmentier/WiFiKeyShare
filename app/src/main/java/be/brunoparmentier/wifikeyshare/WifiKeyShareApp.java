@@ -34,7 +34,7 @@ public class WifiKeyShareApp extends Application {
 
         if (AppLockManager.getInstance().isAppLockFeatureEnabled()) {
             /* Disable lockscreen for ConfirmConnectToWifiNetworkActivity */
-            AppLockManager.getInstance().getCurrentAppLock().setDisabledActivities(
+            AppLockManager.getInstance().getAppLock().setExemptActivities(
                     new String[]{ ConfirmConnectToWifiNetworkActivity.class.getCanonicalName() });
         }
 

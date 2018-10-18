@@ -2,7 +2,7 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion 23
-    buildToolsVersion "23.0.2"
+    buildToolsVersion "28.0.3"
     defaultConfig {
         applicationId 'be.brunoparmentier.wifikeyshare'
         minSdkVersion 15
@@ -11,12 +11,15 @@ android {
         versionName "1.1.1"
     }
     buildTypes {
+        debug {
+            applicationIdSuffix '.debug'
+        }
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             applicationVariants.all { variant ->
                 variant.outputs.each { output ->
-                    output.outputFile = new File(output.outputFile.parent, output.outputFile.name.replace("app-release", "wifikeyshare-" + defaultConfig.versionName + "-release"))
+                    output.outputFileName = "wifikeyshare-" + defaultConfig.versionName + "-release.apk"
                 }
             }
         }
@@ -29,12 +32,17 @@ android {
 }
 
 dependencies {
-    compile fileTree(include: ['*.jar'], dir: 'libs')
-    testCompile 'junit:junit:4.12'
-    compile 'com.android.support:appcompat-v7:23.1.1'
-    compile 'com.android.support:design:23.1.1'
-    compile 'com.android.support:recyclerview-v7:23.1.1'
-    compile 'eu.chainfire:libsuperuser:1.0.0.+'
-    compile 'com.google.zxing:core:3.2.1'
-    compile 'org.wordpress:passcodelock:1.+'
+    implementation 'com.android.support:appcompat-v7:23.4.0'
+    implementation 'com.android.support:design:23.4.0'
+    implementation 'com.android.support:recyclerview-v7:23.4.0'
+    implementation 'eu.chainfire:libsuperuser:1.0.0.201704021214'
+    implementation 'com.google.zxing:core:3.3.0'
+    implementation 'org.wordpress:passcodelock:1.4.0' // TODO: update (1.5.1 fixed a PIN input screen bypass, but doesn't work currently)
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'com.android.support:appcompat-v7:23.4.0'
+        force 'com.android.support:preference-v7:23.4.0'
+    }
 }

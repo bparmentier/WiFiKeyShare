@@ -237,7 +237,7 @@ public class WifiNetworkActivity extends AppCompatActivity {
 
                         // Update QR code image
                         FragmentManager fm = getSupportFragmentManager();
-                        QrCodeFragment qrCodeFragment = (QrCodeFragment) fm.getFragments().get(0);
+                        QrCodeFragment qrCodeFragment = (QrCodeFragment) fm.getFragments().get(1);
                         qrCodeFragment.updateQrCode(wifiNetwork);
 
                         WifiKeysDataSource.getInstance().insertWifiKey(wifiNetwork);

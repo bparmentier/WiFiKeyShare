@@ -39,20 +39,20 @@
         them manually for each network you want to share.
     </string>
     <!-- Long-tap on Wi-Fi network dialog -->
-    <string name="wifilist_dialog_view_password">@string/view_password</string>
+    <string name="wifilist_dialog_view_password" translatable="false">@string/view_password</string>
     <string name="wifilist_dialog_clear_password">Clear saved password</string>
     <string name="wifilist_dialog_title_ssid">SSID</string>
     <string name="wifilist_dialog_title_security">Security</string>
-    <string name="wifilist_dialog_title_password">@string/password</string>
+    <string name="wifilist_dialog_title_password" translatable="false">@string/password</string>
 
     <!-- Wi-Fi network activity -->
     <string name="wifi_activity_title">Wi-Fi Network</string>
     <!-- Password needed dialog -->
     <string name="wifi_dialog_password_title">Wi-Fi password needed</string>
     <string name="wifi_dialog_password_msg">Enter the Wi-Fi password for %1$s:</string>
-    <string name="wifi_dialog_password_hint">@string/password</string>
+    <string name="wifi_dialog_password_hint" translatable="false">@string/password</string>
     <string name="wifi_dialog_password_show">Show password</string>
-    <string name="wifi_dialog_view_password">@string/view_password</string>
+    <string name="wifi_dialog_view_password" translatable="false">@string/view_password</string>
 
     <!-- QR code fragment -->
     <string name="qrcode_fragment_tab_title">QR code</string>
@@ -137,7 +137,7 @@
     </string>
 
     <!-- Strings related to Settings -->
-    <string name="settings_activity_title">@string/settings</string>
+    <string name="settings_activity_title" translatable="false">@string/settings</string>
     <string name="settings">Settings</string>
     <string name="pin_lock_title">PIN lock</string>
     <string name="pin_lock_summary">Protect app by PIN</string>

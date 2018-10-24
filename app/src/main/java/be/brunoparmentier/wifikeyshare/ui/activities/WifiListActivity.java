@@ -26,6 +26,7 @@ import android.content.IntentFilter;
 import android.net.wifi.WifiConfiguration;
 import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AlertDialog;
@@ -42,6 +43,11 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
 
+import org.xmlpull.v1.XmlPullParserException;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
@@ -55,6 +61,7 @@ import be.brunoparmentier.wifikeyshare.model.WifiNetwork;
 import be.brunoparmentier.wifikeyshare.ui.AboutDialog;
 import be.brunoparmentier.wifikeyshare.ui.ContextMenuRecyclerView;
 import be.brunoparmentier.wifikeyshare.ui.DividerItemDecoration;
+import be.brunoparmentier.wifikeyshare.utils.WifiConfigStoreParser;
 import be.brunoparmentier.wifikeyshare.utils.WpaSupplicantParser;
 import eu.chainfire.libsuperuser.Shell;
 
@@ -62,6 +69,7 @@ public class WifiListActivity extends AppCompatActivity {
     private static final String TAG = WifiListActivity.class.getSimpleName();
 
     private static final String FILE_WIFI_SUPPLICANT = "/data/misc/wifi/wpa_supplicant.conf";
+    private static final String FILE_WIFI_CONFIG_STORE = "/data/misc/wifi/WifiConfigStore.xml";
 
     private static final int PASSWORD_REQUEST = 1;
     private static final String KEY_NETWORK_ID = "network_id";
@@ -321,17 +329,33 @@ public class WifiListActivity extends AppCompatActivity {
             if (Shell.SU.available()) {
                 isDeviceRooted = true;
 
-                List<String> result = Shell.SU.run("cat " + FILE_WIFI_SUPPLICANT);
+                String wifiFile;
+                if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                    wifiFile = FILE_WIFI_SUPPLICANT;
+                } else {
+                    wifiFile = FILE_WIFI_CONFIG_STORE;
+                }
+                List<String> result = Shell.SU.run("cat " + wifiFile);
                 String strRes = "";
                 for (String line : result) {
                     strRes += line + "\n";
                     //Log.d(TAG, line);
                 }
-                List<WifiNetwork> wpaSupplicantNetworks = WpaSupplicantParser.parse(strRes);
+                List<WifiNetwork> wifiNetworksFromRoot = new ArrayList<>();
+                try {
+                    if (Build.VERSION.SDK_INT < Build.VERSION_CODES.O) {
+                        wifiNetworksFromRoot = WpaSupplicantParser.parse(strRes);
+                    } else {
+                        wifiNetworksFromRoot = WifiConfigStoreParser.parse(
+                                new ByteArrayInputStream(strRes.getBytes(StandardCharsets.UTF_8)));
+                    }
+                } catch (XmlPullParserException | IOException e) {
+                    e.printStackTrace();
+                }
 
                 for (WifiNetwork wifiManagerNetwork : wifiManagerNetworks) {
                     if (wifiManagerNetwork.getAuthType() != WifiAuthType.OPEN) {
-                        for (WifiNetwork wpaSupplicantNetwork : wpaSupplicantNetworks) {
+                        for (WifiNetwork wpaSupplicantNetwork : wifiNetworksFromRoot) {
                             if (wifiManagerNetwork.getSsid().equals(wpaSupplicantNetwork.getSsid())) {
                                 wifiManagerNetwork.setKey(wpaSupplicantNetwork.getKey());
                                 break;

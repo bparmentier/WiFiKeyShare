@@ -92,10 +92,9 @@ public class WpaSupplicantParser {
     }
 
     private static String parseToken(String networkSection, String tokenName) {
-        //Log.d(TAG, networkSection);
         if (hasToken(networkSection, tokenName)) {
             List<String> tokenLines = tokenLines(networkSection, tokenName);
-            return tokenLines.get(0).split("=")[1].replace("\"", "");
+            return tokenLines.get(0).split("=", 2)[1].replace("\"", "");
         }
 
         return "";

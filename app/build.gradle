@@ -29,6 +29,7 @@ android {
     lintOptions {
         abortOnError false
     }
+    testOptions.unitTests.includeAndroidResources = true
 }
 
 dependencies {
@@ -41,6 +42,7 @@ dependencies {
     implementation 'commons-codec:commons-codec:1.11'
 
     testImplementation 'junit:junit:4.12'
+    testImplementation 'org.robolectric:robolectric:4.0'
 }
 
 configurations.all {

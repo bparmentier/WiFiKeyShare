@@ -21,6 +21,7 @@ package be.brunoparmentier.wifikeyshare.model;
 import android.net.wifi.WifiConfiguration;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class WifiNetwork implements Serializable {
     private String ssid;
@@ -110,6 +111,22 @@ public class WifiNetwork implements Serializable {
                 ", authType=" + authType +
                 ", isHidden=" + isHidden +
                 '}';
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WifiNetwork that = (WifiNetwork) o;
+        return isHidden == that.isHidden &&
+                Objects.equals(ssid, that.ssid) &&
+                Objects.equals(key, that.key) &&
+                authType == that.authType;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(ssid, key, authType, isHidden);
     }
 
     public void setKey(String key) {

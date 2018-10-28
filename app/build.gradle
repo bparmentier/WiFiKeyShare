@@ -38,6 +38,8 @@ dependencies {
     implementation 'eu.chainfire:libsuperuser:1.0.0.201704021214'
     implementation 'com.google.zxing:core:3.3.0'
     implementation 'org.wordpress:passcodelock:1.4.0' // TODO: update (1.5.1 fixed a PIN input screen bypass, but doesn't work currently)
+
+    testImplementation 'junit:junit:4.12'
 }
 
 configurations.all {

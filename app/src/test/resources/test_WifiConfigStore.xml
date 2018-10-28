@@ -1,0 +1,450 @@
+<?xml version='1.0' encoding='utf-8' standalone='yes' ?>
+<WifiConfigStoreData>
+    <int name="Version" value="1" />
+    <NetworkList>
+        <Network>
+            <WifiConfiguration>
+                <string name="ConfigKey">&quot;test1&quot;NONE</string>
+                <string name="SSID">&quot;test1&quot;</string>
+                <null name="BSSID" />
+                <null name="PreSharedKey" />
+                <null name="WEPKeys" />
+                <int name="WEPTxKeyIndex" value="0" />
+                <boolean name="HiddenSSID" value="false" />
+                <boolean name="RequirePMF" value="false" />
+                <byte-array name="AllowedKeyMgmt" num="1">01</byte-array>
+                <byte-array name="AllowedProtocols" num="1">03</byte-array>
+                <byte-array name="AllowedAuthAlgos" num="1">01</byte-array>
+                <byte-array name="AllowedGroupCiphers" num="1">0f</byte-array>
+                <byte-array name="AllowedPairwiseCiphers" num="1">06</byte-array>
+                <boolean name="Shared" value="true" />
+                <int name="Status" value="2" />
+                <null name="FQDN" />
+                <null name="ProviderFriendlyName" />
+                <null name="LinkedNetworksList" />
+                <null name="DefaultGwMacAddress" />
+                <boolean name="ValidatedInternetAccess" value="false" />
+                <boolean name="NoInternetAccessExpected" value="false" />
+                <int name="UserApproved" value="0" />
+                <boolean name="MeteredHint" value="false" />
+                <int name="MeteredOverride" value="0" />
+                <boolean name="UseExternalScores" value="false" />
+                <int name="NumAssociation" value="0" />
+                <int name="CreatorUid" value="1000" />
+                <string name="CreatorName">android.uid.system:1000</string>
+                <string name="CreationTime">time=10-28 22:15:25.572</string>
+                <int name="LastUpdateUid" value="1000" />
+                <string name="LastUpdateName">android.uid.system:1000</string>
+                <int name="LastConnectUid" value="0" />
+                <boolean name="IsLegacyPasspointConfig" value="false" />
+                <long-array name="RoamingConsortiumOIs" num="0" />
+                <string name="RandomizedMacAddress">02:00:00:00:00:00</string>
+            </WifiConfiguration>
+            <NetworkStatus>
+                <string name="SelectionStatus">NETWORK_SELECTION_ENABLED</string>
+                <string name="DisableReason">NETWORK_SELECTION_ENABLE</string>
+                <null name="ConnectChoice" />
+                <long name="ConnectChoiceTimeStamp" value="-1" />
+                <boolean name="HasEverConnected" value="false" />
+            </NetworkStatus>
+            <IpConfiguration>
+                <string name="IpAssignment">DHCP</string>
+                <string name="ProxySettings">NONE</string>
+            </IpConfiguration>
+        </Network>
+        <Network>
+            <WifiConfiguration>
+                <string name="ConfigKey">&quot;test2&quot;WEP</string>
+                <string name="SSID">&quot;test2&quot;</string>
+                <null name="BSSID" />
+                <null name="PreSharedKey" />
+                <string-array name="WEPKeys" num="4">
+                    <item value="&quot;test&quot;" />
+                    <item value="" />
+                    <item value="" />
+                    <item value="" />
+                </string-array>
+                <int name="WEPTxKeyIndex" value="0" />
+                <boolean name="HiddenSSID" value="false" />
+                <boolean name="RequirePMF" value="false" />
+                <byte-array name="AllowedKeyMgmt" num="1">01</byte-array>
+                <byte-array name="AllowedProtocols" num="1">03</byte-array>
+                <byte-array name="AllowedAuthAlgos" num="1">03</byte-array>
+                <byte-array name="AllowedGroupCiphers" num="1">0f</byte-array>
+                <byte-array name="AllowedPairwiseCiphers" num="1">06</byte-array>
+                <boolean name="Shared" value="true" />
+                <int name="Status" value="2" />
+                <null name="FQDN" />
+                <null name="ProviderFriendlyName" />
+                <null name="LinkedNetworksList" />
+                <null name="DefaultGwMacAddress" />
+                <boolean name="ValidatedInternetAccess" value="false" />
+                <boolean name="NoInternetAccessExpected" value="false" />
+                <int name="UserApproved" value="0" />
+                <boolean name="MeteredHint" value="false" />
+                <int name="MeteredOverride" value="0" />
+                <boolean name="UseExternalScores" value="false" />
+                <int name="NumAssociation" value="0" />
+                <int name="CreatorUid" value="1000" />
+                <string name="CreatorName">android.uid.system:1000</string>
+                <string name="CreationTime">time=10-28 22:15:39.284</string>
+                <int name="LastUpdateUid" value="1000" />
+                <string name="LastUpdateName">android.uid.system:1000</string>
+                <int name="LastConnectUid" value="0" />
+                <boolean name="IsLegacyPasspointConfig" value="false" />
+                <long-array name="RoamingConsortiumOIs" num="0" />
+                <string name="RandomizedMacAddress">02:00:00:00:00:00</string>
+            </WifiConfiguration>
+            <NetworkStatus>
+                <string name="SelectionStatus">NETWORK_SELECTION_ENABLED</string>
+                <string name="DisableReason">NETWORK_SELECTION_ENABLE</string>
+                <null name="ConnectChoice" />
+                <long name="ConnectChoiceTimeStamp" value="-1" />
+                <boolean name="HasEverConnected" value="false" />
+            </NetworkStatus>
+            <IpConfiguration>
+                <string name="IpAssignment">DHCP</string>
+                <string name="ProxySettings">NONE</string>
+            </IpConfiguration>
+        </Network>
+        <Network>
+            <WifiConfiguration>
+                <string name="ConfigKey">&quot;test3&quot;WPA_PSK</string>
+                <string name="SSID">&quot;test3&quot;</string>
+                <null name="BSSID" />
+                <string name="PreSharedKey">&quot;test1234&quot;</string>
+                <null name="WEPKeys" />
+                <int name="WEPTxKeyIndex" value="0" />
+                <boolean name="HiddenSSID" value="false" />
+                <boolean name="RequirePMF" value="false" />
+                <byte-array name="AllowedKeyMgmt" num="1">02</byte-array>
+                <byte-array name="AllowedProtocols" num="1">03</byte-array>
+                <byte-array name="AllowedAuthAlgos" num="1">01</byte-array>
+                <byte-array name="AllowedGroupCiphers" num="1">0f</byte-array>
+                <byte-array name="AllowedPairwiseCiphers" num="1">06</byte-array>
+                <boolean name="Shared" value="true" />
+                <int name="Status" value="2" />
+                <null name="FQDN" />
+                <null name="ProviderFriendlyName" />
+                <null name="LinkedNetworksList" />
+                <null name="DefaultGwMacAddress" />
+                <boolean name="ValidatedInternetAccess" value="false" />
+                <boolean name="NoInternetAccessExpected" value="false" />
+                <int name="UserApproved" value="0" />
+                <boolean name="MeteredHint" value="false" />
+                <int name="MeteredOverride" value="0" />
+                <boolean name="UseExternalScores" value="false" />
+                <int name="NumAssociation" value="0" />
+                <int name="CreatorUid" value="1000" />
+                <string name="CreatorName">android.uid.system:1000</string>
+                <string name="CreationTime">time=10-28 22:15:59.563</string>
+                <int name="LastUpdateUid" value="1000" />
+                <string name="LastUpdateName">android.uid.system:1000</string>
+                <int name="LastConnectUid" value="0" />
+                <boolean name="IsLegacyPasspointConfig" value="false" />
+                <long-array name="RoamingConsortiumOIs" num="0" />
+                <string name="RandomizedMacAddress">02:00:00:00:00:00</string>
+            </WifiConfiguration>
+            <NetworkStatus>
+                <string name="SelectionStatus">NETWORK_SELECTION_ENABLED</string>
+                <string name="DisableReason">NETWORK_SELECTION_ENABLE</string>
+                <null name="ConnectChoice" />
+                <long name="ConnectChoiceTimeStamp" value="-1" />
+                <boolean name="HasEverConnected" value="false" />
+            </NetworkStatus>
+            <IpConfiguration>
+                <string name="IpAssignment">DHCP</string>
+                <string name="ProxySettings">NONE</string>
+            </IpConfiguration>
+        </Network>
+        <Network>
+            <WifiConfiguration>
+                <string name="ConfigKey">&quot;test4&quot;WPA_PSK</string>
+                <string name="SSID">&quot;test4&quot;</string>
+                <null name="BSSID" />
+                <string name="PreSharedKey">&quot;ABCDEFGHI0123456789JKLMNOP&quot;</string>
+                <null name="WEPKeys" />
+                <int name="WEPTxKeyIndex" value="0" />
+                <boolean name="HiddenSSID" value="false" />
+                <boolean name="RequirePMF" value="false" />
+                <byte-array name="AllowedKeyMgmt" num="1">02</byte-array>
+                <byte-array name="AllowedProtocols" num="1">03</byte-array>
+                <byte-array name="AllowedAuthAlgos" num="1">01</byte-array>
+                <byte-array name="AllowedGroupCiphers" num="1">0f</byte-array>
+                <byte-array name="AllowedPairwiseCiphers" num="1">06</byte-array>
+                <boolean name="Shared" value="true" />
+                <int name="Status" value="2" />
+                <null name="FQDN" />
+                <null name="ProviderFriendlyName" />
+                <null name="LinkedNetworksList" />
+                <null name="DefaultGwMacAddress" />
+                <boolean name="ValidatedInternetAccess" value="false" />
+                <boolean name="NoInternetAccessExpected" value="false" />
+                <int name="UserApproved" value="0" />
+                <boolean name="MeteredHint" value="false" />
+                <int name="MeteredOverride" value="0" />
+                <boolean name="UseExternalScores" value="false" />
+                <int name="NumAssociation" value="0" />
+                <int name="CreatorUid" value="1000" />
+                <string name="CreatorName">android.uid.system:1000</string>
+                <string name="CreationTime">time=10-28 22:16:40.317</string>
+                <int name="LastUpdateUid" value="1000" />
+                <string name="LastUpdateName">android.uid.system:1000</string>
+                <int name="LastConnectUid" value="0" />
+                <boolean name="IsLegacyPasspointConfig" value="false" />
+                <long-array name="RoamingConsortiumOIs" num="0" />
+                <string name="RandomizedMacAddress">02:00:00:00:00:00</string>
+            </WifiConfiguration>
+            <NetworkStatus>
+                <string name="SelectionStatus">NETWORK_SELECTION_ENABLED</string>
+                <string name="DisableReason">NETWORK_SELECTION_ENABLE</string>
+                <null name="ConnectChoice" />
+                <long name="ConnectChoiceTimeStamp" value="-1" />
+                <boolean name="HasEverConnected" value="false" />
+            </NetworkStatus>
+            <IpConfiguration>
+                <string name="IpAssignment">DHCP</string>
+                <string name="ProxySettings">NONE</string>
+            </IpConfiguration>
+        </Network>
+        <Network>
+            <WifiConfiguration>
+                <string name="ConfigKey">&quot;test5&quot;WPA_PSK</string>
+                <string name="SSID">&quot;test5&quot;</string>
+                <null name="BSSID" />
+                <string name="PreSharedKey">&quot;&quot;;/\=#}`,\&quot;$4&lt;d)=%&quot;</string>
+                <null name="WEPKeys" />
+                <int name="WEPTxKeyIndex" value="0" />
+                <boolean name="HiddenSSID" value="false" />
+                <boolean name="RequirePMF" value="false" />
+                <byte-array name="AllowedKeyMgmt" num="1">02</byte-array>
+                <byte-array name="AllowedProtocols" num="1">03</byte-array>
+                <byte-array name="AllowedAuthAlgos" num="1">01</byte-array>
+                <byte-array name="AllowedGroupCiphers" num="1">0f</byte-array>
+                <byte-array name="AllowedPairwiseCiphers" num="1">06</byte-array>
+                <boolean name="Shared" value="true" />
+                <int name="Status" value="2" />
+                <null name="FQDN" />
+                <null name="ProviderFriendlyName" />
+                <null name="LinkedNetworksList" />
+                <null name="DefaultGwMacAddress" />
+                <boolean name="ValidatedInternetAccess" value="false" />
+                <boolean name="NoInternetAccessExpected" value="false" />
+                <int name="UserApproved" value="0" />
+                <boolean name="MeteredHint" value="false" />
+                <int name="MeteredOverride" value="0" />
+                <boolean name="UseExternalScores" value="false" />
+                <int name="NumAssociation" value="0" />
+                <int name="CreatorUid" value="1000" />
+                <string name="CreatorName">android.uid.system:1000</string>
+                <string name="CreationTime">time=10-28 22:18:38.578</string>
+                <int name="LastUpdateUid" value="1000" />
+                <string name="LastUpdateName">android.uid.system:1000</string>
+                <int name="LastConnectUid" value="0" />
+                <boolean name="IsLegacyPasspointConfig" value="false" />
+                <long-array name="RoamingConsortiumOIs" num="0" />
+                <string name="RandomizedMacAddress">02:00:00:00:00:00</string>
+            </WifiConfiguration>
+            <NetworkStatus>
+                <string name="SelectionStatus">NETWORK_SELECTION_ENABLED</string>
+                <string name="DisableReason">NETWORK_SELECTION_ENABLE</string>
+                <null name="ConnectChoice" />
+                <long name="ConnectChoiceTimeStamp" value="-1" />
+                <boolean name="HasEverConnected" value="false" />
+            </NetworkStatus>
+            <IpConfiguration>
+                <string name="IpAssignment">DHCP</string>
+                <string name="ProxySettings">NONE</string>
+            </IpConfiguration>
+        </Network>
+        <Network>
+            <WifiConfiguration>
+                <string name="ConfigKey">&quot;test6&quot;WPA_EAP</string>
+                <string name="SSID">&quot;test6&quot;</string>
+                <null name="BSSID" />
+                <null name="PreSharedKey" />
+                <null name="WEPKeys" />
+                <int name="WEPTxKeyIndex" value="0" />
+                <boolean name="HiddenSSID" value="false" />
+                <boolean name="RequirePMF" value="false" />
+                <byte-array name="AllowedKeyMgmt" num="1">0c</byte-array>
+                <byte-array name="AllowedProtocols" num="1">03</byte-array>
+                <byte-array name="AllowedAuthAlgos" num="1">01</byte-array>
+                <byte-array name="AllowedGroupCiphers" num="1">0f</byte-array>
+                <byte-array name="AllowedPairwiseCiphers" num="1">06</byte-array>
+                <boolean name="Shared" value="true" />
+                <int name="Status" value="2" />
+                <null name="FQDN" />
+                <null name="ProviderFriendlyName" />
+                <null name="LinkedNetworksList" />
+                <null name="DefaultGwMacAddress" />
+                <boolean name="ValidatedInternetAccess" value="false" />
+                <boolean name="NoInternetAccessExpected" value="false" />
+                <int name="UserApproved" value="0" />
+                <boolean name="MeteredHint" value="false" />
+                <int name="MeteredOverride" value="0" />
+                <boolean name="UseExternalScores" value="false" />
+                <int name="NumAssociation" value="0" />
+                <int name="CreatorUid" value="1000" />
+                <string name="CreatorName">android.uid.system:1000</string>
+                <string name="CreationTime">time=10-28 22:19:23.352</string>
+                <int name="LastUpdateUid" value="1000" />
+                <string name="LastUpdateName">android.uid.system:1000</string>
+                <int name="LastConnectUid" value="0" />
+                <boolean name="IsLegacyPasspointConfig" value="false" />
+                <long-array name="RoamingConsortiumOIs" num="0" />
+                <string name="RandomizedMacAddress">02:00:00:00:00:00</string>
+            </WifiConfiguration>
+            <NetworkStatus>
+                <string name="SelectionStatus">NETWORK_SELECTION_ENABLED</string>
+                <string name="DisableReason">NETWORK_SELECTION_ENABLE</string>
+                <null name="ConnectChoice" />
+                <long name="ConnectChoiceTimeStamp" value="-1" />
+                <boolean name="HasEverConnected" value="false" />
+            </NetworkStatus>
+            <IpConfiguration>
+                <string name="IpAssignment">DHCP</string>
+                <string name="ProxySettings">NONE</string>
+            </IpConfiguration>
+            <WifiEnterpriseConfiguration>
+                <string name="Identity"></string>
+                <string name="AnonIdentity"></string>
+                <string name="Password"></string>
+                <string name="ClientCert"></string>
+                <string name="CaCert"></string>
+                <string name="SubjectMatch"></string>
+                <string name="Engine">0</string>
+                <string name="EngineId"></string>
+                <string name="PrivateKeyId"></string>
+                <string name="AltSubjectMatch"></string>
+                <string name="DomSuffixMatch">abc.com</string>
+                <string name="CaPath">/system/etc/security/cacerts</string>
+                <int name="EapMethod" value="0" />
+                <int name="Phase2Method" value="0" />
+                <string name="PLMN"></string>
+                <string name="Realm"></string>
+            </WifiEnterpriseConfiguration>
+        </Network>
+        <Network>
+            <WifiConfiguration>
+                <string name="ConfigKey">&quot;test7&quot;WPA_EAP</string>
+                <string name="SSID">&quot;test7&quot;</string>
+                <null name="BSSID" />
+                <null name="PreSharedKey" />
+                <null name="WEPKeys" />
+                <int name="WEPTxKeyIndex" value="0" />
+                <boolean name="HiddenSSID" value="false" />
+                <boolean name="RequirePMF" value="false" />
+                <byte-array name="AllowedKeyMgmt" num="1">0c</byte-array>
+                <byte-array name="AllowedProtocols" num="1">03</byte-array>
+                <byte-array name="AllowedAuthAlgos" num="1">01</byte-array>
+                <byte-array name="AllowedGroupCiphers" num="1">0f</byte-array>
+                <byte-array name="AllowedPairwiseCiphers" num="1">06</byte-array>
+                <boolean name="Shared" value="true" />
+                <int name="Status" value="2" />
+                <null name="FQDN" />
+                <null name="ProviderFriendlyName" />
+                <null name="LinkedNetworksList" />
+                <null name="DefaultGwMacAddress" />
+                <boolean name="ValidatedInternetAccess" value="false" />
+                <boolean name="NoInternetAccessExpected" value="false" />
+                <int name="UserApproved" value="0" />
+                <boolean name="MeteredHint" value="false" />
+                <int name="MeteredOverride" value="0" />
+                <boolean name="UseExternalScores" value="false" />
+                <int name="NumAssociation" value="0" />
+                <int name="CreatorUid" value="1000" />
+                <string name="CreatorName">android.uid.system:1000</string>
+                <string name="CreationTime">time=10-28 22:20:27.187</string>
+                <int name="LastUpdateUid" value="1000" />
+                <string name="LastUpdateName">android.uid.system:1000</string>
+                <int name="LastConnectUid" value="0" />
+                <boolean name="IsLegacyPasspointConfig" value="false" />
+                <long-array name="RoamingConsortiumOIs" num="0" />
+                <string name="RandomizedMacAddress">02:00:00:00:00:00</string>
+            </WifiConfiguration>
+            <NetworkStatus>
+                <string name="SelectionStatus">NETWORK_SELECTION_ENABLED</string>
+                <string name="DisableReason">NETWORK_SELECTION_ENABLE</string>
+                <null name="ConnectChoice" />
+                <long name="ConnectChoiceTimeStamp" value="-1" />
+                <boolean name="HasEverConnected" value="false" />
+            </NetworkStatus>
+            <IpConfiguration>
+                <string name="IpAssignment">DHCP</string>
+                <string name="ProxySettings">NONE</string>
+            </IpConfiguration>
+            <WifiEnterpriseConfiguration>
+                <string name="Identity">abcdef</string>
+                <string name="AnonIdentity"></string>
+                <string name="Password">qwertyuiop</string>
+                <string name="ClientCert"></string>
+                <string name="CaCert"></string>
+                <string name="SubjectMatch"></string>
+                <string name="Engine">0</string>
+                <string name="EngineId"></string>
+                <string name="PrivateKeyId"></string>
+                <string name="AltSubjectMatch"></string>
+                <string name="DomSuffixMatch"></string>
+                <string name="CaPath"></string>
+                <int name="EapMethod" value="0" />
+                <int name="Phase2Method" value="0" />
+                <string name="PLMN"></string>
+                <string name="Realm"></string>
+            </WifiEnterpriseConfiguration>
+        </Network>
+        <Network>
+            <WifiConfiguration>
+                <string name="ConfigKey">&quot;a&quot;=$\o(#=&gt;™•,k8&quot;NONE</string>
+                <string name="SSID">&quot;a&quot;=$\o(#=&gt;™•,k8&quot;</string>
+                <null name="BSSID" />
+                <null name="PreSharedKey" />
+                <null name="WEPKeys" />
+                <int name="WEPTxKeyIndex" value="0" />
+                <boolean name="HiddenSSID" value="false" />
+                <boolean name="RequirePMF" value="false" />
+                <byte-array name="AllowedKeyMgmt" num="1">01</byte-array>
+                <byte-array name="AllowedProtocols" num="1">03</byte-array>
+                <byte-array name="AllowedAuthAlgos" num="1">01</byte-array>
+                <byte-array name="AllowedGroupCiphers" num="1">0f</byte-array>
+                <byte-array name="AllowedPairwiseCiphers" num="1">06</byte-array>
+                <boolean name="Shared" value="true" />
+                <int name="Status" value="2" />
+                <null name="FQDN" />
+                <null name="ProviderFriendlyName" />
+                <null name="LinkedNetworksList" />
+                <null name="DefaultGwMacAddress" />
+                <boolean name="ValidatedInternetAccess" value="false" />
+                <boolean name="NoInternetAccessExpected" value="false" />
+                <int name="UserApproved" value="0" />
+                <boolean name="MeteredHint" value="false" />
+                <int name="MeteredOverride" value="0" />
+                <boolean name="UseExternalScores" value="false" />
+                <int name="NumAssociation" value="0" />
+                <int name="CreatorUid" value="1000" />
+                <string name="CreatorName">android.uid.system:1000</string>
+                <string name="CreationTime">time=10-28 22:21:23.771</string>
+                <int name="LastUpdateUid" value="1000" />
+                <string name="LastUpdateName">android.uid.system:1000</string>
+                <int name="LastConnectUid" value="0" />
+                <boolean name="IsLegacyPasspointConfig" value="false" />
+                <long-array name="RoamingConsortiumOIs" num="0" />
+                <string name="RandomizedMacAddress">02:00:00:00:00:00</string>
+            </WifiConfiguration>
+            <NetworkStatus>
+                <string name="SelectionStatus">NETWORK_SELECTION_ENABLED</string>
+                <string name="DisableReason">NETWORK_SELECTION_ENABLE</string>
+                <null name="ConnectChoice" />
+                <long name="ConnectChoiceTimeStamp" value="-1" />
+                <boolean name="HasEverConnected" value="false" />
+            </NetworkStatus>
+            <IpConfiguration>
+                <string name="IpAssignment">DHCP</string>
+                <string name="ProxySettings">NONE</string>
+            </IpConfiguration>
+        </Network>
+    </NetworkList>
+    <PasspointConfigData>
+        <long name="ProviderIndex" value="0" />
+    </PasspointConfigData>
+</WifiConfigStoreData>

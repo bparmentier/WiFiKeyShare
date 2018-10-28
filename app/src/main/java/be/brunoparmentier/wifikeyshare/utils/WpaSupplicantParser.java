@@ -18,6 +18,11 @@
 
 package be.brunoparmentier.wifikeyshare.utils;
 
+import org.apache.commons.codec.Charsets;
+import org.apache.commons.codec.DecoderException;
+import org.apache.commons.codec.binary.Hex;
+
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -94,7 +99,22 @@ public class WpaSupplicantParser {
     private static String parseToken(String networkSection, String tokenName) {
         if (hasToken(networkSection, tokenName)) {
             List<String> tokenLines = tokenLines(networkSection, tokenName);
-            return tokenLines.get(0).split("=", 2)[1].replace("\"", "");
+            String key = tokenLines.get(0).split("=", 2)[1];
+
+            if (tokenName.equals("ssid")
+                    || tokenName.equals("psk")
+                    || tokenName.startsWith("wep_key")) {
+                if (key.startsWith("\"")) {
+                    key = key.replaceAll("^\"", "").replaceAll("\"$", "");
+                } else {
+                    try {
+                        key = new String(Hex.decodeHex(key.toCharArray()));
+                    } catch (DecoderException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+            return key;
         }
 
         return "";

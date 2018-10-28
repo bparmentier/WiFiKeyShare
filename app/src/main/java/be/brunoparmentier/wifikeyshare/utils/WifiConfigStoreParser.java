@@ -124,16 +124,31 @@ public class WifiConfigStoreParser {
                 }
                 String tagName = parser.getName();
                 String name = parser.getAttributeValue(null, "name");
-                if (name.equals("SSID") && !tagName.equalsIgnoreCase("null")) {
+                if (name.equals("ConfigKey") && !tagName.equalsIgnoreCase("null")) {
+                    String configKey = readTag(parser, tagName);
+                    String parsedAuthType = configKey.substring(configKey.lastIndexOf("\"") + 1);
+                    switch (parsedAuthType) {
+                        case "NONE":
+                            authType = WifiAuthType.OPEN;
+                            break;
+                        case "WEP":
+                            authType = WifiAuthType.WEP;
+                            break;
+                        case "WPA_PSK":
+                            authType = WifiAuthType.WPA2_PSK;
+                            break;
+                        case "WPA_EAP":
+                            authType = WifiAuthType.WPA2_EAP;
+                            break;
+                    }
+                } else if (name.equals("SSID") && !tagName.equalsIgnoreCase("null")) {
                     ssid = readTag(parser, tagName);
                 } else if (name.equals("PreSharedKey") && !tagName.equalsIgnoreCase("null")) {
                     String newKey = readTag(parser, tagName);
                     if (newKey.length() > 0) {
                         key = newKey;
-                        authType = WifiAuthType.WPA2_PSK;
                     }
                 } else if (name.equals("WEPKeys") && !tagName.equalsIgnoreCase("null")) {
-                    authType = WifiAuthType.WEP;
                     if (tagName.equalsIgnoreCase("string-array")) {
                         try {
                             int numQty = Integer.parseInt(parser.getAttributeValue(null, "num"));
@@ -144,7 +159,7 @@ public class WifiConfigStoreParser {
                                     loopQty++;
                                     String newKey = parser.getAttributeValue(null, "value");
                                     if (newKey.length() > 0) {
-                                        key = newKey;
+                                        key = newKey.substring(1, newKey.length() - 1);
                                     }
                                 }
                             }
@@ -178,7 +193,8 @@ public class WifiConfigStoreParser {
         }
         parser.require(XmlPullParser.END_TAG, null, tagName);
         if (tagName.equalsIgnoreCase("string")
-                && Character.toString(result.charAt(0)).equals("\"")) {
+                && Character.toString(result.charAt(0)).equals("\"")
+                && Character.toString(result.charAt(result.length() - 1)).equals("\"")) {
             result = result.substring(1, result.length() - 1);
         }
         return result;

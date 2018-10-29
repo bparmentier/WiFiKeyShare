@@ -1,6 +1,6 @@
 /*
  * WiFiKeyShare. Share Wi-Fi passwords with QR codes or NFC tags.
- * Copyright (C) 2016 Bruno Parmentier <dev@brunoparmentier.be>
+ * Copyright (C) 2016, 2018 Bruno Parmentier <dev@brunoparmentier.be>
  *
  * This program is free software: you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -18,11 +18,9 @@
 
 package be.brunoparmentier.wifikeyshare.utils;
 
-import org.apache.commons.codec.Charsets;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
-import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.List;
 

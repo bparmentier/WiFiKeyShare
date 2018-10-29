@@ -86,8 +86,8 @@ public class QrCodeUtils {
             output.append("WPA"); // FIXME: support EAP?
         }
         output.append(";");
-        maybeAppend(output, "P:", key);
-        output.append("S:").append(ssid).append(';');
+        maybeAppend(output, "P:", escapeMecard(key));
+        output.append("S:").append(escapeMecard(ssid)).append(';');
         if (isHidden) {
             maybeAppend(output, "H:", "true");
         }
@@ -100,5 +100,14 @@ public class QrCodeUtils {
         if (value != null && !value.isEmpty()) {
             output.append(prefix).append(value).append(';');
         }
+    }
+
+    private static String escapeMecard(String input) {
+        return input
+                .replace("\\", "\\\\")
+                .replace("\"", "\\\"")
+                .replace(";", "\\;")
+                .replace(",", "\\,")
+                .replace(":", "\\:");
     }
 }

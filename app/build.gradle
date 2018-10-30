@@ -7,8 +7,8 @@ android {
         applicationId 'be.brunoparmentier.wifikeyshare'
         minSdkVersion 15
         targetSdkVersion 28
-        versionCode 3
-        versionName "1.1.1"
+        versionCode 4
+        versionName "1.2.0"
     }
     buildTypes {
         debug {
